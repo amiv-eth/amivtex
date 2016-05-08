@@ -1,0 +1,95 @@
+\ProvidesPackage{komadefaults}
+
+% Set general options
+\KOMAoptions{%
+    foldmarks=false,  % No folding marks
+    backaddress=plain,  % No underlined backaddress
+    refline=nodate  % Date is in location field
+}
+
+% Set positions
+% Header
+\@setplength{firstheadhpos}{0pt}
+\@setplength{firstheadwidth}{\paperwidth}
+% First Footer
+\@setplength{firstfoothpos}{0pt}
+\@setplength{firstfootvpos}{\paperheight}
+\@addtoplength[-1.0]{firstfootvpos}{30pt}
+\@setplength{firstfootwidth}{\paperwidth}
+% Location Field
+\@setplength{locvpos}{\useplength{toaddrvpos}}
+\@addtoplength[0.5]{locvpos}{\useplength{backaddrheight}}
+
+\@setplength[0.45]{locwidth}{\textwidth}
+
+
+% Header and footer
+% Helper: Create colored bar
+% First arg color, second content
+\newcommand{\colorbar}[2] {%
+    \colorbox{#1}{\parbox{\paperwidth}{#2}}
+}
+
+% Blue bar with logo in head
+\setkomavar{firsthead}{%
+    \colorbar{petrolblue}{%
+        \vspace{10pt}
+        \hspace{20pt}
+        \includegraphics[height=40pt]{\amivlogo}%
+        \vspace{10pt}%
+    }
+}
+
+% Orange bar with general amiv info in foot
+\setkomavar{firstfoot}{%
+    \colorbar{copperred}{\centering
+        \vspace{5pt}
+        \footnotesize{%
+            \amivname \quad \amivaddress \quad \amivcity \quad \amivphone \quad \amivemail
+        }
+        \vspace{20pt}
+    }%
+}
+
+% Copy content for other footers
+\setkomavar{nextfoot}{\usekomavar{firstfoot}}
+
+% Ensure footer is enabled on other pages, see:
+% http://tex.stackexchange.com/questions/196360/scrlttr2-make-second-page-footer-match-first-page-footer
+\usepackage{scrlayer}
+\DeclareNewLayer[
+  align=tl,
+  hoffset=\dimexpr.5\paperwidth-.5\useplength{firstfootwidth}\relax,
+  voffset=\useplength{firstfootvpos},
+  width=\useplength{firstfootwidth},
+  height=\dimexpr\paperheight-\useplength{firstfootvpos},
+  foreground,
+  contents={\parbox{\layerwidth}{\usekomavar{firstfoot}}}
+]{footer.fg}
+\DeclarePageStyleByLayers{copyfooter}{footer.fg}
+\pagestyle{copyfooter}
+
+% Location field (to the right of address field)
+% Helper to create nicely formatted and colored items
+\newcommand{\locationitem}[2] {%
+    {\color{copperred} #1}\quad #2
+}
+% Content of locationf field
+\setkomavar{location}{%
+    \locationitem{Ihre Ansprechperson}{\usekomavar{signature}}\\
+    \\
+    \locationitem{T}{\usekomavar{fromphone}}\\
+    \locationitem{E}{\usekomavar{fromemail}}\\
+    \\
+    \locationitem{D}{\usekomavar{date}}\\    
+}
+
+
+% Set default fields
+\setkomavar{fromname}{\amivname}
+\setkomavar{fromaddress}{%
+    \amivaddress\\
+    \amivcity%
+}
+\setkomavar{fromphone}{\amivphone}
+\setkomavar{fromemail}{\amivemail}
