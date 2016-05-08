@@ -1,0 +1,87 @@
+%
+% sections.lco
+%
+% Copyright (c) Markus Kohm  2005-2008
+%
+% This is a LCO-file for scrlttr2 supporting \section, \subsection
+% \subsubsection, \paragraph, \addsec and \minisec.
+%
+% NOTE: \tableofcontents is not supported!
+%
+% This file may be distributed and/or modified under the
+% conditions of the LaTeX Project Public License, either version 1.3
+% of this license or (at your option) any later version.
+% The latest version of this license is in
+%    http://www.latex-project.org/lppl.txt
+% and version 1.3 or later is part of all distributions of LaTeX
+% version 2003/12/01 or later.
+%
+% This file has the LPPL maintenance status "maintained". 
+%
+
+% AMIV modification: Changed the section counter style
+
+\ProvidesFile{sections.lco}%
+             [2008/12/03 v0.2 unsupported LCO-file]%
+\newcounter{section}
+\newcounter{subsection}[section]
+\newcounter{subsubsection}[subsection]
+\newcounter{paragraph}[subsubsection]
+\renewcommand*{\thesection}{\S\ \arabic{section}}
+\renewcommand*{\thesubsection}{\arabic{subsection}.}
+\renewcommand*{\thesubsubsection}{\arabic{subsubsection}.}
+\renewcommand*{\theparagraph}{\alph{paragraph})}
+\renewcommand*{\p@subsection}{\thesection}
+\renewcommand*{\p@subsubsection}{\p@subsection\thesubsection}
+\renewcommand*{\p@paragraph}{\p@subsubsection\thesubsubsection}
+\newcommand*\addsec{\secdef\@addsec\@saddsec}
+\newcommand*{\@addsec}{}
+\def\@addsec[#1]#2{\section*{#2}\addcontentsline{toc}{section}{#1}
+  \if@twoside \@mkboth{#1}{}\else \@mkboth{#1}{#1}\fi}
+\newcommand*{\@saddsec}[1]{\section*{#1}\@mkboth{}{}}
+\let\size@section\normalsize
+\let\size@subsection\normalsize
+\let\size@subsubsection\normalsize
+\let\size@paragraph\normalsize
+\newcommand*{\scr@fnt@section}{\size@section}
+\newcommand*{\scr@fnt@subsection}{\size@subsection}
+\newcommand*{\scr@fnt@subsubsection}{\size@subsubsection}
+\newcommand*{\scr@fnt@paragraph}{\size@paragraph}
+\newkomafont{minisec}{}
+\newcommand*\sectfont{\normalcolor\sffamily\bfseries}
+\newcommand*{\scr@fnt@disposition}{\sectfont}
+\aliaskomafont{sectioning}{disposition}
+\setcounter{secnumdepth}{4}
+\newcommand\section{\@startsection{section}{1}{\z@}%
+  {-3.5ex \@plus -1ex \@minus -.2ex}%
+  {2.3ex \@plus.2ex}%
+  {\setlength{\parfillskip}{\z@ \@plus 1fil}%
+    \raggedsection\normalfont\usekomafont{disposition}\nobreak
+    \usekomafont{section}\nobreak}}
+\newcommand\subsection{\@startsection{subsection}{2}{\z@}%
+  {-3.25ex\@plus -1ex \@minus -.2ex}%
+  {1.5ex \@plus .2ex}%
+  {\setlength{\parfillskip}{\z@ \@plus 1fil}%
+    \raggedsection\normalfont\usekomafont{disposition}\nobreak
+    \usekomafont{subsection}\nobreak}}
+\newcommand\subsubsection{\@startsection{subsubsection}{3}{\z@}%
+  {-3.25ex\@plus -1ex \@minus -.2ex}%
+  {1.5ex \@plus .2ex}%
+  {\setlength{\parfillskip}{\z@ \@plus 1fil}%
+    \raggedsection\normalfont\usekomafont{disposition}\nobreak
+    \usekomafont{subsubsection}\nobreak}}
+\newcommand\paragraph{\@startsection{paragraph}{4}{\z@}%
+  {3.25ex \@plus1ex \@minus.2ex}%
+  {-1em}%
+  {\setlength{\parfillskip}{\z@ \@plus 1fil}%
+    \raggedsection\normalfont\usekomafont{disposition}\nobreak
+    \usekomafont{paragraph}\nobreak}}
+\newcommand\minisec[1]{\@afterindentfalse \vskip 1.5ex
+  {\parindent \z@
+    \raggedsection\normalfont\usekomafont{disposition}\nobreak%
+    \usekomafont{minisec}#1\par\nobreak}\nobreak
+  \@afterheading}
+\let\raggedsection\raggedright
+\endinput
+%
+% end of file `sections.lco'

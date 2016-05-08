@@ -19,9 +19,11 @@
 % Location Field
 \@setplength{locvpos}{\useplength{toaddrvpos}}
 \@addtoplength[0.5]{locvpos}{\useplength{backaddrheight}}
-
 \@setplength[0.45]{locwidth}{\textwidth}
 
+
+% Signature left handed
+\renewcommand*{\raggedsignature}{\raggedright}
 
 % Header and footer
 % Helper: Create colored bar
@@ -45,7 +47,7 @@
     \colorbar{copperred}{\centering
         \vspace{5pt}
         \footnotesize{%
-            \amivname \quad \amivaddress \quad \amivcity \quad \amivphone \quad \amivemail
+            \amivname \quad \amivaddress \quad \amivpostal\ \amivcity \quad \amivphone \quad \amivemail
         }
         \vspace{20pt}
     }%
@@ -74,22 +76,29 @@
 \newcommand{\locationitem}[2] {%
     {\color{copperred} #1}\quad #2
 }
-% Content of locationf field
-\setkomavar{location}{%
-    \locationitem{Ihre Ansprechperson}{\usekomavar{signature}}\\
-    \\
+
+% Content of location field
+% Create command to make it reusable
+\newcommand{\locationcontent}{%
+    \locationitem{Ihre Ansprechperson}{\\ \amivrepresentative}
+    \bigbreak\noindent
     \locationitem{T}{\usekomavar{fromphone}}\\
-    \locationitem{E}{\usekomavar{fromemail}}\\
-    \\
+    \locationitem{E}{\usekomavar{fromemail}}
+    \bigbreak\noindent
     \locationitem{D}{\usekomavar{date}}\\    
 }
+% Set actual field
+\setkomavar{location}{\locationcontent}
+
+% Set Name of "Anlagen field"
+\setkomavar*{enclseparator}{Anlagen}
 
 
 % Set default fields
 \setkomavar{fromname}{\amivname}
 \setkomavar{fromaddress}{%
     \amivaddress\\
-    \amivcity%
+    \amivpostal\ \amivcity%
 }
 \setkomavar{fromphone}{\amivphone}
 \setkomavar{fromemail}{\amivemail}

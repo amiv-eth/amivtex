@@ -1,0 +1,85 @@
+\ProvidesPackage{kontaktutils}
+
+% Add paragraph symbol to sections
+\newcommand{\bigboothinfo}{%
+	\begin{enumerate}
+		\item Abmessungen Standplatz: 500cm x 220cm
+		\item Zwei Tische oder ein Tisch und zwei Stehtische oder vier Stehtische
+		\item Zwei Stellwände (je 120cm x 180 cm)
+	\end{enumerate}
+}
+
+\newcommand{\smallboothinfo}{%
+	\begin{enumerate}
+		\item Abmessungen Standplatz: 250cm x 220cm
+		\item Ein Tisch oder zwei Stehtische
+		\item Eine Stellwand (120cm x 180 cm)
+	\end{enumerate}
+}
+
+\newcommand{\mediainfo}{{%
+	\footnotesize Inserat im Messeführer (A5, farbig)\\
+	Ein frei gestaltbarer Facebook Post Ihrer Firma
+	auf der Kontakt.16 Facebook-Seite
+}}
+
+\newcommand{\businessinfo}{{%
+	\footnotesize Erwähnung als Partner auf der Startseite der Kontakt-Website\\
+	Ganzjähriges Firmenprofil auf der Kontakt-Website\\
+	Ganzseitiges Inserat in der Studentenzeitschrift des AMIV (Blitz) vor der Messe
+}}
+
+\newcommand{\firstinfo}{{%
+	\footnotesize Erwähnung als Partner auf der Startseite der Kontakt-Website\\
+	Ganzjähriges Firmenprofil auf der Kontakt-Website\\
+	Ganzseitiges Inserat in der Studentenzeitschrift des AMIV (Blitz) vor der Messe\\
+	Frei wählbarer Standplatz\\
+	Ihr Firmenlogo erscheint prominent auf allen Werbeplakaten
+}}
+
+% Helper to create cover letter
+\newcommand{\makecoverletter}{
+	\setkomavar{subject}{Vertrag zur AMIV Kontakt.16}
+	\setkomavar{location}{\locationcontent}
+	\KOMAoptions{%
+		backaddress=plain,
+		addrfield=true,
+	}
+
+	\begin{letter}{%
+		\companyname\\
+		\companyrepresentative\\
+		\companyaddress\\
+		\companycity
+	}
+
+		\opening{Sehr geehrter \companyrepresentative,}
+
+		Wir freuen uns, dass \companyname an der diesjährigen Kontakt teilnehmen wird.
+		\bigbreak\noindent
+		Anbei senden wir Ihnen den Standvertrag in doppelter Ausführung. 
+		Wir bitten Sie, eine Version unterzeichnet an uns zu retournieren.
+		\bigbreak\noindent
+		Bei allen Anliegen oder Fragen stehen wir Ihnen gerne zur Verfügung.
+		\bigbreak
+		\closing{Mit freundlichen Grüssen}
+
+		\encl{Standvertrag in doppelter Ausführung}
+
+	\end{letter}
+}
+
+% Helper to create contract itself
+\newcommand{\makecontract}{%
+	\setkomavar{subject}{}
+	\setkomavar{location}{}
+	\KOMAoptions{%
+		backaddress=off,
+		addrfield=false,
+	}
+
+	\begin{letter}{}
+		\opening{}
+		\input{kontakt_contract_text}
+	\end{letter}
+}
