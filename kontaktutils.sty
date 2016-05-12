@@ -1,5 +1,11 @@
 \ProvidesPackage{kontaktutils}
 
+% Make contract sections paragraphs 
+\renewcommand*{\thesection}{\S\ \arabic{section}}
+
+% Reset counting with every letter to support several per document
+\AtBeginLetter{\setcounter{section}{0}}
+
 % Add paragraph symbol to sections
 \newcommand{\bigboothinfo}{%
 	\begin{enumerate}
@@ -38,7 +44,7 @@
 }}
 
 % Helper to create cover letter
-\newcommand{\makecoverletter}{
+\newcommand{\makecoverletter}{%
 	\setkomavar{subject}{Vertrag zur AMIV Kontakt.16}
 	\setkomavar{location}{\locationcontent}
 	\KOMAoptions{%
@@ -67,19 +73,20 @@
 		\encl{Standvertrag in doppelter Ausführung}
 
 	\end{letter}
-}
+}%
 
 % Helper to create contract itself
-\newcommand{\makecontract}{%
+\newcommand{\makecontract}{
 	\setkomavar{subject}{}
 	\setkomavar{location}{}
-	\KOMAoptions{%
+
+	\KOMAoptions{
 		backaddress=off,
 		addrfield=false,
 	}
 
 	\begin{letter}{}
 		\opening{}
-		\input{kontakt_contract_text}
+		\input{kontakt_contract_text.tex}
 	\end{letter}
-}
+}%

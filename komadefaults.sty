@@ -18,7 +18,6 @@
 \@setplength{firstfoothpos}{0pt}
 \@setplength{firstfootvpos}{26.5cm}
 \@setplength{firstfootwidth}{\paperwidth}
-\@setplength{nextfootvpos}{\useplength{firstfootvpos}}
 
 % Adress field
 \@setplength{toaddrhpos}{2.5cm}
@@ -67,22 +66,18 @@
 }
 
 % Copy content for other footers
-\setkomavar{nextfoot}{\usekomavar{firstfoot}}
-
-% Ensure footer is enabled on other pages, see:
-% http://tex.stackexchange.com/questions/196360/scrlttr2-make-second-page-footer-match-first-page-footer
-\usepackage{scrlayer}
-\DeclareNewLayer[
-  align=tl,
-  hoffset=\dimexpr.5\paperwidth-.5\useplength{firstfootwidth}\relax,
-  voffset=\useplength{firstfootvpos},
-  width=\useplength{firstfootwidth},
-  height=\dimexpr\paperheight-\useplength{firstfootvpos},
-  foreground,
-  contents={\parbox{\layerwidth}{\usekomavar{firstfoot}}}
-]{footer.fg}
-\DeclarePageStyleByLayers{copyfooter}{footer.fg}
-\pagestyle{copyfooter}
+\AtBeginLetter{\pagestyle{headings}}
+\setkomavar{nextfoot}{%
+    \vspace{2.76cm}\\  % TODO: This is bad. Should be better
+    \hspace*{-\oddsidemargin}\hspace{-1in}%
+    \colorbar{copperred}{\centering
+        \vspace{0.4cm}
+        \footnotesize{%
+            \amivname \quad \amivaddress \quad \amivpostal\ \amivcity \quad \amivphone \quad \amivemail
+        }
+        \vspace{1cm} % bigger than necessary, just to definetly fill the page
+    }%
+}
 
 % Location field (to the right of address field)
 % Helper to create nicely formatted and colored items
