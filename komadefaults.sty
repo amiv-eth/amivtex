@@ -4,23 +4,35 @@
 \KOMAoptions{%
     foldmarks=false,  % No folding marks
     backaddress=plain,  % No underlined backaddress
-    refline=nodate  % Date is in location field
+    refline=nodate,  % Date is in location field
+    fontsize=10pt,
 }
 
 % Set positions
 % Header
+\@setplength{firstheadvpos}{1.5cm}
 \@setplength{firstheadhpos}{0pt}
 \@setplength{firstheadwidth}{\paperwidth}
-% First Footer
+
+% First und next Footer
 \@setplength{firstfoothpos}{0pt}
-\@setplength{firstfootvpos}{\paperheight}
-\@addtoplength[-1.0]{firstfootvpos}{30pt}
+\@setplength{firstfootvpos}{26.5cm}
 \@setplength{firstfootwidth}{\paperwidth}
+\@setplength{nextfootvpos}{\useplength{firstfootvpos}}
+
+% Adress field
+\@setplength{toaddrhpos}{2.5cm}
+\@setplength{toaddrvpos}{5.5cm}
+
 % Location Field
 \@setplength{locvpos}{\useplength{toaddrvpos}}
+\@setplength{lochpos}{2cm}
 \@addtoplength[0.5]{locvpos}{\useplength{backaddrheight}}
-\@setplength[0.45]{locwidth}{\textwidth}
+\@setplength{locwidth}{6.5cm}
 
+% Start of text
+\@setplength{refvpos}{10cm}
+\@setplength{subjectaftervskip}{1.1cm}
 
 % Signature left handed
 \renewcommand*{\raggedsignature}{\raggedright}
@@ -35,21 +47,22 @@
 % Blue bar with logo in head
 \setkomavar{firsthead}{%
     \colorbar{petrolblue}{%
-        \vspace{10pt}
+        \vspace{0.25cm}
         \hspace{20pt}
-        \includegraphics[height=40pt]{\amivlogo}%
-        \vspace{10pt}%
+        \includegraphics[height=2.5cm]{\amivlogo}%
+        \vspace{0.25cm}%
     }
 }
 
 % Orange bar with general amiv info in foot
 \setkomavar{firstfoot}{%
+    \vspace{1.8cm}\\
     \colorbar{copperred}{\centering
-        \vspace{5pt}
+        \vspace{0.4cm}
         \footnotesize{%
             \amivname \quad \amivaddress \quad \amivpostal\ \amivcity \quad \amivphone \quad \amivemail
         }
-        \vspace{20pt}
+        \vspace{1cm} % bigger than necessary, just to definetly fill the page
     }%
 }
 
