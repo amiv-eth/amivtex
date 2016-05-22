@@ -1,0 +1,99 @@
+\documentclass{scrartcl}
+
+\author{Alexander Dietmüller}
+
+% The path to amivtex files, for the example just the parent folder
+\newcommand{\amivtexlocation}{../}
+
+% Needed to make \input work from a different directory
+\makeatletter
+\def\input@path{{\amivtexlocation}}
+\makeatother
+
+% User letter package
+\usepackage{scrletter}
+
+% Include amiv settings
+\usepackage{\amivtexlocation amivdefaults}
+
+% Include KOMA settings
+\usepackage{\amivtexlocation komadefaults}
+
+% Include kontakt contract helpers
+\usepackage{\amivtexlocation kontaktutils}
+
+% Kontact settings
+\renewcommand{\fairtitle}{AMIV Kontakt.16}
+\renewcommand{\amivsectionname}{Kommission Kontakt}
+\renewcommand{\amivsectionpresident}{Don Pablo}
+
+% Sender of cover letters
+\setkomavar{signature}{Pablo's Boss}
+
+\begin{document}
+% AMIV member responsible for company
+\renewcommand{\amivrepresentative}{Pablo}
+
+% Company info
+\renewcommand{\companyname}{Some Company}
+\renewcommand{\companyaddress}{Randomstreet}
+\renewcommand{\companycity}{1234 Town}
+\renewcommand{\companycountry}{Far far away}
+\renewcommand{\companyrepresentative}{Mr. Company}
+
+\renewcommand{\boothchoice}{%
+    % Uncomment the booth choice you need
+    %\smallAone
+    %\smallAtwo
+    %\smallBone
+    %\smallBtwo
+    \bigAone
+    %\bigAtwo
+    %\bigBone
+    %\bigBtwo
+    %\startupone
+    %\startuptwo
+    \hfill
+    % Enter the price
+    2200 CHF
+    % Uncomment the lines below if you need booth info (either small or big)
+    \bigbreak
+    \noindent Standinformationen:
+    %\smallboothinfo
+    \bigboothinfo
+    \bigbreak
+    \noindent Der Aussteller kann einen eigenen 
+    Projektständer sowie anstelle der Stellwand ein 
+    eigenes Banner aufstellen, dieses darf jedoch 
+    die Masse des gebuchten Standes nicht 
+    überschreiten.
+}
+
+\renewcommand{\datechoice}{%
+    Teilnahme Dienstag, 18.10.2016
+}
+
+\renewcommand{\extrachoice}{%
+    % Uncomment the parts and bigbreaks you need
+    %\noindent Media Paket \hfill 850 CHF\\
+    %\mediainfo
+    %\bigbreak
+    
+    %\noindent Business Paket \hfill 1500 CHF\\
+    %\businessinfo
+    %\bigbreak
+    
+    \noindent First Paket \hfill 2500 CHF\\
+    \firstinfo
+    
+    %Nichts gewählt.   
+}
+
+% Cover letter and contract twice, uncomment as needed
+% First the cover letter
+\makecoverletter
+% Next the contract (in duplicate if needed)
+\makecontract
+\makecontract
+
+\end{document}
