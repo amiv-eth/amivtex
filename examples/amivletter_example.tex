@@ -1,0 +1,42 @@
+% The path to amivtex files, for the example just the parent folder
+\newcommand{\amivtexlocation}{../}
+
+% Needed to make \input work from a different directory
+\makeatletter
+\def\input@path{{\amivtexlocation}}
+\makeatother
+
+\documentclass{amivletter}
+%\documentclass[kontakt]{amivletter}
+
+% Generate random text for demo purposes
+\usepackage{blindtext}
+
+\begin{document}
+
+% Required Variables
+\subject{\LaTeX\ Brief ist da, Feedback erwünscht!}
+\representative{Alexander Dietmüller}
+\signature{Alexander}
+
+\begin{letter}{%
+    Hr. Test\\
+    Teststrasse\\
+    1234 Teststadt\\
+    Testanien%
+}
+
+\opening{Hallo zusammen,}
+
+\Blindtext
+
+\closing{Liebe Grüsse}
+
+\encl{%
+    Garnichts\\
+    Noch weniger
+}
+
+\end{letter}
+
+\end{document}
