@@ -1,10 +1,13 @@
-\documentclass[twoside]{article}
+\documentclass[twoside, 8pt]{extarticle}
 
-\usepackage[a5paper, top=0cm, includehead, headheight=1cm, headsep=2cm]{geometry}
+\usepackage[a5paper, top=0cm, includehead, headheight=1cm, headsep=2cm, xetex,%
+		    right=3cm, marginparsep=0cm, marginparwidth=3cm]{geometry}
 
 \usepackage{fontspec}
 \setmainfont{DINPro}
 \setsansfont{DINPro}
+
+\usepackage{graphicx}
 
 \usepackage{xcolor}    
 \definecolor{copperred}{rgb}{0.910, 0.274, 0.169}
@@ -25,13 +28,66 @@
 }
 \fancyfoot[EL, OR]{\color{copperred} \thepage}
 
+%Use marginnotes to create boxes at the border
+\usepackage{marginnote}
+
 % Generate random text for demo purposes
 \usepackage{blindtext}
 
 
 \begin{document}
 
-\Blindtext
 
+\setlength{\parindent}{0pt}
+\begin{minipage}[t][\textheight][t]{\textwidth}  %Keep content on one page
+\marginnote{
+\begin{flushright}
+\rotatebox{90}{%
+	\colorbox{petrolblue}{\makebox[2cm][c]{\Large \color{white} \textbf{MTEC}}}
+	\colorbox{petrolblue}{\makebox[2cm][c]{\Large \color{white} \textbf{MAVT}}}
+	\colorbox{petrolblue}{\makebox[2cm][c]{\Large \color{white} \textbf{ITET}}}
+	\quad
+	\colorbox{copperred}{\begin{minipage}[c][1cm]{2cm}%
+		\Large \textbf{A2}
+	\end{minipage}}
+}
+\end{flushright}
+}
+
+\begin{minipage}[t][0.4\textheight][t]{0.6\textwidth}
+\textbf{\large \color{copperred} Sensirion AG }\\
+www.sensirion.com\\
+
+
+\textbf{KONTAKT FÜR STUDIERENDE}\\
+Marco Höhener\\
++41 44 927 11 96\\
+www.xing.to/Marco\_Hoehener\\
+
+
+\textbf{MITARBEITENDE}\\
+520 in der Schweiz\\
+600 in der Welt\\
+
+\textbf{ANGEBOTE}\\
+Praktika\\
+Festanstellungen\\
+
+\end{minipage}%
+\begin{minipage}[t][0.4\textheight][t]{0.35\textwidth}
+\centering
+LOGO
+
+\end{minipage}
+\begin{minipage}[t][0.55\textheight][t]{\textwidth}
+\textbf{\large \color{copperred} Über uns }\\\\
+\blindtext\\
+
+\textbf{\large \color{copperred} Schwerpunkte }\\\\
+\blindtext
+
+\end{minipage}%
+
+\end{minipage}
 
 \end{document}
