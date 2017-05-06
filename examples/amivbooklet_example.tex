@@ -11,6 +11,8 @@
 
 \usepackage{graphicx}
 
+\usepackage{float}
+
 \usepackage{xcolor}    
 \definecolor{copperred}{rgb}{0.910, 0.274, 0.169}
 \definecolor{petrolblue}{rgb}{0.122, 0.176, 0.329}
@@ -37,6 +39,28 @@
 %Use marginnotes to create boxes at the border
 \usepackage{marginnote}
 
+% Detect odd/even pages
+\usepackage{changepage}
+\newcommand{\rot}{%
+\ifoddpage
+90
+\else
+-90
+\fi
+}
+
+\newlength{\sideboxheight}
+\setlength{\sideboxheight}{2cm}
+\newcommand{\sidebox}[3][black]{%  text color (black), box color, text 
+	\checkoddpage  % required for \rot to have correct value
+	\amivbox[#1]{#2}{0.6cm}{\sideboxheight}{\rotatebox{\rot}{#3}}
+}
+\newcommand{\boothbox}[1]{\marginnote{\sidebox{copperred}{#1}}[0cm]}
+\newcommand{\itetbox}{\marginnote{\sidebox[white]{petrolblue}{ITET}}[\dimexpr 1\sideboxheight + 3em]}
+\newcommand{\mavtbox}{\marginnote{\sidebox[white]{petrolblue}{MAVT}}[\dimexpr 2\sideboxheight + 4em]}
+\newcommand{\mtecbox}{\marginnote{\sidebox[white]{petrolblue}{MTEC}}[\dimexpr 3\sideboxheight + 5em]}
+
+
 % Generate random text for demo purposes
 \usepackage{blindtext}
 
@@ -44,20 +68,21 @@
 \begin{document}
 
 \setlength{\parindent}{0pt}
+%asdasd5
+%\clearpage
 
-\begin{minipage}[t][\textheight][t]{\textwidth}  %Keep content on one page
-\marginnote{%
-	\rotatebox{90}{\amivbox{copperred}{2cm}{0.6cm}{A2}}\\
-	\vspace{2em}
-	\rotatebox{90}{\amivbox[white]{petrolblue}{2cm}{0.6cm}{ITET}}\\
-	\rotatebox{90}{\amivbox[white]{petrolblue}{2cm}{0.6cm}{MAVT}}\\
-	\rotatebox{90}{\amivbox[white]{petrolblue}{2cm}{0.6cm}{MTEC}}\\
-}
-
-\begin{minipage}[t][0.4\textheight][t]{0.6\textwidth}
+%\begin{minipage}[t][\textheight][t]{\textwidth}  %Keep content on one page
+% Sidebar
+\boothbox{A2}
+\itetbox
+\mavtbox
+\mtecbox
+% Company Info
+\fbox{%
+\begin{minipage}[t][0.4\textheight][t]{0.5\textwidth}
 \textbf{\large \color{copperred} Sensirion AG }\\
 www.sensirion.com\\
-
+\underline{}
 
 \textbf{KONTAKT FÜR STUDIERENDE}\\
 Marco Höhener\\
@@ -72,14 +97,19 @@ www.xing.to/Marco\_Hoehener\\
 \textbf{ANGEBOTE}\\
 Praktika\\
 Festanstellungen\\
-
 \end{minipage}%
-\begin{minipage}[t][0.4\textheight][t]{0.35\textwidth}
-\centering
-LOGO
-
-
+}%
+% Logo
+\fbox{%
+\begin{minipage}[t][0.4\textheight][t]{0.45\textwidth}
+%\begin{figure}[H]
+%\centering
+%\includegraphics[width=\textwidth, height=0.4\textheight, keepaspectratio]{amiv.png}
+%\end{figure}%
 \end{minipage}
+}
+
+% Text
 \begin{minipage}[t][0.55\textheight][t]{\textwidth}
 \textbf{\large \color{copperred} Über uns }\\\\
 \blindtext\\
@@ -89,6 +119,6 @@ LOGO
 
 \end{minipage}%
 
-\end{minipage}
+%\end{minipage}
 
 \end{document}
