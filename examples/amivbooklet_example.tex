@@ -1,17 +1,25 @@
-\documentclass[twoside, 8pt]{extarticle}
+% The path to amivtex files, for the example just the parent folder
+\newcommand{\amivtexlocation}{../}
 
-%TODO odd/even pages, separate class and utilsS
+% Needed to make \input work from a different directory
+\makeatletter
+\def\input@path{{\amivtexlocation}}
+\makeatother
 
-\usepackage[a5paper, top=0cm, includehead, headheight=1cm, headsep=2cm, xetex,%
-		    right=3cm, marginparsep=2.2cm, marginparwidth=0.8cm]{geometry}
+\documentclass[twoside, 9pt]{extarticle}
+
+\usepackage[xetex, a5paper, top=0cm, includehead, headheight=10mm, headsep=12mm,%
+		    left=1cm, right=0cm, includemp, marginparsep=12mm, marginparwidth=8mm]{geometry}
 
 \usepackage{fontspec}
 \setmainfont{DINPro}
 \setsansfont{DINPro}
 
+%\usepackage[onehalfspacing]{setspace}
+
 \usepackage{graphicx}
 
-\usepackage{float}
+%\usepackage{float}
 
 \usepackage{xcolor}    
 \definecolor{copperred}{rgb}{0.910, 0.274, 0.169}
@@ -27,6 +35,24 @@
 	}%
 }
 
+%Use marginnotes to create boxes at the border
+\usepackage{marginnote}
+
+% Detect odd/even pages
+\usepackage{changepage}
+\newcommand{\rot}{\ifoddpage 90\else -90\fi}
+
+\newlength{\sideboxheight}
+\setlength{\sideboxheight}{2cm}
+\newcommand{\sidebox}[3][black]{%  text color (black), box color, text 
+	\checkoddpage  % required for \rot to have correct value
+	\amivbox[#1]{#2}{0.6cm}{\sideboxheight}{\rotatebox{\rot}{#3}}
+}
+\newcommand{\boothbox}[1]{\marginnote{\sidebox{copperred}{#1}}[0cm]}
+\newcommand{\itet}{\marginnote{\sidebox[white]{petrolblue}{ITET}}[\dimexpr 1\sideboxheight + 3em]}
+\newcommand{\mavt}{\marginnote{\sidebox[white]{petrolblue}{MAVT}}[\dimexpr 2\sideboxheight + 4em]}
+\newcommand{\mtec}{\marginnote{\sidebox[white]{petrolblue}{MTEC}}[\dimexpr 3\sideboxheight + 5em]}
+
 \usepackage{fancyhdr}
 \pagestyle{fancy}
 % Remove content and separating line
@@ -36,29 +62,70 @@
 \fancyhead[c]{\makebox[0pt][c]{\amivbox{petrolblue}{1.2\paperwidth}{\headheight}{}}}
 \fancyfoot[EL, OR]{\color{copperred} \thepage}
 
-%Use marginnotes to create boxes at the border
-\usepackage{marginnote}
+% Internal Variables
+\newcommand{\companyname}{}
+\newcommand{\companywebsite}{}
+\newcommand{\companybooth}{}
+\newcommand{\companylogo}{}
+\newcommand{\companyboxes}{}
+\newcommand{\companycontact}{}
+\newcommand{\companyemployees}{}
+\newcommand{\companyoffers}{}
+\newcommand{\companyabout}{}
+\newcommand{\companyfocus}{}
 
-% Detect odd/even pages
-\usepackage{changepage}
-\newcommand{\rot}{%
-\ifoddpage
-90
-\else
--90
-\fi
+% Provide commands to set company info easily
+\newcommand{\name}[1]{\renewcommand{\companyname}{#1}}
+\newcommand{\website}[1]{\renewcommand{\companywebsite}{#1}}
+\newcommand{\booth}[1]{\renewcommand{\companybooth}{#1}}
+\newcommand{\logo}[1]{\renewcommand{\companylogo}{#1}}
+\newcommand{\boxes}[1]{\renewcommand{\companyboxes}{#1}}
+\newcommand{\contact}[1]{\renewcommand{\companycontact}{#1}}
+\newcommand{\employees}[1]{\renewcommand{\companyemployees}{#1}}
+\newcommand{\offers}[1]{\renewcommand{\companyoffers}{#1}}
+\newcommand{\about}[1]{\renewcommand{\companyabout}{#1}}
+\newcommand{\focus}[1]{\renewcommand{\companyfocus}{#1}}
+
+% Create a companypage
+\newcommand{\companypage}{%
+\clearpage  % start on new page
+% Sidebar
+\boothbox{\companybooth}
+\companyboxes
+% Company Info
+\begin{minipage}[t][0.4\textheight]{0.5\textwidth}
+	\vspace{0pt}  % The minipages will be aligned by the first line, insert an empty line to make it pretty
+	\textbf{\Large \color{copperred} \companyname }\\
+	\companywebsite
+	\bigbreak
+	\textbf{KONTAKT FÜR STUDIERENDE}\\
+	\companycontact
+	\medbreak
+	\textbf{MITARBEITENDE}\\
+	\companyemployees
+	\medbreak
+	\textbf{ANGEBOTE}\\
+	\companyoffers
+\end{minipage}%
+% Logo
+\begin{minipage}[t][0.4\textheight]{0.5\textwidth}
+	\vspace{0pt}  % The minipages will be aligned by the first line, insert an empty line to make it pretty
+	\centering
+	\includegraphics[width=\textwidth, height=0.4\textheight, keepaspectratio]{\companylogo}
+\end{minipage}
+
+% Text, use minipage to keep it on one page
+\begin{minipage}[t][0.55\textheight][t]{\textwidth}
+	\textbf{\large \color{copperred} Über uns }
+	\smallbreak
+	\companyabout
+	\bigbreak
+	\textbf{\large \color{copperred} Schwerpunkte }
+	\smallbreak
+	\companyfocus
+\end{minipage}
 }
 
-\newlength{\sideboxheight}
-\setlength{\sideboxheight}{2cm}
-\newcommand{\sidebox}[3][black]{%  text color (black), box color, text 
-	\checkoddpage  % required for \rot to have correct value
-	\amivbox[#1]{#2}{0.6cm}{\sideboxheight}{\rotatebox{\rot}{#3}}
-}
-\newcommand{\boothbox}[1]{\marginnote{\sidebox{copperred}{#1}}[0cm]}
-\newcommand{\itetbox}{\marginnote{\sidebox[white]{petrolblue}{ITET}}[\dimexpr 1\sideboxheight + 3em]}
-\newcommand{\mavtbox}{\marginnote{\sidebox[white]{petrolblue}{MAVT}}[\dimexpr 2\sideboxheight + 4em]}
-\newcommand{\mtecbox}{\marginnote{\sidebox[white]{petrolblue}{MTEC}}[\dimexpr 3\sideboxheight + 5em]}
 
 
 % Generate random text for demo purposes
@@ -66,59 +133,32 @@
 
 
 \begin{document}
-
 \setlength{\parindent}{0pt}
-%asdasd5
-%\clearpage
 
-%\begin{minipage}[t][\textheight][t]{\textwidth}  %Keep content on one page
-% Sidebar
-\boothbox{A2}
-\itetbox
-\mavtbox
-\mtecbox
-% Company Info
-\fbox{%
-\begin{minipage}[t][0.4\textheight][t]{0.5\textwidth}
-\textbf{\large \color{copperred} Sensirion AG }\\
-www.sensirion.com\\
-\underline{}
+\name{Sensirion AG}
+\website{www.sensirion.com}
+\booth{A2}
+\logo{amiv.png}
+\boxes{\itet\mavt\mtec}
+\contact{Marco Höhener\\+41 44 927 11 96\\www.xing.to/Marco\_Hoehener}
+\employees{520 in der Schweiz\\600 in der Welt}
+\offers{Praktika\\Festanstellungen}
+\about{\blindtext}
+\focus{\blindtext}
 
-\textbf{KONTAKT FÜR STUDIERENDE}\\
-Marco Höhener\\
-+41 44 927 11 96\\
-www.xing.to/Marco\_Hoehener\\
+\companypage
 
+\name{Other AG}
+\website{www.other.com}
+\booth{A5}
+\logo{amiv.png}
+\boxes{\itet\mtec}
+\contact{Marco Höhener\\+41 44 927 11 96\\www.xing.to/Marco\_Hoehener}
+\employees{520 in der Schweiz\\600 in der Welt}
+\offers{Praktika\\Festanstellungen}
+\about{\blindtext}
+\focus{\blindtext}
 
-\textbf{MITARBEITENDE}\\
-520 in der Schweiz\\
-600 in der Welt\\
-
-\textbf{ANGEBOTE}\\
-Praktika\\
-Festanstellungen\\
-\end{minipage}%
-}%
-% Logo
-\fbox{%
-\begin{minipage}[t][0.4\textheight][t]{0.45\textwidth}
-%\begin{figure}[H]
-%\centering
-%\includegraphics[width=\textwidth, height=0.4\textheight, keepaspectratio]{amiv.png}
-%\end{figure}%
-\end{minipage}
-}
-
-% Text
-\begin{minipage}[t][0.55\textheight][t]{\textwidth}
-\textbf{\large \color{copperred} Über uns }\\\\
-\blindtext\\
-
-\textbf{\large \color{copperred} Schwerpunkte }\\\\
-\blindtext
-
-\end{minipage}%
-
-%\end{minipage}
+\companypage
 
 \end{document}
