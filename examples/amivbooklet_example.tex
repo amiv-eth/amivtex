@@ -6,11 +6,11 @@
 \def\input@path{{\amivtexlocation}}
 \makeatother
 
-\documentclass[twoside, 9pt]{extarticle}
+\documentclass[9pt]{extarticle}
 
-\usepackage[xetex, a5paper,%
+\usepackage[xetex, a5paper, twocolumn, twoside, showframe,%
 			top=20mm, headheight=20mm, headsep=10mm, bottom=15mm, footskip=7.5mm,%
-		    left=7.5mm, right=0cm, includemp, marginparsep=7.5mm, marginparwidth=7.5mm]{geometry}
+		    inner=7.5mm, outer=15mm, marginparsep=7.5mm, marginparwidth=7.5mm]{geometry}
 
 \usepackage{fontspec}
 \setmainfont{DINPro}
@@ -90,7 +90,9 @@
 
 % Create a companypage
 \newcommand{\companypage}{%
-\clearpage  % start on new page
+% start on new page and switch to onecolumn mode
+\clearpage
+\onecolumn
 % Sidebar
 \boothbox{\companybooth}
 \companyboxes
@@ -125,13 +127,20 @@
 	\smallbreak
 	\companyfocus
 \end{minipage}
+\twocolumn
 }
+
+% No Paragraph Indentation in Booklet
+\setlength{\parindent}{0pt}
 
 % Generate random text for demo purposes
 \usepackage{blindtext}
 
 \begin{document}
-\setlength{\parindent}{0pt}
+
+\section*{Test}
+
+\Blindtext
 
 \name{Sensirion AG}
 \website{www.sensirion.com}
@@ -161,4 +170,9 @@
 \companypage
 \companypage
 \companypage
+
+\section*{Test}
+
+\Blindtext
+
 \end{document}
