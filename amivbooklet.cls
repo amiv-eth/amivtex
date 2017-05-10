@@ -41,8 +41,8 @@ inner=7.5mm, outer=15mm, marginparsep=0mm, marginparwidth=15mm]{geometry}
 	}%
 }
 \RequirePackage{fancyhdr}
+% Add layout to fancy header
 \pagestyle{fancy}
-% Remove content and separating line
 \fancyhf{}
 \renewcommand{\headrulewidth}{0pt}
 \newcommand{\headerbox}{\colorpage{petrolblue}{\paperwidth}{10mm}{}}
@@ -135,4 +135,29 @@ inner=7.5mm, outer=15mm, marginparsep=0mm, marginparwidth=15mm]{geometry}
 		\companyfocus
 	\end{minipage}
 	\twocolumn
+}
+
+
+%% FULL PAGE ADVERTISEMENTS
+% newgeometry is used to remove margins. Both newgeometry and restoregeometry will add a clearpage
+\newcommand{\fullpagead}[1]{% image
+	\newgeometry{top=0pt, bottom=0pt, left=0pt, right=0pt}
+	\includegraphics[width=\paperwidth, height=\paperheight, keepaspectratio]{#1}
+	\restoregeometry
+}
+
+% Companies with advertisements, make sure they are on the same double page
+% Helper to ensure even page
+\def\clearevenpage{\clearpage \ifodd\c@page
+	\hbox{}\newpage\hbox{}\newpage\fi}
+
+\newcommand{\companywithadleft}[1]{%
+	\clearevenpage
+	\fullpagead{#1}
+	\companypage
+}
+\newcommand{\companywithadright}[1]{%
+	\clearevenpage
+	\companypage
+	\fullpagead{#1}
 }
