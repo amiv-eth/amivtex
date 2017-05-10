@@ -5,8 +5,18 @@ This contains a basic AMIV letter only yet.
 
 ## Prequisites
 
-To be able to switch to a different font [Xetex](https://de.wikipedia.org/wiki/XeTeX) must be used in stead of pdflatex.
-On Linux TexLive supports this, MikTex on Windows afaik as well.
+To be able to switch to a different font
+[XeLatex](https://de.wikipedia.org/wiki/XeTeX) must be used in stead of 
+pdflatex. On Linux TexLive supports this, MikTex on Windows as well.
+
+## Installation
+
+You have do make sure Xelatex can find amivtex, so you either have to
+- Add it to your local tex tree
+- set the environment variable TEXINPUT
+- use a command line option (MikTex)
+
+More Info for [MikTex](http://docs.miktex.org/manual/localadditions.html)
 
 ## What is used
 

@@ -1,146 +1,10 @@
-% The path to amivtex files, for the example just the parent folder
-\newcommand{\amivtexlocation}{../}
-
-% Needed to make \input work from a different directory
-\makeatletter
-\def\input@path{{\amivtexlocation}}
-\makeatother
-
-\documentclass[9pt]{extarticle}
-
-\usepackage[xetex, a5paper, twocolumn, twoside, showframe,%
-			top=20mm, headheight=20mm, headsep=10mm, bottom=15mm, footskip=7.5mm,%
-		    inner=7.5mm, outer=15mm, marginparsep=7.5mm, marginparwidth=7.5mm]{geometry}
-
-\usepackage{fontspec}
-\setmainfont{DINPro}
-\setsansfont{DINPro}
-
-%\usepackage[onehalfspacing]{setspace}
-
-\usepackage{graphicx}
-
-%\usepackage{float}
-
-\usepackage{xcolor}    
-\definecolor{copperred}{rgb}{0.910, 0.274, 0.169}
-\definecolor{petrolblue}{rgb}{0.122, 0.176, 0.329}
-
-% Use fancyhdr to create a colored box at the top of the page
-
-\newcommand{\amivbox}[5][black]{% Textcolor (optional), Boxcolor, Width, Height, Content
-	\colorbox{#2}{%
-		\begin{minipage}[c][#4]{#3}
-			\makebox[\textwidth]{\large \color{#1}\textbf{#5}}
-		\end{minipage}%
-	}%
-}
-
-%Use marginnotes to create boxes at the border
-\usepackage{marginnote}
-
-% Detect odd/even pages
-\usepackage{changepage}
-\newcommand{\rot}{\ifoddpage 90\else -90\fi}
-
-\newlength{\sideboxheight}
-\setlength{\sideboxheight}{2cm}
-\newcommand{\sidebox}[3][black]{%  text color (black), box color, text 
-	\checkoddpage  % required for \rot to have correct value
-	\amivbox[#1]{#2}{0.6cm}{\sideboxheight}{\rotatebox{\rot}{#3}}
-}
-\newcommand{\boothbox}[1]{\marginnote{\sidebox{copperred}{#1}}[0cm]}
-\newcommand{\itet}{\marginnote{\sidebox[white]{petrolblue}{ITET}}[\dimexpr 1\sideboxheight + 3em]}
-\newcommand{\mavt}{\marginnote{\sidebox[white]{petrolblue}{MAVT}}[\dimexpr 2\sideboxheight + 4em]}
-\newcommand{\mtec}{\marginnote{\sidebox[white]{petrolblue}{MTEC}}[\dimexpr 3\sideboxheight + 5em]}
-
-\usepackage{fancyhdr}
-\pagestyle{fancy}
-% Remove content and separating line
-\fancyhf{}
-\renewcommand{\headrulewidth}{0pt}
-\newcommand{\headerbox}{\amivbox{petrolblue}{\paperwidth}{10mm}{}}
-\fancyhead[OC]{\hspace*{-7.5mm}\headerbox}
-\fancyhead[EC]{\hspace*{-15mm}\headerbox}
-\fancyfoot[EL, OR]{\textcolor{copperred}{\thepage}}
-
-% Internal Variables
-\newcommand{\companyname}{}
-\newcommand{\companywebsite}{}
-\newcommand{\companybooth}{}
-\newcommand{\companylogo}{}
-\newcommand{\companyboxes}{}
-\newcommand{\companycontact}{}
-\newcommand{\companyemployees}{}
-\newcommand{\companyoffers}{}
-\newcommand{\companyabout}{}
-\newcommand{\companyfocus}{}
-
-% Provide commands to set company info easily
-\newcommand{\name}[1]{\renewcommand{\companyname}{#1}}
-\newcommand{\website}[1]{\renewcommand{\companywebsite}{#1}}
-\newcommand{\booth}[1]{\renewcommand{\companybooth}{#1}}
-\newcommand{\logo}[1]{\renewcommand{\companylogo}{#1}}
-\newcommand{\boxes}[1]{\renewcommand{\companyboxes}{#1}}
-\newcommand{\contact}[1]{\renewcommand{\companycontact}{#1}}
-\newcommand{\employees}[1]{\renewcommand{\companyemployees}{#1}}
-\newcommand{\offers}[1]{\renewcommand{\companyoffers}{#1}}
-\newcommand{\about}[1]{\renewcommand{\companyabout}{#1}}
-\newcommand{\focus}[1]{\renewcommand{\companyfocus}{#1}}
-
-% Create a companypage
-\newcommand{\companypage}{%
-% start on new page and switch to onecolumn mode
-\clearpage
-\onecolumn
-% Sidebar
-\boothbox{\companybooth}
-\companyboxes
-% Company Info
-\begin{minipage}[t][0.4\textheight]{0.5\textwidth}
-	\textbf{\Large \textcolor{copperred}{\companyname}}\\
-	\companywebsite
-	\bigbreak
-	\textbf{KONTAKT FÜR STUDIERENDE}\\
-	\companycontact
-	\medbreak
-	\textbf{MITARBEITENDE}\\
-	\companyemployees
-	\medbreak
-	\textbf{ANGEBOTE}\\
-	\companyoffers
-\end{minipage}%
-% Logo
-\begin{minipage}[t][0.4\textheight]{0.5\textwidth}
-	\vspace*{-8pt}  % This is needed to align the logo to the top of the minipage. Why?
-	\centering
-	\includegraphics[width=\textwidth, height=0.4\textheight, keepaspectratio]{\companylogo}
-\end{minipage}
-
-% Text, use minipage to keep it on one page
-\begin{minipage}[t][0.55\textheight]{\textwidth}
-	\textbf{\large \textcolor{copperred}{Über uns}}
-	\smallbreak
-	\companyabout
-	\bigbreak
-	\textbf{\large \textcolor{copperred}{Schwerpunkte}}
-	\smallbreak
-	\companyfocus
-\end{minipage}
-\twocolumn
-}
-
-% No Paragraph Indentation in Booklet
-\setlength{\parindent}{0pt}
+\documentclass{amivbooklet}
 
 % Generate random text for demo purposes
 \usepackage{blindtext}
 
 \begin{document}
 
-\section*{Test}
-
-\Blindtext
 
 \name{Sensirion AG}
 \website{www.sensirion.com}
@@ -160,19 +24,16 @@
 \booth{A5}
 \logo{amiv.png}
 \boxes{\itet\mtec}
-\contact{Marco Höhener\\+41 44 927 11 96\\www.xing.to/Marco\_Hoehener}
-\employees{520 in der Schweiz\\600 in der Welt}
+\contact{Herr Test\\+41 44 123 45 67}
+\employees{60 in der Schweiz}
 \offers{Praktika\\Festanstellungen}
 \about{\blindtext}
 \focus{\blindtext}
 
-\companypage
-\companypage
-\companypage
-\companypage
 
-\section*{Test}
-
-\Blindtext
+\companypage
+\companypage
+\companypage
+\companypage
 
 \end{document}
