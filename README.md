@@ -6,7 +6,7 @@ are easy to use!
 
 Take a look in the examples folder to see how to use them.
 
-## Prequisites
+## Prerequisites
 
 ### Fonts
 
