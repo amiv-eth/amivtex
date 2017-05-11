@@ -1,37 +1,46 @@
 # amivtex
 Tex templates for the AMIV CI
 
-This contains a basic AMIV letter only yet.
+Two document classes are provided: `amivletter` and `amivbooklet` -- and they
+are easy to use!
+
+Take a look in the examples folder to see how to use them.
 
 ## Prequisites
 
+### Fonts
+
+The `DinPro` Font must be installed.
+
+### Xetex
+
 To be able to switch to a different font
-[XeLatex](https://de.wikipedia.org/wiki/XeTeX) must be used in stead of 
-pdflatex. On Linux TexLive supports this, MikTex on Windows as well.
+[XeLatex](https://de.wikipedia.org/wiki/XeTeX) must be used in stead of
+pdflatex. On Linux TexLive includes Xetex, MikTex on Windows as well.
 
 ## Installation
 
-You have do make sure Xelatex can find amivtex, so you either have to
-- Add it to your local tex tree
-- set the environment variable TEXINPUT
-- use a command line option (MikTex)
+### Linux
 
-More Info for [MikTex](http://docs.miktex.org/manual/localadditions.html)
+Probably the easiest way is to just clone amivtex into the local texmf tree.
 
-## What is used
+```
+# Create directory structure, be careful to create the subdirectories right
+mkdir -p ~/texmf/tex/latex/
+cd ~/texmf/tex/latex/
+# Clone
+git clone https://github.com/NotSpecial/amivtex.git
+```
 
-The excellent [KOMA script](http://www.komascript.de) package with the ```scrlltr2``` class
+No further steps necessary, it should be detected automatically.
+[More info here.](https://wiki.archlinux.org/index.php/TeX_Live#Install_.sty_files)
 
-## How is it structured
+### Windows
 
-In  ```amivdefaults.sty``` all basic packages are included and amiv information such as public address etc are set.
+MikTex has severeal option, e.g. a simple command line addition.
+[Detailed Info.](http://docs.miktex.org/manual/localadditions.html)
 
-In ```komadefaults.sty``` everything needed for KOMA letters is done.
 
-Finally ```amiv_letter_template.tex``` shows how this is all used together (This file can be used as a template)
+### Verify your installation
 
-## Common problems:
-
-### Font
-
-Make sure the DinPro Font is installed on your system or it wont work.
+Open one of the example `.tex` files. If they compile, you are good to go.
