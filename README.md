@@ -2,21 +2,12 @@
 Tex templates for the AMIV CI
 
 Two document classes are provided: `amivletter` and `amivbooklet` -- and they
-are easy to use!
+are easy to use, ake a look in the examples folder to see all available commands and how to use them.
 
-Take a look in the examples folder to see how to use them.
+## Fonts & XeLaTex
 
-## Prerequisites
-
-### Fonts
-
-The `DinPro` Font must be installed.
-
-### Xetex
-
-To be able to switch to a different font
-[XeLatex](https://de.wikipedia.org/wiki/XeTeX) must be used in stead of
-pdflatex. On Linux TexLive includes Xetex, MikTex on Windows as well.
+The `DinPro` Font must be installed. To be able to switch to a different font in Latex, 
+[XeLaTex](https://de.wikipedia.org/wiki/XeTeX) must be used. On Linux TexLive includes XeLaTeX, MikTex on Windows as well.
 
 ## Installation
 
@@ -25,10 +16,10 @@ pdflatex. On Linux TexLive includes Xetex, MikTex on Windows as well.
 Probably the easiest way is to just clone amivtex into the local texmf tree.
 
 ```
-# Create directory structure, be careful to create the subdirectories right
+# Create directory structure, be careful to name the subdirectories right
 mkdir -p ~/texmf/tex/latex/
 cd ~/texmf/tex/latex/
-# Clone
+# Now get amivtex
 git clone https://github.com/NotSpecial/amivtex.git
 ```
 
@@ -37,7 +28,8 @@ No further steps necessary, it should be detected automatically.
 
 ### Windows
 
-MikTex has severeal option, e.g. a simple command line addition.
+MikTex has several options to add `.sty` files,
+e.g. a simple command line option `--include-directory=<your_amivtex_tex>`.
 [Detailed Info.](http://docs.miktex.org/manual/localadditions.html)
 
 
