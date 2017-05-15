@@ -8,7 +8,7 @@
 \setmainfont{DINPro}
 \setsansfont{DINPro}
 
-\RequirePackage{xcolor}    
+\RequirePackage{xcolor}
 \definecolor{copperred}{rgb}{0.910, 0.274, 0.169}
 \definecolor{petrolblue}{rgb}{0.122, 0.176, 0.329}
 
@@ -60,7 +60,7 @@ inner=7.5mm, outer=15mm, marginparsep=0mm, marginparwidth=15mm]{geometry}
 \RequirePackage{marginnote}
 \newlength{\sideboxheight}
 \setlength{\sideboxheight}{2cm}
-\newcommand{\sidebox}[3][black]{%  text color (black), box color, text 
+\newcommand{\sidebox}[3][black]{%  text color (black), box color, text
 	\checkoddpage  % required for \rot to have correct value
 	\ifoddpage\hfill\fi% Odd page need filler first
 	\colorpage[#1]{#2}{5mm}{\sideboxheight}{\rotatebox{\rot}{#3}}%
@@ -123,7 +123,7 @@ inner=7.5mm, outer=15mm, marginparsep=0mm, marginparwidth=15mm]{geometry}
 		\centering
 		\includegraphics[width=\textwidth, height=0.4\textheight, keepaspectratio]{\companylogo}
 	\end{minipage}
-	
+
 	% Text, use minipage to keep it on one page
 	\begin{minipage}[t][0.55\textheight]{\textwidth}
 		\textbf{\large \textcolor{copperred}{Über uns}}
@@ -140,9 +140,13 @@ inner=7.5mm, outer=15mm, marginparsep=0mm, marginparwidth=15mm]{geometry}
 
 %% FULL PAGE ADVERTISEMENTS
 % newgeometry is used to remove margins. Both newgeometry and restoregeometry will add a clearpage
+% We need to put everything into a minipage, because if the image is too
+% large, TeX will sometimes include a uncesseary white page otherwise
 \newcommand{\fullpagead}[1]{% image
 	\newgeometry{top=0pt, bottom=0pt, left=0pt, right=0pt}
+	\begin{minipage}{\paperwidth}
 	\includegraphics[width=\paperwidth, height=\paperheight, keepaspectratio]{#1}
+	\end{minipage}
 	\restoregeometry
 }
 
