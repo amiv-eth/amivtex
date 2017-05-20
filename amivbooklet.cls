@@ -2,6 +2,9 @@
 
 \LoadClass[9pt]{extarticle}
 
+%% LANGUAGE (polyglossia instead of babel since we are using xetex)
+\RequirePackage{polyglossia}
+\setmainlanguage[variant=swiss]{german}
 
 %% FONT AND COLORS
 \RequirePackage{fontspec}
@@ -21,9 +24,9 @@
 \RequirePackage{graphicx}
 
 \newlength{\innermargin}
-\setlength{\innermargin}{7.5mm}
+\setlength{\innermargin}{9mm}
 \newlength{\outermargin}
-\setlength{\outermargin}{15mm}
+\setlength{\outermargin}{18mm}
 
 %% LAYOUT
 \RequirePackage[%
@@ -130,6 +133,7 @@ outer=\outermargin, marginparsep=0mm, marginparwidth=\outermargin]{geometry}
 	% start on new page and switch to onecolumn mode
 	\clearpage
 	\onecolumn
+<<<<<<< HEAD
 	% Sidebar
 	\boothbox{\companybooth}
 	\companyboxes
@@ -158,15 +162,44 @@ outer=\outermargin, marginparsep=0mm, marginparwidth=\outermargin]{geometry}
 
 	% Text, use minipage to keep it on one page
 	\begin{minipage}[t][0.5\textheight]{\textwidth}
+=======
+	\begin{minipage}[t][\textheight]{\textwidth}  % Keep content on one page
+		% Sidebar
+		\boothbox{\companybooth}
+		\companyboxes
+		% Company name and website
+		\textbf{\Large \textcolor{copperred}{\companyname}}\\
+		\companywebsite\\
+		% Company Info
+		\begin{minipage}[t]{0.5\textwidth}
+			\smallbreak
+			{\small \companyemployees}
+			\bigbreak
+			\textbf{Kontakt für Studierende}\\
+			\companycontact
+			\bigbreak\medbreak
+		\end{minipage}%
+		% Logo
+		% This minipage has a height to get a minimum height if the comapny info
+		% is short
+		\begin{minipage}[t][0.2\textheight]{0.5\textwidth}
+			%\vspace{0pt}
+			\vspace*{-8pt}  % This is needed to align the logo to the top of the minipage. Why?
+			\centering
+			\includegraphics[width=0.9\textwidth, height=0.2\textheight, keepaspectratio]{\companylogo}
+		\end{minipage}
+		
+>>>>>>> Updated layout with more whitespace
 		\textbf{\large \textcolor{copperred}{Über uns}}
 		\smallbreak
 		\companyabout
-		\bigbreak
+		\bigbreak\medbreak
 		\textbf{\large \textcolor{copperred}{Schwerpunkte}}
 		\smallbreak
-		\companyfocus
+		\companyfocus	
 	\end{minipage}
 	\twocolumn
+
 }
 
 
@@ -188,12 +221,12 @@ outer=\outermargin, marginparsep=0mm, marginparwidth=\outermargin]{geometry}
 	\hbox{}\newpage\hbox{}\newpage\fi}
 
 \newcommand{\companywithadleft}[1]{%
- 	%\clearevenpage
- 	%\fullpagead{#1}
+ 	\clearevenpage
+ 	\fullpagead{#1}
 	\companypage
 }
 \newcommand{\companywithadright}[1]{%
- 	%\clearevenpage
- 	%\companypage
- 	%\fullpagead{#1}
+ 	\clearevenpage
+ 	\companypage
+ 	\fullpagead{#1}
 }
