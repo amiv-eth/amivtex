@@ -136,23 +136,27 @@ outer=\outermargin, marginparsep=0mm, marginparwidth=\outermargin]{geometry}
 	% Company name and website
 	\textbf{\Large \textcolor{copperred}{\companyname}}\\
 	\companywebsite
-	\medbreak
+	
 	% Company Info
-	\begin{minipage}[t][0.3\textheight]{0.5\textwidth}
-		\textbf{KONTAKT FÜR STUDIERENDE}\\
+	\begin{minipage}[t]{0.5\textwidth}
+		\smallbreak
+		{\small \companyemployees}
+		\bigbreak
+		\textbf{Kontakt für Studierende}\\
 		\companycontact
-		\medbreak
-		\textbf{MITARBEITENDE}\\
-		\companyemployees
+		\bigbreak
 	\end{minipage}%
 	% Logo
+	% This minipage has a height to get a minimum height if the comapny info
+	% is short
 	\begin{minipage}[t][0.2\textheight]{0.45\textwidth}
-		\vspace*{-8pt}  % This is needed to align the logo to the top of the minipage. Why?
-		\includegraphics[width=\textwidth, height=0.4\textheight, keepaspectratio]{\companylogo}
+		\vspace{0pt}
+		%\vspace*{-8pt}  % This is needed to align the logo to the top of the minipage. Why?
+		\includegraphics[width=\textwidth, height=0.2\textheight, keepaspectratio]{\companylogo}
 	\end{minipage}
 
 	% Text, use minipage to keep it on one page
-	\begin{minipage}[t][0.55\textheight]{\textwidth}
+	\begin{minipage}[t][0.5\textheight]{\textwidth}
 		\textbf{\large \textcolor{copperred}{Über uns}}
 		\smallbreak
 		\companyabout
