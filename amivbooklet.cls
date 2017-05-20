@@ -21,9 +21,9 @@
 \RequirePackage{graphicx}
 
 \newlength{\innermargin}
-\setlength{\innermargin}{10mm}
+\setlength{\innermargin}{7.5mm}
 \newlength{\outermargin}
-\setlength{\outermargin}{20mm}
+\setlength{\outermargin}{15mm}
 
 %% LAYOUT
 \RequirePackage[%
@@ -149,10 +149,11 @@ outer=\outermargin, marginparsep=0mm, marginparwidth=\outermargin]{geometry}
 	% Logo
 	% This minipage has a height to get a minimum height if the comapny info
 	% is short
-	\begin{minipage}[t][0.2\textheight]{0.45\textwidth}
-		\vspace{0pt}
-		%\vspace*{-8pt}  % This is needed to align the logo to the top of the minipage. Why?
-		\includegraphics[width=\textwidth, height=0.2\textheight, keepaspectratio]{\companylogo}
+	\begin{minipage}[t][0.2\textheight]{0.5\textwidth}
+		%\vspace{0pt}
+		\vspace*{-8pt}  % This is needed to align the logo to the top of the minipage. Why?
+		\centering
+		\includegraphics[width=0.9\textwidth, height=0.2\textheight, keepaspectratio]{\companylogo}
 	\end{minipage}
 
 	% Text, use minipage to keep it on one page
@@ -187,12 +188,12 @@ outer=\outermargin, marginparsep=0mm, marginparwidth=\outermargin]{geometry}
 	\hbox{}\newpage\hbox{}\newpage\fi}
 
 \newcommand{\companywithadleft}[1]{%
- 	\clearevenpage
- 	\fullpagead{#1}
+ 	%\clearevenpage
+ 	%\fullpagead{#1}
 	\companypage
 }
 \newcommand{\companywithadright}[1]{%
- 	\clearevenpage
- 	\companypage
- 	\fullpagead{#1}
+ 	%\clearevenpage
+ 	%\companypage
+ 	%\fullpagead{#1}
 }
