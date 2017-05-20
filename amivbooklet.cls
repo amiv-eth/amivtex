@@ -59,6 +59,9 @@ outer=\outermargin, marginparsep=0mm, marginparwidth=\outermargin]{geometry}
 \fancyhead[EC]{\hspace*{-1\outermargin}\headerbox}
 \fancyfoot[EL, OR]{\textcolor{copperred}{\thepage}}
 
+% Preview footer
+\fancyfoot[EC]{\framebox{VORSCHAU GERADE SEITE -- EVEN PAGE PREVIEW}}
+\fancyfoot[OC]{\framebox{VORSCHAU UNGERADE SEITE -- ODD PAGE PREVIEW}}
 
 %% KONTAKT
 % Detect odd/even pages
