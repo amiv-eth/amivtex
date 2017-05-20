@@ -20,15 +20,21 @@
 %% LOGOS AND TITLE
 \RequirePackage{graphicx}
 
+\newlength{\innermargin}
+\setlength{\innermargin}{10mm}
+\newlength{\outermargin}
+\setlength{\outermargin}{20mm}
 
 %% LAYOUT
 \RequirePackage[%
 % General setup
 xetex, a5paper, twocolumn, twoside,%
 % Top and Bottom Margins including Footer and Header
-top=20mm, headheight=20mm, headsep=10mm, bottom=15mm, footskip=7.5mm,%
+top=20mm, headheight=20mm, headsep=10mm, bottom=20mm, footskip=10mm,%
 % Side Margins
-inner=7.5mm, outer=15mm, marginparsep=0mm, marginparwidth=15mm]{geometry}
+%inner=7.5mm, outer=15mm, marginparsep=0mm, marginparwidth=15mm]{geometry}
+inner=\innermargin,% 
+outer=\outermargin, marginparsep=0mm, marginparwidth=\outermargin]{geometry}
 
 
 %% HEADER AND FOOTER
@@ -36,7 +42,7 @@ inner=7.5mm, outer=15mm, marginparsep=0mm, marginparwidth=15mm]{geometry}
 \newcommand{\colorpage}[5][black]{% Textcolor (optional), Boxcolor, Width, Height, Content
 	\colorbox{#2}{%
 		\begin{minipage}[c][#4]{#3}
-			\makebox[\textwidth]{\large \color{#1}\textbf{#5}}
+			\makebox[\textwidth]{\textcolor{#1}{#5}}
 		\end{minipage}%
 	}%
 }
@@ -46,8 +52,8 @@ inner=7.5mm, outer=15mm, marginparsep=0mm, marginparwidth=15mm]{geometry}
 \fancyhf{}
 \renewcommand{\headrulewidth}{0pt}
 \newcommand{\headerbox}{\colorpage{petrolblue}{\paperwidth}{10mm}{}}
-\fancyhead[OC]{\hspace*{-7.5mm}\headerbox}
-\fancyhead[EC]{\hspace*{-15mm}\headerbox}
+\fancyhead[OC]{\hspace*{-1\innermargin}\headerbox}
+\fancyhead[EC]{\hspace*{-1\outermargin}\headerbox}
 \fancyfoot[EL, OR]{\textcolor{copperred}{\thepage}}
 
 
@@ -58,18 +64,44 @@ inner=7.5mm, outer=15mm, marginparsep=0mm, marginparwidth=15mm]{geometry}
 
 %Use marginnotes to create boxes at the border
 \RequirePackage{marginnote}
-\newlength{\sideboxheight}
-\setlength{\sideboxheight}{2cm}
-\newcommand{\sidebox}[3][black]{%  text color (black), box color, text
+\newcommand{\sidebox}[4][black]{%  text color (black), box color, height, text 
 	\checkoddpage  % required for \rot to have correct value
 	\ifoddpage\hfill\fi% Odd page need filler first
-	\colorpage[#1]{#2}{5mm}{\sideboxheight}{\rotatebox{\rot}{#3}}%
+	\colorpage[#1]{#2}{6mm}{#3}{\rotatebox{\rot}{#4}}%
 	\ifoddpage\else\hfill\ \fi% Even page after box
 }
-\newcommand{\boothbox}[1]{\marginnote{\sidebox{copperred}{#1}}[0cm]}
-\newcommand{\itet}{\marginnote{\sidebox[white]{petrolblue}{ITET}}[\dimexpr 1\sideboxheight + 3em]}
-\newcommand{\mavt}{\marginnote{\sidebox[white]{petrolblue}{MAVT}}[\dimexpr 2\sideboxheight + 4em]}
-\newcommand{\mtec}{\marginnote{\sidebox[white]{petrolblue}{MTEC}}[\dimexpr 3\sideboxheight + 5em]}
+% Booth
+\newlength{\sideboxheight}
+\setlength{\sideboxheight}{16mm}
+\newcommand{\boothbox}[1]{\marginnote{\sidebox{copperred}{\sideboxheight}{%
+\textbf{{\large #1}}
+}}[0cm]}
+
+% Interested in (ITET, MAVT, MTEC)
+\newcommand{\interestbox}[1]{\sidebox[white]{petrolblue}{\sideboxheight}{%
+\textbf{{\large #1}}
+}}
+\newcommand{\itet}{\marginnote{\interestbox{ITET}}[\dimexpr 1\sideboxheight + 2em]}
+\newcommand{\mavt}{\marginnote{\interestbox{MAVT}}[\dimexpr 2\sideboxheight + 3em]}
+\newcommand{\mtec}{\marginnote{\interestbox{MTEC}}[\dimexpr 3\sideboxheight + 4em]}
+
+% Offers (fulltime, entry, thesis)
+\newlength{\offerboxheight}
+\newlength{\offerboxoffset}
+\setlength{\offerboxheight}{30mm}
+\setlength{\offerboxoffset}{\dimexpr 4\sideboxheight + 6em}
+
+\newcommand{\offerbox}[1]{\sidebox{petrolblue!33}{\offerboxheight}{%
+% Use a tabular environment to allow newlines inside box
+\begin{tabular}{c}
+	#1
+\end{tabular}
+}}
+
+\newcommand{\fulltimeoffer}[1]{\marginnote{\offerbox{#1}}[\dimexpr 1\offerboxoffset]}
+\newcommand{\entryoffer}[1]{\marginnote{\offerbox{#1}}[\dimexpr 1\offerboxoffset + \offerboxheight + 1em]}
+\newcommand{\thesisoffer}[1]{\marginnote{\offerbox{#1}}[\dimexpr 1\offerboxoffset + 2\offerboxheight + 2em]}
+
 
 % Internal Variables
 \newcommand{\companyname}{}
@@ -79,7 +111,6 @@ inner=7.5mm, outer=15mm, marginparsep=0mm, marginparwidth=15mm]{geometry}
 \newcommand{\companyboxes}{}
 \newcommand{\companycontact}{}
 \newcommand{\companyemployees}{}
-\newcommand{\companyoffers}{}
 \newcommand{\companyabout}{}
 \newcommand{\companyfocus}{}
 
@@ -91,7 +122,6 @@ inner=7.5mm, outer=15mm, marginparsep=0mm, marginparwidth=15mm]{geometry}
 \newcommand{\boxes}[1]{\renewcommand{\companyboxes}{#1}}
 \newcommand{\contact}[1]{\renewcommand{\companycontact}{#1}}
 \newcommand{\employees}[1]{\renewcommand{\companyemployees}{#1}}
-\newcommand{\offers}[1]{\renewcommand{\companyoffers}{#1}}
 \newcommand{\about}[1]{\renewcommand{\companyabout}{#1}}
 \newcommand{\focus}[1]{\renewcommand{\companyfocus}{#1}}
 
@@ -103,24 +133,21 @@ inner=7.5mm, outer=15mm, marginparsep=0mm, marginparwidth=15mm]{geometry}
 	% Sidebar
 	\boothbox{\companybooth}
 	\companyboxes
+	% Company name and website
+	\textbf{\Large \textcolor{copperred}{\companyname}}\\
+	\companywebsite
+	\medbreak
 	% Company Info
-	\begin{minipage}[t][0.4\textheight]{0.5\textwidth}
-		\textbf{\Large \textcolor{copperred}{\companyname}}\\
-		\companywebsite
-		\bigbreak
+	\begin{minipage}[t][0.3\textheight]{0.5\textwidth}
 		\textbf{KONTAKT FÜR STUDIERENDE}\\
 		\companycontact
 		\medbreak
 		\textbf{MITARBEITENDE}\\
 		\companyemployees
-		\medbreak
-		\textbf{ANGEBOTE}\\
-		\companyoffers
 	\end{minipage}%
 	% Logo
-	\begin{minipage}[t][0.4\textheight]{0.5\textwidth}
+	\begin{minipage}[t][0.2\textheight]{0.45\textwidth}
 		\vspace*{-8pt}  % This is needed to align the logo to the top of the minipage. Why?
-		\centering
 		\includegraphics[width=\textwidth, height=0.4\textheight, keepaspectratio]{\companylogo}
 	\end{minipage}
 
@@ -156,12 +183,12 @@ inner=7.5mm, outer=15mm, marginparsep=0mm, marginparwidth=15mm]{geometry}
 	\hbox{}\newpage\hbox{}\newpage\fi}
 
 \newcommand{\companywithadleft}[1]{%
-	\clearevenpage
-	\fullpagead{#1}
+ 	\clearevenpage
+ 	\fullpagead{#1}
 	\companypage
 }
 \newcommand{\companywithadright}[1]{%
-	\clearevenpage
-	\companypage
-	\fullpagead{#1}
+ 	\clearevenpage
+ 	\companypage
+ 	\fullpagead{#1}
 }
