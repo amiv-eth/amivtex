@@ -1,47 +1,27 @@
-\documentclass{scrartcl}
-
-\author{Alexander Dietmüller}
-
-% The path to amivtex files, for the example just the parent folder
-\newcommand{\amivtexlocation}{../}
-
-% Needed to make \input work from a different directory
-\makeatletter
-\def\input@path{{\amivtexlocation}}
-\makeatother
-
-% User letter package
-\usepackage{scrletter}
-
-% Include amiv settings
-\usepackage{\amivtexlocation amivdefaults}
-
-% Include KOMA settings
-\usepackage{\amivtexlocation komadefaults}
-
-% Include kontakt contract helpers
-\usepackage{\amivtexlocation kontaktutils}
+% Using the `kontakt' option adds contract generation commands
+\documentclass[kontakt]{amivletter}
 
 % Kontact settings
-\renewcommand{\fairtitle}{AMIV Kontakt.16}
-\renewcommand{\amivsectionname}{Kommission Kontakt}
-\renewcommand{\amivsectionpresident}{Don Pablo}
+\fairtitle{AMIV Kontakt.16}
+\kontaktpresident{Don Pablo}
 
-% Sender of cover letters
-\setkomavar{signature}{Pablo's Boss}
 
 \begin{document}
+
+% Signature on Cover Letter
+\signature{Pablo's Boss}
+
 % AMIV member responsible for company
-\renewcommand{\amivrepresentative}{Pablo}
+\representative{Pablo}
 
 % Company info
-\renewcommand{\companyname}{Some Company}
-\renewcommand{\companyaddress}{Randomstreet}
-\renewcommand{\companycity}{1234 Town}
-\renewcommand{\companycountry}{Far far away}
-\renewcommand{\companyrepresentative}{Mr. Company}
+\name{Some Company}
+\address{Randomstreet}
+\city{1234 Town}
+\country{Far far away}
+\contact{Mr. Company}
 
-\renewcommand{\boothchoice}{%
+\boothchoice{%
     % Uncomment the booth choice you need
     %\smallAone
     %\smallAtwo
@@ -69,11 +49,11 @@
     überschreiten.
 }
 
-\renewcommand{\datechoice}{%
+\datechoice{%
     Teilnahme Dienstag, 18.10.2016
 }
 
-\renewcommand{\extrachoice}{%
+\extrachoice{%
     % Uncomment the parts and bigbreaks you need
     %\noindent Media Paket \hfill 850 CHF\\
     %\mediainfo

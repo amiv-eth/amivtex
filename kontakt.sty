@@ -1,27 +1,44 @@
 \ProvidesPackage{kontaktutils}
 
-% Make contract sections paragraphs 
+\renewcommand{\amivemail}{kontakt@amiv.ethz.ch}
+\renewcommand{\amivlogo}{kontakt_dark_background.eps}
+
+% Make contract sections paragraphs
 \renewcommand*{\thesection}{\S\ \arabic{section}}
 
 % Reset counting with every letter to support several per document
 \AtBeginLetter{\setcounter{section}{0}}
 
 % Set kontact settings
-\newcommand{\fairtitle}{AMIV Kontakt.16}
-\newcommand{\amivsectionname}{Kommission Kontakt}
-\newcommand{\amivsectionpresident}{Alexander Ens}
+\newcommand{\amivfairtitle}{AMIV Kontakt.16}
+\newcommand{\amivkontaktpresident}{Alexander Ens}
 \renewcommand{\amivemail}{kontakt@amiv.ethz.ch}
 \renewcommand{\amivlogo}{kontakt_dark_background.eps}
 
-% Create commands so they can be renewed for every letter
+\newcommand{\kontaktpresident}[1]{%
+			\renewcommand{\amivkontaktpresident}{#1}}
+
+\newcommand{\fairtitle}[1]{\renewcommand{\amivfairtitle}{#1}}
+
+% Commands so they can be renewed for every letter
 \newcommand{\companyname}{}
+\newcommand{\companycontact}{}
 \newcommand{\companyaddress}{}
 \newcommand{\companycity}{}
 \newcommand{\companycountry}{}
-\newcommand{\companyrepresentative}{}
-\newcommand{\boothchoice}{}
-\newcommand{\datechoice}{}
-\newcommand{\extrachoice}{}
+\newcommand{\companyboothchoice}{}
+\newcommand{\companydatechoice}{}
+\newcommand{\companyextrachoice}{}
+
+% Commands to easily set values
+\newcommand{\name}[1]{\renewcommand{\companyname}{#1}}
+\newcommand{\contact}[1]{\renewcommand{\companycontact}{#1}}
+\newcommand{\address}[1]{\renewcommand{\companyaddress}{#1}}
+\newcommand{\city}[1]{\renewcommand{\companycity}{#1}}
+\newcommand{\country}[1]{\renewcommand{\companycountry}{#1}}
+\newcommand{\boothchoice}[1]{\renewcommand{\companyboothchoice}{#1}}
+\newcommand{\datechoice}[1]{\renewcommand{\companydatechoice}{#1}}
+\newcommand{\extrachoice}[1]{\renewcommand{\companyextrachoice}{#1}}
 
 % Booth descriptions and info, command format: \sizeKATnumberofdays
 % Exceptions startup, they have no category
@@ -58,7 +75,7 @@
 \newcommand{\mediainfo}{{%
 	\footnotesize Inserat im Messeführer (A5, farbig)\\
 	Ein frei gestaltbarer Facebook Post Ihrer Firma
-	auf der Kontakt.16 Facebook-Seite
+	auf der Kontakt Facebook-Seite
 }}
 
 \newcommand{\businessinfo}{{%
@@ -78,6 +95,7 @@
 % Helper to create cover letter
 \newcommand{\makecoverletter}{%
 	\setkomavar{subject}{Vertrag zur \fairtitle}
+	\setkomavar{signature}{\amivsignature}
 	\setkomavar{location}{\locationcontent}
 	\KOMAoptions{%
 		backaddress=plain,
@@ -86,7 +104,7 @@
 
 	\begin{letter}{%
 		\companyname\\
-		\companyrepresentative\\
+		\companycontact\\
 		\companyaddress\\
 		\companycity\\
 		\companycountry
@@ -96,7 +114,7 @@
 
 		wir freuen uns, dass \companyname\ an der diesjährigen Kontakt teilnehmen wird.
 		\bigbreak\noindent
-		Anbei senden wir Ihnen den Standvertrag in doppelter Ausführung. 
+		Anbei senden wir Ihnen den Standvertrag in doppelter Ausführung.
 		Wir bitten Sie, eine Version unterzeichnet an uns zu retournieren.
 		\bigbreak\noindent
 		Bei allen Anliegen oder Fragen stehen wir Ihnen gerne zur Verfügung.

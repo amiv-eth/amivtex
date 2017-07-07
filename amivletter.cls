@@ -16,7 +16,7 @@
 \setmainfont{DINPro}
 \setsansfont{DINPro}
 
-\RequirePackage{xcolor}    
+\RequirePackage{xcolor}
 \definecolor{copperred}{rgb}{0.910, 0.274, 0.169}
 \definecolor{petrolblue}{rgb}{0.122, 0.176, 0.329}
 
@@ -42,8 +42,7 @@
 
 %% OPTIONS
 \DeclareOption{kontakt}{%
-	\renewcommand{\amivemail}{kontakt@amiv.ethz.ch}
-	\renewcommand{\amivlogo}{kontakt_dark_background.eps}
+	\input{kontakt.sty}
 }
 \ProcessOptions\relax
 
@@ -141,7 +140,7 @@
 	\locationitem{T}{\usekomavar{fromphone}}\\
 	\locationitem{E}{\usekomavar{fromemail}}
 	\bigbreak\noindent
-	\locationitem{D}{\usekomavar{date}}\\    
+	\locationitem{D}{\usekomavar{date}}\\
 }
 % Set actual field
 \setkomavar{location}{\locationcontent}
