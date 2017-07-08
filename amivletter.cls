@@ -5,10 +5,11 @@
 \RequirePackage{scrletter}
 
 
-% Default packages needed for german hyphenation
-\RequirePackage[ngerman, nswissgerman]{babel}
+%% LANGUAGE (polyglossia instead of babel since we are using xetex)
+\RequirePackage{polyglossia}
+\setmainlanguage[variant=swiss]{german}
 
-% Required for logo
+% LOGO
 \RequirePackage{graphicx}
 
 %% FONT & COLORS
@@ -82,6 +83,9 @@
 
 % Signature left handed
 \renewcommand*{\raggedsignature}{\raggedright}
+
+% Space before signature
+\@setplength{sigbeforevskip}{1.5cm}
 
 % Header and footer
 % Helper: Create colored bar

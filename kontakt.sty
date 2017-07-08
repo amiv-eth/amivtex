@@ -1,8 +1,3 @@
-\ProvidesPackage{kontaktutils}
-
-\renewcommand{\amivemail}{kontakt@amiv.ethz.ch}
-\renewcommand{\amivlogo}{kontakt_dark_background.eps}
-
 % Make contract sections paragraphs
 \renewcommand*{\thesection}{\S\ \arabic{section}}
 
@@ -13,7 +8,7 @@
 \newcommand{\amivfairtitle}{AMIV Kontakt.16}
 \newcommand{\amivkontaktpresident}{Alexander Ens}
 \renewcommand{\amivemail}{kontakt@amiv.ethz.ch}
-\renewcommand{\amivlogo}{kontakt_dark_background.eps}
+\renewcommand{\amivlogo}{kontakt_dark_background}
 
 \newcommand{\kontaktpresident}[1]{%
 			\renewcommand{\amivkontaktpresident}{#1}}
@@ -94,7 +89,7 @@
 
 % Helper to create cover letter
 \newcommand{\makecoverletter}{%
-	\setkomavar{subject}{Vertrag zur \fairtitle}
+	\setkomavar{subject}{Vertrag zur \amivfairtitle}
 	\setkomavar{signature}{\amivsignature}
 	\setkomavar{location}{\locationcontent}
 	\KOMAoptions{%
