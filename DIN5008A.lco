@@ -1,0 +1,62 @@
+%
+% This is file `DIN5008A.lco'.
+% Copyright (c) 2015 Markus Kohm [komascript at gmx info]
+%
+% This file may be distributed and/or modified under the conditions of
+% the LaTeX Project Public License, version 1.3c of the license.
+% The latest version of this license is in
+%   http://www.latex-project.org/lppl.txt
+% and version 1.3c or later is part of all distributions of LaTeX
+% version 2005/12/01 or later.
+%
+% This work has the LPPL maintenance status "maintained".
+%
+% The Current Maintainer and author of this work is Markus Kohm.
+%
+\immediate\write17{^^J%
++----------------------------------------------------------------------^^J%
+| WARNING (`DIN5008.lco'):^^J%
++----------------------------------------------------------------------^^J%
+| YOU SHOULD NOTE, THAT THIS IS NOT AN EARLY BETA RELEASE!^^J%
+| THIS VERSION IS INTENDED TO BE USED FOR TESTING ONLY!^^J%
+| USAGE FOR PURPOSES OTHER THAN INTENDED IS DANGEROUS!^^J%
+| DON'T EXPECT ANY SUPPORT FOR THIS VERSION!^^J%
++----------------------------------------------------------------------^^J%
+}
+\ProvidesFile{DIN5008A.lco}[2015/02/16 v0.1-beta letter-class-option]
+\LoadLetterOption{DINmtext}
+\KOMAoptions{fromalign=left,addrfield=topaligned,refline=narrow}
+\@setplength{firstheadhpos}{25mm}
+\@setplength{firstheadwidth}{100mm}
+\@setplength{specialmailindent}{5mm}
+\@setplength{specialmailrightindent}{0pt}
+\@setplength{toaddrindent}{5mm}
+\@setplength{lochpos}{-125mm}
+\@setplength{locvpos}{32mm}
+\@setplength{locwidth}{75mm}
+\@setplength{refvpos}{\dimexpr\useplength{tfoldmarkvpos}-32pt}
+\@setplength{refaftervskip}{8.46mm}
+\@newplength{specialmailheight}
+\@setplength{specialmailheight}{12.7mm}
+\newcommand*{\textareabydin}{%
+  \areaset{165mm}{233mm}%
+  \setlength{\oddsidemargin}{\dimexpr 25mm-1in}%
+  \setlength{\evensidemargin}{\dimexpr 20mm-1in}%
+}
+\renewcommand{\backaddr@format}[1]{\hspace*{\useplength{toaddrindent}}%
+  \parbox[t][\useplength{backaddrheight}][t]%
+         {\dimexpr\useplength{toaddrwidth}-\useplength{toaddrindent}}%
+         {\strut\ignorespaces #1\unskip\strut}%
+}
+\renewcommand{\specialmail@format}[1]{%
+  \parbox[t][\useplength{specialmailheight}][t]%
+         {\dimexpr\useplength{toaddrwidth}-\useplength{specialmailindent}-\useplength{specialmailrightindent}}%
+         {\strut\ignorespaces #1\unskip\strut}%
+}
+\setkomafont{specialmail}{\sffamily\fontsize{10pt}{12pt}\selectfont}
+\setkomafont{backaddress}{\sffamily\fontsize{8pt}{10pt}\selectfont}
+\setkomafont{addressee}{\sffamily\fontsize{10pt}{12pt}\selectfont}
+\setkomafont{fromname}{\sffamily\fontsize{10pt}{12pt}\selectfont}
+\setkomafont{fromaddress}{\sffamily\fontsize{10pt}{12pt}\selectfont}
+\setkomafont{refvalue}{\sffamily\fontsize{10pt}{12pt}\selectfont}
+\let\raggedsignature\raggedright

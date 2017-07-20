@@ -3,6 +3,14 @@
 % Base is the KOMA-script class scrartcl and the scrletter package
 \LoadClass{scrartcl}
 \RequirePackage{scrletter}
+\KOMAoptions{%
+	foldmarks=false,  % No folding marks
+	refline=nodate,  % Date is in location field
+	fontsize=10pt
+}
+\LoadLetterOption{DIN5008A}
+\textareabydin% Satzspiegel und Ränder nach DIN aktivieren.
+
 
 
 %% LANGUAGE (polyglossia instead of babel since we are using xetex)
@@ -41,53 +49,41 @@
 \newcommand{\signature}[1]{\renewcommand{\amivsignature}{#1}}
 \renewcommand{\subject}[1]{\renewcommand{\amivsubject}{#1}}  % Is it bad to overwrite \subject?
 
-%% OPTIONS
-\DeclareOption{kontakt}{%
-	\input{kontakt.sty}
+% Let KOMA use the previously defined commands for each letter
+\setkomavar{backaddress}{%
+	\amivname\ \amivaddress\ \amivpostal\ \amivcity%
 }
-\ProcessOptions\relax
+\setkomavar{signature}{\amivsignature}
+\setkomavar{subject}{\amivsubject}
 
-%% KOMA-SCRIPT CONFIG
-% Set general options
-\KOMAoptions{%
-	foldmarks=false,  % No folding marks
-	backaddress=plain,  % No underlined backaddress
-	refline=nodate,  % Date is in location field
-	fontsize=10pt,
+\newcommand{\locationitem}[2] {% Helper to create formatted and colored items
+	{\color{copperred} #1}\quad #2
 }
+\newcommand{\locationcontent}{%
+	\locationitem{Ihre Ansprechperson}{\\ \amivrepresentative}
+	\bigbreak\noindent
+	\locationitem{T}{\amivphone}\\
+	\locationitem{E}{\amivemail}
+	\bigbreak\noindent
+	\locationitem{D}{\usekomavar{date}}\\
+}
+\setkomavar{location}{\locationcontent}
 
-% Set positions
-% Header
-\@setplength{firstheadvpos}{1.5cm}
-\@setplength{firstheadhpos}{0pt}
+% Signature left handed and with some extra space
+\renewcommand*{\raggedsignature}{\raggedright}
+\@setplength{sigbeforevskip}{1.5cm}
+
+% Rename of "Anlagen" field
+\setkomavar*{enclseparator}{Anlagen}
+
+% Header and footer
+\@setplength{firstheadvpos}{0cm}
+\@setplength{firstheadhpos}{0cm}
 \@setplength{firstheadwidth}{\paperwidth}
-
-% First und next Footer
 \@setplength{firstfoothpos}{0pt}
 \@setplength{firstfootvpos}{26.5cm}
 \@setplength{firstfootwidth}{\paperwidth}
 
-% Adress field
-\@setplength{toaddrhpos}{2.5cm}
-\@setplength{toaddrvpos}{5.5cm}
-
-% Location Field
-\@setplength{locvpos}{\useplength{toaddrvpos}}
-\@setplength{lochpos}{2cm}
-\@addtoplength[0.5]{locvpos}{\useplength{backaddrheight}}
-\@setplength{locwidth}{6.5cm}
-
-% Start of text
-\@setplength{refvpos}{10cm}
-\@setplength{subjectaftervskip}{1.1cm}
-
-% Signature left handed
-\renewcommand*{\raggedsignature}{\raggedright}
-
-% Space before signature
-\@setplength{sigbeforevskip}{1.5cm}
-
-% Header and footer
 % Helper: Create colored bar
 % First arg color, second content
 \newcommand{\colorbar}[2] {%
@@ -99,7 +95,7 @@
 	\colorbar{petrolblue}{%
 		\vspace{0.25cm}
 		\hspace{20pt}
-		\includegraphics[height=2.5cm]{\amivlogo}%
+		\includegraphics[height=2cm]{\amivlogo}%
 		\vspace{0.25cm}%
 	}
 }
@@ -119,10 +115,10 @@
 % Copy content for other footers
 \AtBeginLetter{\pagestyle{headings}}
 \setkomavar{nextfoot}{%
-	\vspace{2.76cm}\\  % TODO: This is bad. Should be better
+	\vspace{1.36cm}\\  % TODO: This is bad. Should be better
 	\hspace*{-\oddsidemargin}\hspace{-1in}%
 	\colorbar{copperred}{\centering
-		\vspace{0.4cm}
+		\vspace{0.41cm}
 		\footnotesize{%
 			\amivname \quad \amivaddress \quad \amivpostal\ \amivcity \quad \amivphone \quad \amivemail
 		}
@@ -130,37 +126,8 @@
 	}%
 }
 
-% Location field (to the right of address field)
-% Helper to create nicely formatted and colored items
-\newcommand{\locationitem}[2] {%
-	{\color{copperred} #1}\quad #2
+%% OPTIONS
+\DeclareOption{kontakt}{%
+	\input{kontakt.sty}
 }
-
-% Content of location field
-% Create command to make it reusable
-\newcommand{\locationcontent}{%
-	\locationitem{Ihre Ansprechperson}{\\ \amivrepresentative}
-	\bigbreak\noindent
-	\locationitem{T}{\usekomavar{fromphone}}\\
-	\locationitem{E}{\usekomavar{fromemail}}
-	\bigbreak\noindent
-	\locationitem{D}{\usekomavar{date}}\\
-}
-% Set actual field
-\setkomavar{location}{\locationcontent}
-
-% Set Name of "Anlagen" field
-\setkomavar*{enclseparator}{Anlagen}
-
-
-% Set default fields
-\setkomavar{fromname}{\amivname}
-\setkomavar{fromaddress}{%
-	\amivaddress\\
-	\amivpostal\ \amivcity%
-}
-\setkomavar{fromphone}{\amivphone}
-\setkomavar{fromemail}{\amivemail}
-\setkomavar{signature}{\amivsignature}
-\setkomavar{subject}{\amivsubject}
-
+\ProcessOptions\relax
