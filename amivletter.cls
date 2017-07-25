@@ -3,11 +3,12 @@
 % Base is the KOMA-script class scrartcl and the scrletter package
 \LoadClass{scrartcl}
 \RequirePackage{scrletter}
+\RequirePackage{scrlayer}  % For footer
 \KOMAoptions{%
 	foldmarks=false,  % No folding marks
 	refline=nodate,  % Date is in location field
 	backaddress=plain,  % Don't underline back address
-	fontsize=10pt
+	fontsize=10pt,
 }
 % Load (customized) swiss letter format
 \LoadLetterOption{SNcustom}
@@ -80,12 +81,45 @@
 % Rename of "Anlagen" field
 \setkomavar*{enclseparator}{Anlagen}
 
-% Helper: Create colored bar
-% First arg color, second content
-\newcommand{\colorbar}[2] {%
-	\colorbox{#1}{\parbox{\paperwidth}{#2}}
+% Helper command to create colored Boxes of fixed Size
+\newcommand{\colorpage}[3]{% Boxcolor, Height, Content
+	\colorbox{#1}{%
+		\begin{minipage}[c][#2]{\paperwidth}
+			#3
+		\end{minipage}%
+	}%
 }
 
+\setkomavar{firsthead}{%
+	\colorpage{petrolblue}{3cm}{%
+		\hspace{1cm}\includegraphics[height=2cm]{\amivlogo}%
+	}
+}
+
+\setkomavar{firstfoot}{%
+	\colorpage{copperred}{2cm}{\makebox[\paperwidth]{%
+		\footnotesize{%
+			\amivname \quad \amivaddress \quad \amivpostal\ \amivcity \quad \amivphone \quad \amivemail
+		}}
+	}
+}
+
+% Footer placement on subsequent sides is not straightforward,
+% see https://tex.stackexchange.com/questions/196360/scrlttr2-make-second-page-footer-match-first-page-footer
+\DeclareNewLayer[
+  align=tl,
+  hoffset=\dimexpr.5\paperwidth-.5\useplength{firstfootwidth}\relax,
+  voffset=\useplength{firstfootvpos},
+  width=\useplength{firstfootwidth},
+  height=\dimexpr\paperheight-\useplength{firstfootvpos},
+  foreground,
+  contents={\parbox{\layerwidth}{\usekomavar{firstfoot}}}
+]{myfoot.fg}
+\DeclarePageStyleByLayers{amivfoot}{myfoot.fg}
+\AtBeginLetter{\pagestyle{amivfoot}}
+
+
+\iffalse
 % Blue bar with logo in head
 \setkomavar{firsthead}{%
 	\colorbar{petrolblue}{%
@@ -121,6 +155,7 @@
 		\vspace{1cm} % bigger than necessary, just to definetly fill the page
 	}%
 }
+\fi
 
 %% OPTIONS
 \DeclareOption{kontakt}{%

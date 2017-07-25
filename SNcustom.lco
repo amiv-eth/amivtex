@@ -26,8 +26,7 @@
 \@setplength{firstheadvpos}{0cm}
 \@setplength{firstheadhpos}{0cm}
 \@setplength{firstheadwidth}{\paperwidth}
-\@setplength{firstfoothpos}{0pt}
-\@setplength{firstfootvpos}{26.5cm}
+\@setplength{firstfootvpos}{\dimexpr\paperheight-1.8cm}
 \@setplength{firstfootwidth}{\paperwidth}
 
 % Custom Text Area Size
