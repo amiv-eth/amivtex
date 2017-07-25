@@ -43,11 +43,13 @@
 
 % Letter specific defaults (to avoid manipulation koma vars and normal commands mixed)
 \newcommand{\amivrepresentative}{Pablo}
+\newcommand{\amivrepresentativeemail}{\amivemail}
 \newcommand{\amivsignature}{Pablo}
 \newcommand{\amivsubject}{AMIV Letter}
 
 % Provide commands to change variables
 \newcommand{\representative}[1]{\renewcommand{\amivrepresentative}{#1}}
+\newcommand{\email}[1]{\renewcommand{\amivrepresentativeemail}{#1}}
 \newcommand{\signature}[1]{\renewcommand{\amivsignature}{#1}}
 \renewcommand{\subject}[1]{\renewcommand{\amivsubject}{#1}}  % Is it bad to overwrite \subject?
 
@@ -65,7 +67,7 @@
 	\locationitem{Ihre Ansprechperson}{\\ \amivrepresentative}
 	\bigbreak\noindent
 	\locationitem{T}{\amivphone}\\
-	\locationitem{E}{\amivemail}
+	\locationitem{E}{\amivrepresentativeemail}
 	\bigbreak\noindent
 	\locationitem{D}{\usekomavar{date}}\\
 }
