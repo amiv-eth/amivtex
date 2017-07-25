@@ -16,11 +16,11 @@
 
 % Info Block
 \@setplength{lochpos}{%
-  -119mm} % negative means distance from left side
+  20mm} % negative means distance from left side
 \@setplength{locvpos}{%
   42mm}
 \@setplength{locwidth}{%
-  70mm}
+  65mm}
 
 % Header and footer
 \@setplength{firstheadvpos}{0cm}
