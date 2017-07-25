@@ -20,7 +20,7 @@
 \@setplength{locvpos}{%
   42mm}
 \@setplength{locwidth}{%
-  90mm}
+  70mm}
 
 % Header and footer
 \@setplength{firstheadvpos}{0cm}
@@ -31,6 +31,6 @@
 \@setplength{firstfootwidth}{\paperwidth}
 
 % Custom Text Area Size
-\areaset{155mm}{233mm}%
+\areaset{160mm}{233mm}%
 \setlength{\oddsidemargin}{\dimexpr 30mm-1in}%
-\setlength{\evensidemargin}{\dimexpr 25mm-1in}%
+\setlength{\evensidemargin}{\dimexpr 20mm-1in}%
