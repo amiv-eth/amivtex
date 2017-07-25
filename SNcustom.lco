@@ -1,0 +1,36 @@
+% Custom extension of KOMA script SN letter option,
+% Since the address field they specify does not seem to be correct
+% for our window letters
+
+\LoadLetterOption{SNleft}
+
+% Addressfield
+\@setplength{toaddrvpos}{%
+  42mm}
+\@setplength{toaddrhpos}{%
+  26mm}
+\@setplength{toaddrwidth}{%
+  75mm}
+\@setplength{toaddrheight}{%
+  32mm}
+
+% Info Block
+\@setplength{lochpos}{%
+  -119mm} % negative means distance from left side
+\@setplength{locvpos}{%
+  42mm}
+\@setplength{locwidth}{%
+  90mm}
+
+% Header and footer
+\@setplength{firstheadvpos}{0cm}
+\@setplength{firstheadhpos}{0cm}
+\@setplength{firstheadwidth}{\paperwidth}
+\@setplength{firstfoothpos}{0pt}
+\@setplength{firstfootvpos}{26.5cm}
+\@setplength{firstfootwidth}{\paperwidth}
+
+% Custom Text Area Size
+\areaset{155mm}{233mm}%
+\setlength{\oddsidemargin}{\dimexpr 30mm-1in}%
+\setlength{\evensidemargin}{\dimexpr 25mm-1in}%

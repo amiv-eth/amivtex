@@ -6,12 +6,14 @@
 \KOMAoptions{%
 	foldmarks=false,  % No folding marks
 	refline=nodate,  % Date is in location field
+	backaddress=plain,  % Don't underline back address
 	fontsize=10pt
 }
-\LoadLetterOption{DIN5008A}
-\textareabydin% Satzspiegel und Ränder nach DIN aktivieren.
+% Load (customized) swiss letter format
+\LoadLetterOption{SNcustom}
 
-
+%% TITLES
+\RequirePackage{titlesec}
 
 %% LANGUAGE (polyglossia instead of babel since we are using xetex)
 \RequirePackage{polyglossia}
@@ -76,14 +78,6 @@
 % Rename of "Anlagen" field
 \setkomavar*{enclseparator}{Anlagen}
 
-% Header and footer
-\@setplength{firstheadvpos}{0cm}
-\@setplength{firstheadhpos}{0cm}
-\@setplength{firstheadwidth}{\paperwidth}
-\@setplength{firstfoothpos}{0pt}
-\@setplength{firstfootvpos}{26.5cm}
-\@setplength{firstfootwidth}{\paperwidth}
-
 % Helper: Create colored bar
 % First arg color, second content
 \newcommand{\colorbar}[2] {%
@@ -93,10 +87,10 @@
 % Blue bar with logo in head
 \setkomavar{firsthead}{%
 	\colorbar{petrolblue}{%
-		\vspace{0.25cm}
-		\hspace{20pt}
+		\vspace{0.5cm}
+		\hspace{1cm}
 		\includegraphics[height=2cm]{\amivlogo}%
-		\vspace{0.25cm}%
+		\vspace{0.5cm}%
 	}
 }
 
