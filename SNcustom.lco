@@ -8,7 +8,7 @@
 \@setplength{toaddrvpos}{%
   42mm}
 \@setplength{toaddrhpos}{%
-  26mm}
+  20mm}
 \@setplength{toaddrwidth}{%
   75mm}
 \@setplength{toaddrheight}{%
@@ -30,6 +30,6 @@
 \@setplength{firstfootwidth}{\paperwidth}
 
 % Custom Text Area Size
-\areaset{160mm}{233mm}%
-\setlength{\oddsidemargin}{\dimexpr 30mm-1in}%
+\areaset{170mm}{233mm}%
+\setlength{\oddsidemargin}{\dimexpr 20mm-1in}%
 \setlength{\evensidemargin}{\dimexpr 20mm-1in}%
