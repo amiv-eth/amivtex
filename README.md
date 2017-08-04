@@ -4,21 +4,23 @@ Tex templates for the AMIV CI
 Two document classes are provided: `amivletter` and `amivbooklet` -- and they
 are easy to use, ake a look in the examples folder to see all available commands and how to use them.
 
-## Docker
-
-(Will add as soon as the automated build is set up)
-
 ## Installation
 
 ### Prerequisites: Fonts & XeLaTex
 
-The `DinPro` Font must be installed. To be able to switch to a different font in Latex, 
-[XeLaTex](https://de.wikipedia.org/wiki/XeTeX) must be used. On Linux TexLive includes XeLaTeX, MikTex on Windows as well.
+The *Din Pro* font must be installed. It is not public, [but available
+for all ETH Members](https://www.ethz.ch/services/en/service/communication/corporate-design/font/ff-din-pro.html).
+For convenience, it can also be found in the AMIV Drive and 
+[AMIV Wiki](https://wiki.amiv.ethz.ch/Corporate_Design#DINPro).
+
+To use this font, 
+[XeLaTex](https://de.wikipedia.org/wiki/XeTeX) must be used.
+On Linux TexLive includes XeLaTeX, MikTex on Windows as well.
 
 
 ### Linux
 
-Probably the easiest way is to just clone amivtex into the local texmf tree.
+Probably the easiest way is to just add amivtex to the local texmf tree.
 
 ```bash
 # Create local texmf tree, be careful to get the subdirectories right
@@ -43,3 +45,56 @@ e.g. a simple command line option `--include-directory=<your_amivtex_dir>`.
 ### Verify your installation
 
 Open one of the example `.tex` files. If they compile, you are good to go.
+
+
+## Docker
+
+If you want to create an python application that requires amivtex,
+a Docker image is available with python3, xelatex and the templates installed.
+Begin your dockerfile with
+`FROM notspecial/amivtex` and you are nearly set.
+
+As the *Din Pro* font is not public, it cannot be included in the
+public image, but the image contains an entrypoint script which will install
+the font at container startup, before the first `CMD` is executed.
+
+**Note**: Make sure *not* to use the `ENTRYPOINT` instruction in your `Dockerfile`,
+or you will overwrite this setup!
+
+The font can be provided in the following ways:
+
+### Using docker secrets (recommended)
+
+[Docker secrets](https://docs.docker.com/engine/swarm/secrets/#read-more-about-docker-secret-commands)
+allow to handle sensitive data conveniently, but have limited size. Therefore, the container
+accepts an URL to download the fonts as secret.
+(The URL can be found in the [AMIV Wiki](https://wiki.amiv.ethz.ch/Corporate_Design#DINPro))
+
+```bash
+# Create the secret named 'font_url'
+echo "URL" | docker secret create font_url -
+# Start your container (which builds on amivtex) with the secret
+docker service create --name youramivtexapp --secret font_url youramivtexappimage
+```
+
+The amivtex image looks for the secret at `/run/secrets/font_url`,
+so if you name your secret differently, either adjust the mountpoint
+or specify the path with the environment variable `FONT_URL_FILE`:
+
+```bash
+docker service create \
+  --name youramivtexapp \
+  --secret my_secret \
+  -e FONT_URL_FILE="/run/secrets/my_secret" \
+  youramivtexappimage
+```
+
+### Using environment vars
+
+If you can't use secrets, you can pass
+the URL directly with the environment variable `FONT_URL`.
+
+If you don't want the container to download anything,
+you can also mount the compressed fonts (`.tar.gz`) and
+let the image the path where you mounted the archive with
+the environment variable `FONT_ARCHIVE`.
