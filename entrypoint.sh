@@ -1,14 +1,57 @@
 #!/bin/bash
-# Custom entrypoint to download and unpack fonts
-# This is required since Docker secrets cannot be directories
+# Amivtex required the DIN Pro fonts, which are not public and can therefore
+# not be part of the public build.
+# This entrypoint script allows the container to install the fonts when it is
+# started, check the README for the different ways to provide the fonts.
 
-# Create font directory
-mkdir -p /usr/share/fonts
+FONT_NAME="Din Pro"
+FONT_DIR=/usr/share/fonts
+DEFAULT_URL_FILE=/run/secrets/font_url  # Default docker secret mount point
 
-# Read URL to download font from app config, download with curl and unpack
-# TODO: Maybe this can be done a bit more efficiently
-wget -qO- $(cat $FONT_URL) \
-    | tar -xzC /usr/share/fonts --strip-components=1
+function error() {
+	echo "Error while aquiring DIN Pro fonts:"
+	case $1 in
+		"no-url") echo "No URL or archive provided.";;
+		"bad-url") echo "The provided URL is wrong.";;
+		"bad-archive") echo "The archive could not be unpacked";;
+		"bad-content") echo "The archive did not contain the DIN Pro fonts."
+	esac
+	echo "Check the README for instructions how to provide the fonts."
+	exit 1
+}
+
+# If fonts are not installed, try to aquire them
+if ! fc-list | grep -qi "$FONT_NAME"; then
+	echo "Fonts missing, installing..."
+	# Make sure directory for fonts exists
+	mkdir -p $FONT_DIR
+
+	# Different possibilities to aquire font: archive > url > url in file
+	if [ -n "$FONT_ARCHIVE" ]; then
+		echo "Archive provided, unpacking..."
+		tar -xz -C $FONT_DIR -f $FONT_ARCHIVE || error bad-archive
+	else
+		echo "Downloading..."
+		if [ -n "$FONT_URL" ]; then
+			url=$FONT_URL
+		elif [ -f ${FONT_URL_FILE:=$DEFAULT_URL_FILE} ]; then
+			url=$(cat $FONT_URL_FILE)
+		else
+			error no-url
+		fi
+
+		temp_archive=/tmp/fonts_temp.tar.gz
+		wget -qO $temp_archive $url || error bad-url
+		echo "Unpacking..."
+		tar -xz -C $FONT_DIR -f $temp_archive || error bad-archive
+		rm $temp_archive
+	fi
+
+	# Check if the archive actually contained the fonts
+	echo "Checking installation..."
+	fc-list | grep -qi "$FONT_NAME" || error bad-content
+	echo "Done!"
+fi
 
 # Execute CMD
 exec "$@"

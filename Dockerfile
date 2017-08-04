@@ -39,6 +39,5 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
         perl
 
 # Entrypoint script downloads non-public fonts at container start
-ENV FONT_URL /run/secrets/font_url
 COPY entrypoint.sh /entrypoint.sh
 ENTRYPOINT ["/entrypoint.sh"]
