@@ -18,17 +18,24 @@ To use this font,
 On Linux, TexLive includes XeLaTeX, MiKTeX on Windows as well.
 
 
-### Linux
+### Linux & MacOS
 
-Probably the easiest way is to just add amivtex to the local texmf tree.
+Some TeX Editors allow to add additional resources directly.
+Otherwise, probably the easiest way is to just add amivtex to the local texmf tree.
 
 ```bash
 # Create local texmf tree, be careful to get the subdirectories right
+## Linux
 mkdir -p ~/texmf/tex/latex/
+## MacOS
+mkdir -p ~/Library/texmf/tex/latex/
 
 # Clone amivtex and create symlink
 git clone https://github.com/NotSpecial/amivtex.git
-ln -s amivtex/amivtex ~/texmf/tex/latex
+## Linux
+ln -s ./amivtex/amivtex ~/texmf/tex/latex
+## MacOS
+ln -s ./amivtex/amivtex ~/Library/texmf/tex/latex
 ```
 
 No further steps necessary, it should be detected automatically.
@@ -38,8 +45,10 @@ No further steps necessary, it should be detected automatically.
 ### Windows
 
 MikTex has several options to add `.sty` files,
-e.g. a simple command line option `--include-directory=<your_amivtex_dir>`.
-[Detailed Info.](http://docs.miktex.org/manual/localadditions.html)
+e.g. a simple command line option `--include-directory=<your_amivtex_dir>/amivtex`,
+which can be added in your Tex Editor.
+(Be careful to include the subdirectory `amivtex` which actually contains the .sty files)
+[More Info.](http://docs.miktex.org/manual/localadditions.html)
 
 
 ### Verify your installation
