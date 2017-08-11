@@ -9,11 +9,14 @@ ENV PATH /usr/local/texlive/2017/bin/x86_64-linux:$PATH
 RUN apt-get update && apt-get install -y --no-install-recommends \
 		perl \
 		wget \
+        # Xelatex needs libfontconfig
 		libfontconfig \
+        # Small tools to allow entrypoint to check if fonts are installed
+        fontconfig \
 	&& \
     rm -rf /var/lib/apt/lists/* && \
     # Download Installer
-    wget -qO- ftp://tug.org/texlive/historic/2017/install-tl-unx.tar.gz | \
+    wget -O- ftp://tug.org/texlive/historic/2017/install-tl-unx.tar.gz | \
     tar -xz -C /tmp/install-tl-unx --strip-components=1 && \
     # Install basic TeX
     /tmp/install-tl-unx/install-tl \
