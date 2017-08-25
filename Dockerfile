@@ -28,6 +28,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
         xetex \
         polyglossia \
         xcolor \
+        pgf \
         koma-script \
         titlesec \
         extsizes \

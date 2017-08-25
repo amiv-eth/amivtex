@@ -12,7 +12,7 @@
 \setsansfont{DINPro}
 
 \RequirePackage{xcolor}
-\definecolor{copperred}{rgb}{0.910, 0.274, 0.169}
+\definecolor{copperred}{rgb}{0.910, 0.275, 0.169}
 \definecolor{petrolblue}{rgb}{0.122, 0.176, 0.329}
 
 
@@ -20,15 +20,58 @@
 \setlength{\parindent}{0pt}
 
 
-%% LOGOS AND TITLE
+%% GRAPHICS
 \RequirePackage{graphicx}
+\usepackage{tikz}
 
+%% TITLE PAGE
+% Lengths for the title layout
+\newlength{\titletopbar}\setlength{\titletopbar}{42mm}
+\newlength{\titlebottombar}\setlength{\titlebottombar}{20mm}
+
+% In addition to \title and \date, allow to specify \titleimage and \location
+\newcommand{\@titleimage}{example-image}
+\newcommand{\titleimage}[1]{\renewcommand{\@titleimage}{#1}}
+\newcommand{\@location}{}
+\newcommand{\location}[1]{\renewcommand{\@location}{#1}}
+
+% Create the titlepage with tikz
+\renewcommand{\maketitle}{%
+\begin{titlepage}
+\begin{tikzpicture}[remember picture, overlay]
+% Blue bar on top
+\fill [petrolblue] (current page.north west)
+    rectangle ([yshift=-\titletopbar]current page.north east);
+% Featured Image
+\node [inner sep=0pt, anchor=south] at ([yshift=\titlebottombar]current page.south)
+    {\includegraphics[height=\dimexpr \paperheight-\titletopbar-\titlebottombar]
+     {\@titleimage}};
+% Top and Bottom Text
+\node [anchor=east, align=right, text=white, font=\fontsize{21}{28}\selectfont,
+       text width=0.5\paperwidth]
+    at ([xshift=-5mm, yshift=-0.5\titletopbar]current page.north east)
+    {\addfontfeature{LetterSpace=2.0} \textbf{\@title}};
+\node [anchor=east, align=right, text=copperred, font=\huge,
+       text width=0.75\paperwidth]
+    at ([xshift=-5mm, yshift=0.5\titlebottombar]current page.south east)
+    {\@location\\\@date};
+% Logos
+\node [inner sep=0pt, anchor=north west]
+    at ([xshift=-27.5mm, yshift=28mm]current page.north west)
+    {\includegraphics[width=90mm]{logo_no_text.pdf}};
+\node [inner sep=0pt, anchor=south west]
+    at ([xshift=5mm, yshift=5mm]current page.south west)
+    {\includegraphics[height=\dimexpr \titlebottombar - 10mm]{logo_text_only.pdf}};
+    \end{tikzpicture}
+\end{titlepage}
+}
+
+%% LAYOUT
 \newlength{\innermargin}
 \setlength{\innermargin}{9mm}
 \newlength{\outermargin}
 \setlength{\outermargin}{18mm}
 
-%% LAYOUT
 \RequirePackage[%
 % General setup
 xetex, a5paper, twocolumn, twoside,%
@@ -43,11 +86,11 @@ outer=\outermargin, marginparsep=0mm, marginparwidth=\outermargin]{geometry}
 %% HEADER AND FOOTER
 % Helper command to create colored Boxes of fixed Size
 \newcommand{\colorpage}[5][black]{% Textcolor (optional), Boxcolor, Width, Height, Content
-	\colorbox{#2}{%
-		\begin{minipage}[c][#4]{#3}
-			\makebox[\textwidth]{\textcolor{#1}{#5}}
-		\end{minipage}%
-	}%
+    \colorbox{#2}{%
+        \begin{minipage}[c][#4]{#3}
+            \makebox[\textwidth]{\textcolor{#1}{#5}}
+        \end{minipage}%
+    }%
 }
 \RequirePackage{fancyhdr}
 % Add layout to fancy header
@@ -71,10 +114,10 @@ outer=\outermargin, marginparsep=0mm, marginparwidth=\outermargin]{geometry}
 %Use marginnotes to create boxes at the border
 \RequirePackage{marginnote}
 \newcommand{\sidebox}[4][black]{%  text color (black), box color, height, text 
-	\checkoddpage  % required for \rot to have correct value
-	\ifoddpage\hfill\fi% Odd page need filler first
-	\colorpage[#1]{#2}{6mm}{#3}{\rotatebox{\rot}{#4}}%
-	\ifoddpage\else\hfill\ \fi% Even page after box
+    \checkoddpage  % required for \rot to have correct value
+    \ifoddpage\hfill\fi% Odd page need filler first
+    \colorpage[#1]{#2}{6mm}{#3}{\rotatebox{\rot}{#4}}%
+    \ifoddpage\else\hfill\ \fi% Even page after box
 }
 % Booth
 \newlength{\sideboxheight}
@@ -100,7 +143,7 @@ outer=\outermargin, marginparsep=0mm, marginparwidth=\outermargin]{geometry}
 \newcommand{\offerbox}[1]{\sidebox{petrolblue!33}{\offerboxheight}{%
 % Use a tabular environment to allow newlines inside box
 \begin{tabular}{c}
-	#1
+    #1
 \end{tabular}
 }}
 
@@ -133,44 +176,44 @@ outer=\outermargin, marginparsep=0mm, marginparwidth=\outermargin]{geometry}
 
 % Create a companypage
 \newcommand{\companypage}{%
-	% start on new page and switch to onecolumn mode
-	\clearpage
-	\onecolumn
-	\begin{minipage}[t][\textheight]{\textwidth}  % Keep content on one page
-		% Sidebar
-		\boothbox{\companybooth}
-		\companyboxes
-		% Company name and website
-		\textbf{\Large \textcolor{copperred}{\companyname}}\\
-		\companywebsite\\
-		% Company Info
-		\begin{minipage}[t]{0.5\textwidth}
-			\smallbreak
-			{\small \companyemployees}
-			\bigbreak
-			\textbf{Kontakt für Studierende}\\
-			\companycontact
-			\bigbreak\medbreak
-		\end{minipage}%
-		% Logo
-		% This minipage has a height to get a minimum height if the comapny info
-		% is short
-		\begin{minipage}[t][0.2\textheight]{0.5\textwidth}
-			%\vspace{0pt}
-			\vspace*{-8pt}  % This is needed to align the logo to the top of the minipage. Why?
-			\centering
-			\includegraphics[width=0.9\textwidth, height=0.2\textheight, keepaspectratio]{\companylogo}
-		\end{minipage}
-		
-		\textbf{\large \textcolor{copperred}{Über uns}}
-		\smallbreak
-		\companyabout
-		\bigbreak\medbreak
-		\textbf{\large \textcolor{copperred}{Schwerpunkte}}
-		\smallbreak
-		\companyfocus	
-	\end{minipage}
-	\twocolumn
+    % start on new page and switch to onecolumn mode
+    \clearpage
+    \onecolumn
+    \begin{minipage}[t][\textheight]{\textwidth}  % Keep content on one page
+        % Sidebar
+        \boothbox{\companybooth}
+        \companyboxes
+        % Company name and website
+        \textbf{\Large \textcolor{copperred}{\companyname}}\\
+        \companywebsite\\
+        % Company Info
+        \begin{minipage}[t]{0.5\textwidth}
+            \smallbreak
+            {\small \companyemployees}
+            \bigbreak
+            \textbf{Kontakt für Studierende}\\
+            \companycontact
+            \bigbreak\medbreak
+        \end{minipage}%
+        % Logo
+        % This minipage has a height to get a minimum height if the comapny info
+        % is short
+        \begin{minipage}[t][0.2\textheight]{0.5\textwidth}
+            %\vspace{0pt}
+            \vspace*{-8pt}  % This is needed to align the logo to the top of the minipage. Why?
+            \centering
+            \includegraphics[width=0.9\textwidth, height=0.2\textheight, keepaspectratio]{\companylogo}
+        \end{minipage}
+        
+        \textbf{\large \textcolor{copperred}{Über uns}}
+        \smallbreak
+        \companyabout
+        \bigbreak\medbreak
+        \textbf{\large \textcolor{copperred}{Schwerpunkte}}
+        \smallbreak
+        \companyfocus   
+    \end{minipage}
+    \twocolumn
 
 }
 
@@ -180,25 +223,25 @@ outer=\outermargin, marginparsep=0mm, marginparwidth=\outermargin]{geometry}
 % We need to put everything into a minipage, because if the image is too
 % large, TeX will sometimes include a uncesseary white page otherwise
 \newcommand{\fullpagead}[1]{% image
-	\newgeometry{top=0pt, bottom=0pt, left=0pt, right=0pt}
-	\begin{minipage}{\paperwidth}
-	\includegraphics[width=\paperwidth, height=\paperheight, keepaspectratio]{#1}
-	\end{minipage}
-	\restoregeometry
+    \newgeometry{top=0pt, bottom=0pt, left=0pt, right=0pt}
+    \begin{minipage}{\paperwidth}
+    \includegraphics[width=\paperwidth, height=\paperheight, keepaspectratio]{#1}
+    \end{minipage}
+    \restoregeometry
 }
 
 % Companies with advertisements, make sure they are on the same double page
 % Helper to ensure even page
 \def\clearevenpage{\clearpage \ifodd\c@page
-	\hbox{}\newpage\hbox{}\newpage\fi}
+    \hbox{}\newpage\hbox{}\newpage\fi}
 
 \newcommand{\companywithadleft}[1]{%
- 	\clearevenpage
- 	\fullpagead{#1}
-	\companypage
+    \clearevenpage
+    \fullpagead{#1}
+    \companypage
 }
 \newcommand{\companywithadright}[1]{%
- 	\clearevenpage
- 	\companypage
- 	\fullpagead{#1}
+    \clearevenpage
+    \companypage
+    \fullpagead{#1}
 }
