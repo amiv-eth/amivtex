@@ -6,6 +6,11 @@
 \RequirePackage{polyglossia}
 \setmainlanguage[variant=swiss]{german}
 
+% Improve line breaking in the rather narrow columns,
+% without being as agressive as \sloppy
+\setlength\emergencystretch{3em}\hbadness=10000
+
+
 %% FONT AND COLORS
 \RequirePackage{fontspec}
 \setmainfont{DINPro}
@@ -72,18 +77,76 @@
 \newlength{\outermargin}
 \setlength{\outermargin}{18mm}
 
+\newcommand{\bottomandsidemargins}{% Needed to re-use them for companypage layout
+}
+
 \RequirePackage[%
 % General setup
 xetex, a5paper, twocolumn, twoside,%
-% Top and Bottom Margins including Footer and Header
-top=20mm, headheight=20mm, headsep=10mm, bottom=20mm, footskip=10mm,%
+% Top and Bottom Margin
+top=40mm, bottom=20mm, footskip=10mm,%
 % Side Margins
-%inner=7.5mm, outer=15mm, marginparsep=0mm, marginparwidth=15mm]{geometry}
-inner=\innermargin,% 
-outer=\outermargin, marginparsep=0mm, marginparwidth=\outermargin]{geometry}
+inner=\innermargin, outer=\outermargin,%
+marginparsep=0mm, marginparwidth=\outermargin%
+]{geometry}
+
 
 
 %% HEADER AND FOOTER
+
+\RequirePackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{}
+\renewcommand{\headrulewidth}{0pt}
+\fancyhead[C]{\begin{tikzpicture}[remember picture, overlay]
+    \fill [petrolblue] (current page.north west)
+        rectangle ([yshift=-10mm]current page.north east);
+    \end{tikzpicture}
+}
+\fancyfoot[EL, OR]{\textcolor{copperred}{\thepage}}
+
+
+%% SECTIONS
+% Remove all numbering
+\setcounter{secnumdepth}{-2}
+% Redefine sections to start a new page and place section name as special title
+\newcommand*{\@sectionname}{}
+\renewcommand*{\section}{%
+    % Check for starred version (dont add to TOC)
+    \@ifstar{\starsection}{\@dblarg\nostarsection}%
+}
+\def\nostarsection[#1]#2{% dblarg doesnt work with \newcommand
+    \addcontentsline{toc}{section}{#1}%
+    \starsection{#2}%
+}
+\newcommand*{\starsection}[1]{%
+    \clearpage%
+    \renewcommand*{\@sectionname}{#1}%
+    \thispagestyle{newsection}%
+}
+% Title is in a header to not influence text body
+\newcommand{\sectiontitleheader}[1]{%
+\begin{tikzpicture}[remember picture, overlay]
+\node [inner sep=0pt, font=\Large, align=left, anchor=west]
+    at ([xshift=#1, yshift=-25mm]current page.north west)
+    {\textbf{\@sectionname}};
+\end{tikzpicture}%
+}
+\fancypagestyle{newsection}{%
+    \fancyhead[EL]{\sectiontitleheader{\outermargin}}
+    \fancyhead[OL]{\sectiontitleheader{\innermargin}}
+}
+
+% Preview footer
+%\fancyfoot[EC]{\framebox{VORSCHAU GERADE SEITE -- EVEN PAGE PREVIEW}}
+%\fancyfoot[OC]{\framebox{VORSCHAU UNGERADE SEITE -- ODD PAGE PREVIEW}}
+
+%% KONTAKT
+% Detect odd/even pages
+\RequirePackage{changepage}
+\newcommand{\rot}{\ifoddpage 90\else -90\fi}
+
+%Use marginnotes to create boxes at the border
 % Helper command to create colored Boxes of fixed Size
 \newcommand{\colorpage}[5][black]{% Textcolor (optional), Boxcolor, Width, Height, Content
     \colorbox{#2}{%
@@ -92,26 +155,6 @@ outer=\outermargin, marginparsep=0mm, marginparwidth=\outermargin]{geometry}
         \end{minipage}%
     }%
 }
-\RequirePackage{fancyhdr}
-% Add layout to fancy header
-\pagestyle{fancy}
-\fancyhf{}
-\renewcommand{\headrulewidth}{0pt}
-\newcommand{\headerbox}{\colorpage{petrolblue}{\paperwidth}{10mm}{}}
-\fancyhead[OC]{\hspace*{-1\innermargin}\headerbox}
-\fancyhead[EC]{\hspace*{-1\outermargin}\headerbox}
-\fancyfoot[EL, OR]{\textcolor{copperred}{\thepage}}
-
-% Preview footer
-\fancyfoot[EC]{\framebox{VORSCHAU GERADE SEITE -- EVEN PAGE PREVIEW}}
-\fancyfoot[OC]{\framebox{VORSCHAU UNGERADE SEITE -- ODD PAGE PREVIEW}}
-
-%% KONTAKT
-% Detect odd/even pages
-\RequirePackage{changepage}
-\newcommand{\rot}{\ifoddpage 90\else -90\fi}
-
-%Use marginnotes to create boxes at the border
 \RequirePackage{marginnote}
 \newcommand{\sidebox}[4][black]{%  text color (black), box color, height, text 
     \checkoddpage  % required for \rot to have correct value
@@ -176,8 +219,16 @@ outer=\outermargin, marginparsep=0mm, marginparwidth=\outermargin]{geometry}
 
 % Create a companypage
 \newcommand{\companypage}{%
-    % start on new page and switch to onecolumn mode
-    \clearpage
+    % start on new page with new layout (less whitespace),switch to one column
+    \newgeometry{%
+        twoside,
+        top=20mm, headheight=20mm, headsep=10mm,%
+        % Bottom Margin
+        bottom=20mm, footskip=10mm,%
+        % Side Margins
+        inner=\innermargin, outer=\outermargin,%
+        marginparsep=0mm, marginparwidth=\outermargin%
+    }
     \onecolumn
     \begin{minipage}[t][\textheight]{\textwidth}  % Keep content on one page
         % Sidebar
@@ -213,6 +264,7 @@ outer=\outermargin, marginparsep=0mm, marginparwidth=\outermargin]{geometry}
         \smallbreak
         \companyfocus   
     \end{minipage}
+    \restoregeometry
     \twocolumn
 
 }
