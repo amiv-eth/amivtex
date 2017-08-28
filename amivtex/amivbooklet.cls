@@ -12,13 +12,13 @@
 
 
 %% FONT AND COLORS
-\RequirePackage{fontspec}
-\setmainfont{DINPro}
-\setsansfont{DINPro}
-
 \RequirePackage{xcolor}
 \definecolor{copperred}{rgb}{0.910, 0.275, 0.169}
 \definecolor{petrolblue}{rgb}{0.122, 0.176, 0.329}
+
+\RequirePackage{fontspec}
+\setmainfont{DINPro}
+\setsansfont{DINPro}
 
 
 % No Paragraph Indentation in Booklet
@@ -44,13 +44,13 @@
 \renewcommand{\maketitle}{%
 \begin{titlepage}
 \begin{tikzpicture}[remember picture, overlay]
-% Blue bar on top
-\fill [petrolblue] (current page.north west)
-    rectangle ([yshift=-\titletopbar]current page.north east);
 % Featured Image
 \node [inner sep=0pt, anchor=south] at ([yshift=\titlebottombar]current page.south)
     {\includegraphics[height=\dimexpr \paperheight-\titletopbar-\titlebottombar]
      {\@titleimage}};
+% Blue bar on top
+\fill [petrolblue] (current page.north west)
+    rectangle ([yshift=-\titletopbar]current page.north east);
 % Top and Bottom Text
 \node [anchor=east, align=right, text=white, font=\fontsize{21}{28}\selectfont,
        text width=0.5\paperwidth]
@@ -77,12 +77,9 @@
 \newlength{\outermargin}
 \setlength{\outermargin}{18mm}
 
-\newcommand{\bottomandsidemargins}{% Needed to re-use them for companypage layout
-}
-
 \RequirePackage[%
 % General setup
-xetex, a5paper, twocolumn, twoside,%
+xetex, a5paper, twoside,%
 % Top and Bottom Margin
 top=40mm, bottom=20mm, footskip=10mm,%
 % Side Margins
@@ -105,6 +102,25 @@ marginparsep=0mm, marginparwidth=\outermargin%
 }
 \fancyfoot[EL, OR]{\textcolor{copperred}{\thepage}}
 
+%% MULTICOLUMN LAYOUT
+
+\RequirePackage{multicol}
+
+% TODO https://tex.stackexchange.com/q/39713
+\def\closeopenmulticols{%
+% test if current env is "multicols" if so close it
+    \def\@tempa{multicols}%
+    \ifx\@tempa\@currenvir
+      \end{multicols}%
+    \fi 
+}
+% close last open multicols
+\AtEndDocument{\closeopenmulticols}
+
+
+% Start with document
+\RequirePackage{etoolbox}
+\AfterEndPreamble{\begin{multicols}{2]}}
 
 %% SECTIONS
 % Remove all numbering
@@ -120,9 +136,12 @@ marginparsep=0mm, marginparwidth=\outermargin%
     \starsection{#2}%
 }
 \newcommand*{\starsection}[1]{%
+    % For each section, interrupt multicol, otherwise it can't balance cols
+    \closeopenmulticols
     \clearpage%
     \renewcommand*{\@sectionname}{#1}%
     \thispagestyle{newsection}%
+    \begin{multicols}{2}
 }
 % Title is in a header to not influence text body
 \newcommand{\sectiontitleheader}[1]{%
@@ -207,19 +226,21 @@ marginparsep=0mm, marginparwidth=\outermargin%
 \newcommand{\companyfocus}{}
 
 % Provide commands to set company info easily
-\newcommand{\name}[1]{\renewcommand{\companyname}{#1}}
-\newcommand{\website}[1]{\renewcommand{\companywebsite}{#1}}
-\newcommand{\booth}[1]{\renewcommand{\companybooth}{#1}}
-\newcommand{\logo}[1]{\renewcommand{\companylogo}{#1}}
-\newcommand{\boxes}[1]{\renewcommand{\companyboxes}{#1}}
-\newcommand{\contact}[1]{\renewcommand{\companycontact}{#1}}
-\newcommand{\employees}[1]{\renewcommand{\companyemployees}{#1}}
-\newcommand{\about}[1]{\renewcommand{\companyabout}{#1}}
-\newcommand{\focus}[1]{\renewcommand{\companyfocus}{#1}}
+% Use gdef to prevent erasing the variables when leaving multicols environment
+\newcommand{\name}[1]{\gdef\companyname{#1}}
+\newcommand{\website}[1]{\gdef\companywebsite{#1}}
+\newcommand{\booth}[1]{\gdef\companybooth{#1}}
+\newcommand{\logo}[1]{\gdef\companylogo{#1}}
+\newcommand{\boxes}[1]{\gdef\companyboxes{#1}}
+\newcommand{\contact}[1]{\gdef\companycontact{#1}}
+\newcommand{\employees}[1]{\gdef\companyemployees{#1}}
+\newcommand{\about}[1]{\gdef\companyabout{#1}}
+\newcommand{\focus}[1]{\gdef\companyfocus{#1}}
 
 % Create a companypage
 \newcommand{\companypage}{%
     % start on new page with new layout (less whitespace),switch to one column
+    \closeopenmulticols
     \newgeometry{%
         twoside,
         top=20mm, headheight=20mm, headsep=10mm,%
@@ -229,7 +250,6 @@ marginparsep=0mm, marginparwidth=\outermargin%
         inner=\innermargin, outer=\outermargin,%
         marginparsep=0mm, marginparwidth=\outermargin%
     }
-    \onecolumn
     \begin{minipage}[t][\textheight]{\textwidth}  % Keep content on one page
         % Sidebar
         \boothbox{\companybooth}
@@ -265,8 +285,7 @@ marginparsep=0mm, marginparwidth=\outermargin%
         \companyfocus   
     \end{minipage}
     \restoregeometry
-    \twocolumn
-
+    \begin{multicols}{2}
 }
 
 
