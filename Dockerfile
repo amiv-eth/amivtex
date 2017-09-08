@@ -36,6 +36,9 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
         marginnote \
         ms \
         blindtext \
+        hyperref \
+        etoolbox \
+        multicol \
     && \
     # Cleanup
     rm -rf /tmp/install-tl-unx && \

@@ -5,10 +5,13 @@
 %% LANGUAGE (polyglossia instead of babel since we are using xetex)
 \RequirePackage{polyglossia}
 \setmainlanguage[variant=swiss]{german}
+\setotherlanguage{english}
 
 % Improve line breaking in the rather narrow columns,
 % without being as agressive as \sloppy
 \setlength\emergencystretch{3em}\hbadness=10000
+
+
 
 
 %% FONT AND COLORS
@@ -25,9 +28,70 @@
 \setlength{\parindent}{0pt}
 
 
-%% GRAPHICS
+%% GRAPHICS AND IMAGES
 \RequirePackage{graphicx}
 \usepackage{tikz}
+
+\newcommand*{\fullwidthimage}[1]{%
+\end{multicols}
+% Wrap image in box so it can overflow to the page border
+\makebox[\textwidth]{
+    \includegraphics[height=10cm]{#1}
+}
+\vspace{-5mm}  % Adjust whitespace below picture
+\iftwocolumn\begin{multicols}{2}\fi
+}
+
+
+% Check if odd or even page to find correct left and right margins
+\newcommand{\leftimagemargin}{%
+    \innermargin%\checkoddpage\ifoddpage\innermargin\else\outermargin\fi
+}
+\newcommand{\rightimagemargin}{%
+    \outermargin%\checkoddpage\ifoddpage\outermargin\else\innermargin\fi    
+}
+
+\newcommand{\image}[1]{%
+% The image is placed inline, not as a float -- therefore we have to use \par
+% to end the current paragraph and again to start a new one after the image.
+% Otherwise we get inconsistent newlines and unwanted spacing
+\par\vspace{0.5\columnsep}
+\docolaction{%
+    % Left col
+    \hspace{-\leftimagemargin}%
+    \includegraphics[width=\dimexpr\linewidth+\leftimagemargin]{#1}%
+}{%
+    % Middle col (not possible in layout, but for completeness)
+    \includegraphics[width=\linewidth]{#1}%
+}{%
+    % Right col    
+    \includegraphics[width=\dimexpr\linewidth+\rightimagemargin]{#1}%
+}%
+\vspace{0.5\columnsep}\par
+}
+
+
+%% PAGELAYOUT
+\newlength{\innermargin}
+\setlength{\innermargin}{9mm}
+\newlength{\outermargin}
+\setlength{\outermargin}{18mm}
+
+\RequirePackage[%
+% General setup
+xetex, a5paper, twoside,%
+% Top and Bottom Margin
+top=40mm, bottom=20mm, footskip=10mm,%
+% Side Margins
+inner=\innermargin, outer=\outermargin,%
+marginparsep=0mm, marginparwidth=\outermargin%
+]{geometry}
+
+% Detect odd/even pages
+\RequirePackage{changepage}
+
+
+
 
 %% TITLE PAGE
 % Lengths for the title layout
@@ -71,21 +135,6 @@
 \end{titlepage}
 }
 
-%% LAYOUT
-\newlength{\innermargin}
-\setlength{\innermargin}{9mm}
-\newlength{\outermargin}
-\setlength{\outermargin}{18mm}
-
-\RequirePackage[%
-% General setup
-xetex, a5paper, twoside,%
-% Top and Bottom Margin
-top=40mm, bottom=20mm, footskip=10mm,%
-% Side Margins
-inner=\innermargin, outer=\outermargin,%
-marginparsep=0mm, marginparwidth=\outermargin%
-]{geometry}
 
 
 
@@ -102,11 +151,20 @@ marginparsep=0mm, marginparwidth=\outermargin%
 }
 \fancyfoot[EL, OR]{\textcolor{copperred}{\thepage}}
 
+
+
+
 %% MULTICOLUMN LAYOUT
+% We need multicol instead of the default twocolumn layout since
+% we can't implement layout elements like the fullwidthimage.
+% We want to make it invisble TODO
+% As a downside, we need special commands to clear pages.
+\RequirePackage[colaction]{multicol}
 
-\RequirePackage{multicol}
+% Twocolumn mode switch
+\newif\iftwocolumn
 
-% TODO https://tex.stackexchange.com/q/39713
+% Helper to close multicol if open https://tex.stackexchange.com/q/39713
 \def\closeopenmulticols{%
 % test if current env is "multicols" if so close it
     \def\@tempa{multicols}%
@@ -114,15 +172,45 @@ marginparsep=0mm, marginparwidth=\outermargin%
       \end{multicols}%
     \fi 
 }
-% close last open multicols
+
+\renewcommand*{\onecolumn}{\iftwocolumn%
+    \closeopenmulticols\twocolumnfalse%
+\fi}
+\renewcommand*{\twocolumn}{\iftwocolumn\else%
+    \twocolumntrue\begin{multicols}{2}
+\fi}
+
+% Start twocolumn mode at start of document
+\RequirePackage{etoolbox}
+\AfterEndPreamble{\twocolumn}
+
+% Close last open multicols at end of document
 \AtEndDocument{\closeopenmulticols}
 
+% Start new pages with breaking twocolumn mode properly
+% Otherwise multicol can't balance columns right
+\newcommand{\nextpage}{%
+    \iftwocolumn\closeopenmulticols\clearpage\begin{multicols}{2}
+    \else\clearpage\fi
+}
 
-% Start with document
-\RequirePackage{etoolbox}
-\AfterEndPreamble{\begin{multicols}{2]}}
+% Jump to the next even page
+\newcommand*{\filler}{\null}
+\newcommand*{\nextevenpage}{%
+    \nextpage
+    \ifodd\c@page \filler\nextpage\fi
+}
+
+
+
 
 %% SECTIONS
+% Adjust spacing for subsubsections
+% TODO: Not quite working yet, all space above is removed regardless of setting
+\RequirePackage{titlesec}  % Important: Load this before section re-definitions
+\titlespacing*{\subsubsection}{0pt}{10pt}{0pt}
+
+
 % Remove all numbering
 \setcounter{secnumdepth}{-2}
 % Redefine sections to start a new page and place section name as special title
@@ -140,15 +228,16 @@ marginparsep=0mm, marginparwidth=\outermargin%
     \closeopenmulticols
     \clearpage%
     \renewcommand*{\@sectionname}{#1}%
+    %\null% Don't skip the page without content
     \thispagestyle{newsection}%
-    \begin{multicols}{2}
+    \iftwocolumn\begin{multicols}{2}\fi
 }
 % Title is in a header to not influence text body
 \newcommand{\sectiontitleheader}[1]{%
 \begin{tikzpicture}[remember picture, overlay]
-\node [inner sep=0pt, font=\Large, align=left, anchor=west]
+\node [inner sep=0pt, align=left, anchor=west, font=\Large\bfseries]
     at ([xshift=#1, yshift=-25mm]current page.north west)
-    {\textbf{\@sectionname}};
+    {\@sectionname};
 \end{tikzpicture}%
 }
 \fancypagestyle{newsection}{%
@@ -156,163 +245,23 @@ marginparsep=0mm, marginparwidth=\outermargin%
     \fancyhead[OL]{\sectiontitleheader{\innermargin}}
 }
 
-% Preview footer
-%\fancyfoot[EC]{\framebox{VORSCHAU GERADE SEITE -- EVEN PAGE PREVIEW}}
-%\fancyfoot[OC]{\framebox{VORSCHAU UNGERADE SEITE -- ODD PAGE PREVIEW}}
 
-%% KONTAKT
-% Detect odd/even pages
-\RequirePackage{changepage}
-\newcommand{\rot}{\ifoddpage 90\else -90\fi}
 
-%Use marginnotes to create boxes at the border
-% Helper command to create colored Boxes of fixed Size
-\newcommand{\colorpage}[5][black]{% Textcolor (optional), Boxcolor, Width, Height, Content
-    \colorbox{#2}{%
-        \begin{minipage}[c][#4]{#3}
-            \makebox[\textwidth]{\textcolor{#1}{#5}}
-        \end{minipage}%
-    }%
-}
+
+%% ADDITIONAL PACKAGES AND OPTIONS
+% email
+\RequirePackage{hyperref}
+
+% Marginnote, required for kontakt options
 \RequirePackage{marginnote}
-\newcommand{\sidebox}[4][black]{%  text color (black), box color, height, text 
-    \checkoddpage  % required for \rot to have correct value
-    \ifoddpage\hfill\fi% Odd page need filler first
-    \colorpage[#1]{#2}{6mm}{#3}{\rotatebox{\rot}{#4}}%
-    \ifoddpage\else\hfill\ \fi% Even page after box
+
+%% OPTIONS
+\DeclareOption{kontakt}{%
+    \input{kontaktbooklet.sty}
 }
-% Booth
-\newlength{\sideboxheight}
-\setlength{\sideboxheight}{16mm}
-\newcommand{\boothbox}[1]{\marginnote{\sidebox{copperred}{\sideboxheight}{%
-\textbf{{\large #1}}
-}}[0cm]}
-
-% Interested in (ITET, MAVT, MTEC)
-\newcommand{\interestbox}[1]{\sidebox[white]{petrolblue}{\sideboxheight}{%
-\textbf{{\large #1}}
-}}
-\newcommand{\itet}{\marginnote{\interestbox{ITET}}[\dimexpr 1\sideboxheight + 2em]}
-\newcommand{\mavt}{\marginnote{\interestbox{MAVT}}[\dimexpr 2\sideboxheight + 3em]}
-\newcommand{\mtec}{\marginnote{\interestbox{MTEC}}[\dimexpr 3\sideboxheight + 4em]}
-
-% Offers (fulltime, entry, thesis)
-\newlength{\offerboxheight}
-\newlength{\offerboxoffset}
-\setlength{\offerboxheight}{30mm}
-\setlength{\offerboxoffset}{\dimexpr 4\sideboxheight + 6em}
-
-\newcommand{\offerbox}[1]{\sidebox{petrolblue!33}{\offerboxheight}{%
-% Use a tabular environment to allow newlines inside box
-\begin{tabular}{c}
-    #1
-\end{tabular}
-}}
-
-\newcommand{\fulltimeoffer}[1]{\marginnote{\offerbox{#1}}[\dimexpr 1\offerboxoffset]}
-\newcommand{\entryoffer}[1]{\marginnote{\offerbox{#1}}[\dimexpr 1\offerboxoffset + \offerboxheight + 1em]}
-\newcommand{\thesisoffer}[1]{\marginnote{\offerbox{#1}}[\dimexpr 1\offerboxoffset + 2\offerboxheight + 2em]}
-
-
-% Internal Variables
-\newcommand{\companyname}{}
-\newcommand{\companywebsite}{}
-\newcommand{\companybooth}{}
-\newcommand{\companylogo}{}
-\newcommand{\companyboxes}{}
-\newcommand{\companycontact}{}
-\newcommand{\companyemployees}{}
-\newcommand{\companyabout}{}
-\newcommand{\companyfocus}{}
-
-% Provide commands to set company info easily
-% Use gdef to prevent erasing the variables when leaving multicols environment
-\newcommand{\name}[1]{\gdef\companyname{#1}}
-\newcommand{\website}[1]{\gdef\companywebsite{#1}}
-\newcommand{\booth}[1]{\gdef\companybooth{#1}}
-\newcommand{\logo}[1]{\gdef\companylogo{#1}}
-\newcommand{\boxes}[1]{\gdef\companyboxes{#1}}
-\newcommand{\contact}[1]{\gdef\companycontact{#1}}
-\newcommand{\employees}[1]{\gdef\companyemployees{#1}}
-\newcommand{\about}[1]{\gdef\companyabout{#1}}
-\newcommand{\focus}[1]{\gdef\companyfocus{#1}}
-
-% Create a companypage
-\newcommand{\companypage}{%
-    % start on new page with new layout (less whitespace),switch to one column
-    \closeopenmulticols
-    \newgeometry{%
-        twoside,
-        top=20mm, headheight=20mm, headsep=10mm,%
-        % Bottom Margin
-        bottom=20mm, footskip=10mm,%
-        % Side Margins
-        inner=\innermargin, outer=\outermargin,%
-        marginparsep=0mm, marginparwidth=\outermargin%
-    }
-    \begin{minipage}[t][\textheight]{\textwidth}  % Keep content on one page
-        % Sidebar
-        \boothbox{\companybooth}
-        \companyboxes
-        % Company name and website
-        \textbf{\Large \textcolor{copperred}{\companyname}}\\
-        \companywebsite\\
-        % Company Info
-        \begin{minipage}[t]{0.5\textwidth}
-            \smallbreak
-            {\small \companyemployees}
-            \bigbreak
-            \textbf{Kontakt für Studierende}\\
-            \companycontact
-            \bigbreak\medbreak
-        \end{minipage}%
-        % Logo
-        % This minipage has a height to get a minimum height if the comapny info
-        % is short
-        \begin{minipage}[t][0.2\textheight]{0.5\textwidth}
-            %\vspace{0pt}
-            \vspace*{-8pt}  % This is needed to align the logo to the top of the minipage. Why?
-            \centering
-            \includegraphics[width=0.9\textwidth, height=0.2\textheight, keepaspectratio]{\companylogo}
-        \end{minipage}
-        
-        \textbf{\large \textcolor{copperred}{Über uns}}
-        \smallbreak
-        \companyabout
-        \bigbreak\medbreak
-        \textbf{\large \textcolor{copperred}{Schwerpunkte}}
-        \smallbreak
-        \companyfocus   
-    \end{minipage}
-    \restoregeometry
-    \begin{multicols}{2}
+\DeclareOption{preview}{%
+    % Preview footer
+    \fancyfoot[EC]{\framebox{VORSCHAU GERADE SEITE -- EVEN PAGE PREVIEW}}
+    \fancyfoot[OC]{\framebox{VORSCHAU UNGERADE SEITE -- ODD PAGE PREVIEW}}
 }
-
-
-%% FULL PAGE ADVERTISEMENTS
-% newgeometry is used to remove margins. Both newgeometry and restoregeometry will add a clearpage
-% We need to put everything into a minipage, because if the image is too
-% large, TeX will sometimes include a uncesseary white page otherwise
-\newcommand{\fullpagead}[1]{% image
-    \newgeometry{top=0pt, bottom=0pt, left=0pt, right=0pt}
-    \begin{minipage}{\paperwidth}
-    \includegraphics[width=\paperwidth, height=\paperheight, keepaspectratio]{#1}
-    \end{minipage}
-    \restoregeometry
-}
-
-% Companies with advertisements, make sure they are on the same double page
-% Helper to ensure even page
-\def\clearevenpage{\clearpage \ifodd\c@page
-    \hbox{}\newpage\hbox{}\newpage\fi}
-
-\newcommand{\companywithadleft}[1]{%
-    \clearevenpage
-    \fullpagead{#1}
-    \companypage
-}
-\newcommand{\companywithadright}[1]{%
-    \clearevenpage
-    \companypage
-    \fullpagead{#1}
-}
+\ProcessOptions\relax

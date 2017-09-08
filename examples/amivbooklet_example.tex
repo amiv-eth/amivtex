@@ -3,6 +3,26 @@
 % Generate random text for demo purposes
 \usepackage{blindtext}
 
+% IMPORTANT NOTE
+% The amivbooklet class uses the `multicols` package to combine the two-column
+% layout with styling elements, in particular the full-width images.
+% The environment is begun and ended automatically, so nothing needs to be done.
+%
+% Turn it off: Use the \onecolumn command
+% Turn it back on: Use the \twocolumn command
+% (The commands have been redefined to work with our mutlicol layout)
+%
+% Switch to next page and nicely balance columns:
+% \nextpage (use instead of \newpage or \clearpage)
+% \nextevenpage
+%
+% There is one caveat:
+% All sections start new multicol environments, so commands defined in one section
+% are not available in other sections.
+% Define commands in the preamble (before \begin{document}) and everything
+% will work fine.
+
+
 \begin{document}
 
 \title{KONTAKT.17 \\ FAIRGUIDE}
@@ -24,50 +44,23 @@
 
 \blindtext
 
-\clearpage
+\nextpage
 
 This page doesn't have a section title. That's possible, too!
 
 \bigbreak
-
 \blindtext
 
-\section{More Sections}
+\section{More Sections, with pictures!}
 
-\Blindtext
+\fullwidthimage{example-image-golden}
+\blindtext
 
-\name{Test GmbH}
-\website{www.test.de}
-\booth{B2}
-\logo{demo_logo.png}
-\boxes{%
-	\itet
-	\mavt
-	\mtec
-	\fulltimeoffer{Festanstellungen}
-	\entryoffer{Praktika\\Traineeprogramm}
-	\thesisoffer{Semester, Bachelor,\\Masterarbeiten}
-}
-\contact{Timo Est\\+41 41 123 31 66\\www.xing.to/T\_Est}
-\employees{120 Mitarbeiter in der Schweiz\\300 Mitarbeiter weltweit}
-\about{\blindtext}
-\focus{\blindtext}
+\nextpage
 
-\companypage
-
-\name{Other AG}
-\website{www.other.com}
-\booth{A5}
-\logo{demo_logo.png}
-\boxes{\itet\mtec\entryoffer{Praktika}}
-\contact{Elena Xample\\+41 24 123 45 67}
-\employees{60 in der Schweiz}
-\about{\blindtext}
-\focus{\blindtext}
-
-\companypage
-\companywithadleft{demo_ad.pdf}
-\companywithadright{demo_ad.pdf}
-\companypage
+\image{example-image-golden}
+\blindtext\blindtext
+\image{example-image-golden}
+\blindtext
 
 \end{document}
