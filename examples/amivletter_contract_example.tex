@@ -1,0 +1,60 @@
+\documentclass[kontakt, contract]{amivletter}
+
+% Generate random text for demo purposes
+\usepackage{blindtext}
+
+\begin{document}
+
+\begin{contract}
+\contracttitle{% Type of contract (Vertrag, Vereinbarung, ...)
+Vertrag
+}{% Superscript (can be empty)
+Wichtige Veranstaltung
+}{% Partner
+\textbf{Partner}
+\bigbreak
+Awesome Company\\
+Support Street 1\\
+Helpington, Switzerland
+}{% AMIV
+\textbf{Veranstalter}
+\bigbreak
+\amivname\\
+\amivaddress\\
+\amivpostal\ \amivcity
+}{% Präambel
+Dieser Text steht auf der ersten Seite des Vertrags.
+Die Präambel dient der Darstellung von Motiven, Absichten.
+\blindtext
+}
+
+\section{Ein Hauptpunkt}
+
+\subsection{Ein Unterpunkt}
+
+\blindtext
+
+\subsection{Noch ein Unterpunkt}
+
+\blindtext
+
+\section{Noch ein Hauptpunkt}
+
+\blindtext
+
+
+% Create a field for signatures
+\contractsignature{% AMIV signatory
+Pablito Pablone
+}{% Company as is shoud appear in the signature field
+Awesome Company
+}{% Optional: Company signatory
+% Mr Company
+}
+
+
+\end{contract}
+
+
+	
+\end{document}

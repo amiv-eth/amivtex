@@ -5,25 +5,28 @@
 \RequirePackage{scrletter}
 \RequirePackage{scrlayer}  % For footer
 \KOMAoptions{%
-	foldmarks=false,  % No folding marks
-	refline=nodate,  % Date is in location field
-	backaddress=plain,  % Don't underline back address
-	fontsize=10pt,
+    foldmarks=false,  % No folding marks
+    refline=nodate,  % Date is in location field
+    backaddress=plain,  % Don't underline back address
+    fontsize=10pt,
 }
 % Load (customized) swiss letter format
 \LoadLetterOption{SNcustom}
 
-%% TITLES
-\RequirePackage{titlesec}
 
 %% LANGUAGE (polyglossia instead of babel since we are using xetex)
+
 \RequirePackage{polyglossia}
 \setmainlanguage[variant=swiss]{german}
 
-% LOGO
+
+%% LOGO
+
 \RequirePackage{graphicx}
 
+
 %% FONT & COLORS
+
 \RequirePackage{fontspec}
 \setmainfont{DINPro}
 \setsansfont{DINPro}
@@ -34,45 +37,71 @@
 
 
 %% GENERAL AMIV INFORMATION
-\newcommand{\amivname}{AMIV an der ETH}
-\newcommand{\amivaddress}{Universitätsstrasse 6, CAB E 37}
-\newcommand{\amivpostal}{8092}
-\newcommand{\amivcity}{Zürich}
-\newcommand{\amivphone}{+41 44 632 42 45}
-\newcommand{\amivemail}{info@amiv.ethz.ch}
-\newcommand{\amivlogo}{logo.png}
 
-% Letter specific defaults (to avoid manipulation koma vars and normal commands mixed)
-\newcommand{\amivrepresentative}{Pablo}
-\newcommand{\amivrepresentativeemail}{\amivemail}
-\newcommand{\amivsignature}{Pablo}
-\newcommand{\amivsubject}{AMIV Letter}
+\newcommand*{\amivname}{AMIV an der ETH}
+\newcommand*{\amivaddress}{Universitätsstrasse 6, CAB E 37}
+\newcommand*{\amivpostal}{8092}
+\newcommand*{\amivcity}{Zürich}
+\newcommand*{\amivphone}{+41 44 632 42 45}
+\newcommand*{\amivemail}{info@amiv.ethz.ch}
+\newcommand*{\amivlogo}{logo.pdf}
 
-% Provide commands to change variables
-\newcommand{\representative}[1]{\renewcommand{\amivrepresentative}{#1}}
-\newcommand{\email}[1]{\renewcommand{\amivrepresentativeemail}{#1}}
-\newcommand{\signature}[1]{\renewcommand{\amivsignature}{#1}}
-\renewcommand{\subject}[1]{\renewcommand{\amivsubject}{#1}}  % Is it bad to overwrite \subject?
+% Provide commands to certain variables (no need to expose koma vars)
+\newcommand*{\representative}[1]{\renewcommand*{\@representative}{#1}}
+\newcommand*{\email}[1]{\renewcommand*{\@representativeemail}{#1}}
+\newcommand*{\signature}[1]{\renewcommand*{\@signature}{#1}}
+\renewcommand*{\subject}[1]{\renewcommand*{\@subject}{#1}}
 
-% Let KOMA use the previously defined commands for each letter
+% Defaults for the internal variables
+\newcommand*{\@representative}{Pablo}
+\newcommand*{\@representativeemail}{\amivemail}
+\newcommand*{\@signature}{Pablo}
+\renewcommand*{\@subject}{AMIV Letter}
+
+
+%% INFO BLOCK (the info on the top right of letter)
+
+% Completely custom
+\newcommand*{\infoblock}[1]{\renewcommand{\@locationcontent}{#1}}
+
+% AMIV info including representative
+\newcommand*{\amivinfoblock}{\renewcommand{\@locationcontent}{%
+    \locationitem{Ihre Ansprechperson}{\\ \@representative}%
+    \bigbreak\noindent
+    \locationitem{T}{\amivphone}\\
+    \locationitem{E}{\@representativeemail}
+    \bigbreak\noindent
+    \locationitem{D}{\usekomavar{date}}\\
+}}
+
+% AMIV info without representative
+\newcommand*{\genericamivinfoblock}{\renewcommand{\@locationcontent}{%
+    \vphantom{Ihre Ansprechperson\\Someone}\\
+    \bigbreak\noindent
+    \locationitem{T}{\amivphone}\\
+    \locationitem{E}{\amivemail}
+    \bigbreak\noindent
+    \locationitem{D}{\usekomavar{date}}\\
+}}
+
+% Defaults
+\newcommand*{\@locationcontent}{}
+\amivinfoblock
+
+% Helper to create formatted and colored items
+\newcommand*{\locationitem}[2] {%
+    {\color{copperred} #1}\quad #2
+}
+
+
+%% KOMA LETTER CONFIG (using the amiv vars)
+
 \setkomavar{backaddress}{%
-	\amivname\ \amivaddress\ \amivpostal\ \amivcity%
+    \amivname\ \amivaddress\ \amivpostal\ \amivcity%
 }
-\setkomavar{signature}{\amivsignature}
-\setkomavar{subject}{\amivsubject}
-
-\newcommand{\locationitem}[2] {% Helper to create formatted and colored items
-	{\color{copperred} #1}\quad #2
-}
-\newcommand{\locationcontent}{%
-	\locationitem{Ihre Ansprechperson}{\\ \amivrepresentative}
-	\bigbreak\noindent
-	\locationitem{T}{\amivphone}\\
-	\locationitem{E}{\amivrepresentativeemail}
-	\bigbreak\noindent
-	\locationitem{D}{\usekomavar{date}}\\
-}
-\setkomavar{location}{\locationcontent}
+\setkomavar{signature}{\@signature}
+\setkomavar{subject}{\@subject}
+\setkomavar{location}{\@locationcontent}
 
 % Signature left handed and with some extra space
 \renewcommand*{\raggedsignature}{\raggedright}
@@ -81,30 +110,39 @@
 % Rename of "Anlagen" field
 \setkomavar*{enclseparator}{Anlagen}
 
+
+%% HEADER AND FOOTER
+
 % Helper command to create colored Boxes of fixed Size
-\newcommand{\colorpage}[3]{% Boxcolor, Height, Content
-	\colorbox{#1}{%
-		\begin{minipage}[c][#2]{\paperwidth}
-			#3
-		\end{minipage}%
-	}%
+\newcommand*{\colorpage}[3]{% Boxcolor, Height, Content
+    \colorbox{#1}{%
+        \begin{minipage}[c][#2]{\paperwidth}
+            #3
+        \end{minipage}%
+    }%
 }
 
 \setkomavar{firsthead}{%
-	\colorpage{petrolblue}{3cm}{%
-		\hspace{1cm}\includegraphics[height=2cm]{\amivlogo}%
-	}
+    \colorpage{petrolblue}{3cm}{%
+        \hspace{1cm}\includegraphics[height=2cm]{\amivlogo}%
+    }
 }
 
 \setkomavar{firstfoot}{%
-	\colorpage{copperred}{2cm}{\makebox[\paperwidth]{%
-		\footnotesize{%
-			\amivname \quad \amivaddress \quad \amivpostal\ \amivcity \quad \amivphone \quad \amivemail
-		}}
-	}
+    \colorpage{copperred}{2cm}{\makebox[\paperwidth]{%
+        \footnotesize{%
+            \amivname \quad \amivaddress
+            \quad
+            \amivpostal\ \amivcity 
+            \quad
+            \amivphone
+            \quad 
+            \amivemail
+        }}
+    }
 }
 
-% Footer placement on subsequent sides is not straightforward,
+% Footer placement on subsequent sides is not so straightforward,
 % see https://tex.stackexchange.com/questions/196360/scrlttr2-make-second-page-footer-match-first-page-footer
 \DeclareNewLayer[
   align=tl,
@@ -119,46 +157,8 @@
 \AtBeginLetter{\pagestyle{amivfoot}}
 
 
-\iffalse
-% Blue bar with logo in head
-\setkomavar{firsthead}{%
-	\colorbar{petrolblue}{%
-		\vspace{0.5cm}
-		\hspace{1cm}
-		\includegraphics[height=2cm]{\amivlogo}%
-		\vspace{0.5cm}%
-	}
-}
-
-% Orange bar with general amiv info in foot
-\setkomavar{firstfoot}{%
-	\vspace{1.8cm}\\
-	\colorbar{copperred}{\centering
-		\vspace{0.4cm}
-		\footnotesize{%
-			\amivname \quad \amivaddress \quad \amivpostal\ \amivcity \quad \amivphone \quad \amivemail
-		}
-		\vspace{1cm} % bigger than necessary, just to definitely fill the page
-	}%
-}
-
-% Copy content for other footers
-\AtBeginLetter{\pagestyle{headings}}
-\setkomavar{nextfoot}{%
-	\vspace{1.36cm}\\  % TODO: This is bad. Should be better
-	\hspace*{-\oddsidemargin}\hspace{-1in}%
-	\colorbar{copperred}{\centering
-		\vspace{0.41cm}
-		\footnotesize{%
-			\amivname \quad \amivaddress \quad \amivpostal\ \amivcity \quad \amivphone \quad \amivemail
-		}
-		\vspace{1cm} % bigger than necessary, just to definetly fill the page
-	}%
-}
-\fi
-
 %% OPTIONS
-\DeclareOption{kontakt}{%
-	\input{kontakt.sty}
-}
+
+\DeclareOption{kontakt}{\input{kontakt.sty}}
+\DeclareOption{contract}{\input{contract.sty}}
 \ProcessOptions\relax

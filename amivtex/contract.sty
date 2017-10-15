@@ -1,0 +1,73 @@
+% A contract environment to easily draft pretty contracts AMIV style.
+
+\newenvironment{contract}{%
+% Before Contract, define commands for title and signature field
+
+\newcommand{\contracttitle}[5]{% Title, first party, second party, präambel
+\begin{center}
+##2\\
+\medbreak
+\begin{Huge}
+##1\\
+\end{Huge}
+\bigbreak
+zwischen
+\end{center}
+
+\vspace{2cm}
+
+\noindent\hspace{0.05\textwidth}
+\begin{minipage}[t]{0.3\textwidth}
+##3
+\end{minipage}%
+\begin{minipage}[t]{0.3\textwidth}
+\centering%
+und
+\end{minipage}%
+\begin{minipage}[t]{0.3\textwidth}
+##4
+\end{minipage}
+
+\vfill
+
+\section*{Präambel}
+\noindent##5
+\clearpage}
+
+\newcommand{\contractsignature}[3]{% amiv rep, company name, company rep
+\vfill\noindent
+\begin{minipage}[t]{0.45\textwidth}
+\amivcity, den \hrulefill\par
+\bigskip\noindent
+\amivname\\
+vertreten durch
+\par\vspace{4em}
+\hrulefill\par
+##1
+\end{minipage}%
+\hspace{0.1\textwidth}
+\begin{minipage}[t]{0.45\textwidth}
+\makebox[8em]{\hrulefill}\ , den \hrulefill\par
+\bigskip\noindent
+##2\\
+vertreten durch
+\par\vspace{4em}
+\hrulefill\par
+##3
+\end{minipage}
+}
+
+% Change section headings and spacing
+\renewcommand*{\thesection}{\S\ \arabic{section}}
+\RedeclareSectionCommand[beforeskip=3em, afterskip=1.5em]{section}
+
+
+% Start a letter without address and subject field
+\setkomavar{subject}{}
+\setkomavar{location}{}
+\begin{letter}[backaddress=off,addrfield=false]{}
+\opening{}
+}% Contract Content now
+{% After Contract
+\end{letter}
+}

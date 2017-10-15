@@ -11,13 +11,13 @@
 
 
 % Tables for Companies on each day
-\setlength\tabcolsep{4 pt}
+\setlength\tabcolsep{3 pt}
 \newenvironment*{companytable}[1]{%
     \subsection*{#1}
-    \begin{tabular}{@{} l p{0.75\linewidth}@{}}
+    \begin{tabular}{@{} l p{0.77\linewidth}@{}}
 }{\end{tabular}}
 \newcommand*{\entry}[2]{%
-\textbf{#1} & #2 \\[1pt]
+\textbf{#1} & #2 \\[2pt]
 }
 
 % Common format for support events
@@ -28,13 +28,23 @@
 
 
 % Little pictures for all board members
-\newcommand{\boardmember}[3]{%
-\begin{minipage}[l][0.25\textheight]{\linewidth}
-\includegraphics[width=\linewidth, height=\dimexpr0.25\textheight-1cm, keepaspectratio]{#1}\\
+
+\newcommand{\boardmembername}[2]{%
+\begin{minipage}[l][10mm]{\linewidth}
 \begin{raggedright} % This avoids breaking the names with hyphenation
-\small{\textbf{#2}}\\
+\small{\textbf{#1}}\\
 \end{raggedright}%
-\footnotesize{#3}%
+\footnotesize{#2}%
+\end{minipage}
+}
+
+\newlength\boardmemberboxheight
+\setlength\boardmemberboxheight{0.25\textheight}
+
+\newcommand{\boardmember}[3]{%
+\begin{minipage}[l][\boardmemberboxheight]{\linewidth}
+\includegraphics[width=\linewidth, height=\dimexpr\boardmemberboxheight-11mm, keepaspectratio]{#1}\\[1mm]
+\boardmembername{#2}{#3}
 \end{minipage}}
 
 
@@ -43,55 +53,67 @@
 \bigbreak\textbf{#1}\\#2
 }
 
-
 % Pages for companies
-% Use marginnotes to create boxes at the border
-% Helper command to create colored Boxes of fixed Size
-\newcommand{\rot}{\ifoddpage 90\else -90\fi}
-\newcommand{\colorpage}[5][black]{% Textcolor (optional), Boxcolor, Width, Height, Content
-    \colorbox{#2}{%
-        \begin{minipage}[c][#4]{#3}
-            \makebox[\textwidth]{\textcolor{#1}{#5}}
-        \end{minipage}%
-    }%
-}
-\newcommand{\sidebox}[4][black]{%  text color (black), box color, height, text 
-    \checkoddpage  % required for \rot to have correct value
-    \ifoddpage\hfill\fi% Odd page need filler first
-    \colorpage[#1]{#2}{6mm}{#3}{\rotatebox{\rot}{#4}}%
-    \ifoddpage\else\hfill\ \fi% Even page after box
-}
-% Booth
+
+\newlength\sideboxwidth
+\setlength\sideboxwidth{8mm}
 \newlength{\sideboxheight}
-\setlength{\sideboxheight}{16mm}
-\newcommand{\boothbox}[1]{\marginnote{\sidebox{copperred}{\sideboxheight}{%
-\textbf{{\large #1}}
-}}[0cm]}
+\setlength{\sideboxheight}{18mm}
+\newlength{\tallsideboxheight}
+\setlength{\tallsideboxheight}{30mm}
 
-% Interested in (ITET, MAVT, MTEC)
-\newcommand{\interestbox}[1]{\sidebox[white]{petrolblue}{\sideboxheight}{%
-\textbf{{\large #1}}
-}}
-\newcommand{\itet}{\marginnote{\interestbox{ITET}}[\dimexpr 1\sideboxheight + 2em]}
-\newcommand{\mavt}{\marginnote{\interestbox{MAVT}}[\dimexpr 2\sideboxheight + 3em]}
-\newcommand{\mtec}{\marginnote{\interestbox{MTEC}}[\dimexpr 3\sideboxheight + 4em]}
+% General offset from top
+\newlength{\sideboxoffset}
+\setlength{\sideboxoffset}{23mm}
 
-% Offers (fulltime, entry, thesis)
-\newlength{\offerboxheight}
+
+\newcommand{\sidebox}[4]{% height, offset, color, content
+\ifoddpage
+\fill [#3] ([xshift=-\sideboxwidth, yshift=-#2]current page.north east)
+    rectangle ([xshift=\printmargin, yshift=\dimexpr -#2-#1]current page.north east);
+\node [align=center, rotate=90]
+    at ([xshift=-0.5\sideboxwidth, yshift=\dimexpr -#2 -0.5 #1]current page.north east)
+    {#4};
+\else
+\fill [#3] ([xshift=-\printmargin, yshift=-#2]current page.north west)
+    rectangle ([xshift=\sideboxwidth, yshift=\dimexpr -#2-#1]current page.north west);
+\node [align=center, rotate=-90]
+    at ([xshift=0.5\sideboxwidth, yshift=\dimexpr -#2 -0.5 #1]current page.north west)
+    {#4};
+\fi
+}
+
+\newcommand*{\boothbox}[1]{% text
+    \sidebox{\sideboxheight}{\sideboxoffset}{copperred}{%
+        \textcolor{white}{\textbf{\large #1}}
+    }
+}
+
+\newcommand*{\interestbox}[2]{% text, additional offset
+    \sidebox{\sideboxheight}{\dimexpr \sideboxoffset + #2}{petrolblue}{%
+        \textcolor{white}{\textbf{\large #1}}
+    }
+}
+
+\newcommand*{\itet}{\interestbox{ITET}{\dimexpr 2\sideboxheight + 1.5em}}
+\newcommand*{\mavt}{\interestbox{MAVT}{\dimexpr 3\sideboxheight + 2em}}
+\newcommand*{\mtec}{\interestbox{MTEC}{\dimexpr 4\sideboxheight + 2.5em}}
+
 \newlength{\offerboxoffset}
-\setlength{\offerboxheight}{30mm}
-\setlength{\offerboxoffset}{\dimexpr 4\sideboxheight + 6em}
+\setlength{\offerboxoffset}{\dimexpr\sideboxoffset+4\sideboxheight + \tallsideboxheight + 4em}
 
-\newcommand{\offerbox}[1]{\sidebox{petrolblue!33}{\offerboxheight}{%
+\newcommand*{\offerbox}[2]{%
+    \sidebox{\tallsideboxheight}{\dimexpr\offerboxoffset+#2}{petrolblue!33}{%
 % Use a tabular environment to allow newlines inside box
-\begin{tabular}{c}
+%\begin{tabular}{c}
     #1
-\end{tabular}
+%\end{tabular}
 }}
 
-\newcommand{\fulltimeoffer}[1]{\marginnote{\offerbox{#1}}[\dimexpr 1\offerboxoffset]}
-\newcommand{\entryoffer}[1]{\marginnote{\offerbox{#1}}[\dimexpr 1\offerboxoffset + \offerboxheight + 1em]}
-\newcommand{\thesisoffer}[1]{\marginnote{\offerbox{#1}}[\dimexpr 1\offerboxoffset + 2\offerboxheight + 2em]}
+\newcommand*{\fulltimeoffer}[1]{\offerbox{#1}{0mm}}
+\newcommand*{\entryoffer}[1]{\offerbox{#1}{\dimexpr\tallsideboxheight + 0.5em}}
+\newcommand*{\thesisoffer}[1]{\offerbox{#1}{\dimexpr 2\tallsideboxheight + 1em}}
+
 
 % Helper Commands to create content for companypages
 \newcommand{\about}[1]{%
@@ -122,9 +144,11 @@
 % Create a companypage
 \newcommand{\companypage}[5]{% Title, Logo, Info, Text, Boxes
     % TODO: Solve boxes without hacking them into section, e.g. using tikz
-    \section*{{\normalfont\normalsize #5}#1}
+    \section*{{\normalfont\normalsize}#1}
     \begin{minipage}[t][\textheight]{\textwidth}  % Keep content on one page
+        % TikZ Image for boxes
         \vspace{-9mm}  % Remove some whitespace to allow more content
+        \checkoddpage
         \begin{minipage}[t]{0.5\dimexpr\textwidth-\columnsep}
             #3%
             \bigbreak
@@ -139,18 +163,25 @@
             \includegraphics[width=0.9\textwidth, height=0.2\textheight, keepaspectratio]{#2}
         \end{minipage}
         #4   
+        \begin{tikzpicture}[remember picture, overlay]
+            #5
+        \end{tikzpicture}
     \end{minipage}
 }
 
 
 % fullpage advertisements (using TikZ to fill full page without complications)
+\newcommand{\printadshift}{\ifoddpage \printmargin \else -\printmargin \fi}
 \newcommand{\fullpagead}[1]{% image
     \nextpage
     \thispagestyle{empty}
+    \checkoddpage
     \begin{tikzpicture}[overlay, remember picture]
-    \node at (current page.center) {%
+    \node at ([xshift=\ifoddpage 0.5\printmargin \else -0.5\printmargin \fi]current page.center) {%
         \includegraphics
-            [height=\paperheight, width=\paperwidth, keepaspectratio]
+            [height=\dimexpr\paperheight+1.41\printmargin, 
+            width=\dimexpr\paperwidth+\printmargin,
+            keepaspectratio]
             {#1}
     };
     \end{tikzpicture}
@@ -161,9 +192,33 @@
 \newcommand*{\makelastpage}[1]{
 \thispagestyle{empty}
 \begin{tikzpicture}[remember picture, overlay]
-\fill [petrolblue] (current page.north west)
-    rectangle ([yshift=-\titletopbar]current page.north east);
+\fill [petrolblue] ([xshift=-\printmargin, yshift=\printmargin]current page.north west)
+    rectangle ([xshift=\printmargin, yshift=-\titletopbar]current page.north east);
 \node [inner sep=0pt, anchor=south] at ([yshift=\titlebottombar]current page.south)
     {\includegraphics[height=\dimexpr \paperheight-\titletopbar-\titlebottombar]{#1}};
+\node [inner sep=0pt, anchor=south east]
+    at ([xshift=-5mm, yshift=5mm]current page.south east)
+    {\includegraphics[height=\dimexpr \titlebottombar - 10mm]{logo_kontakt.pdf}};
 \end{tikzpicture}
+}
+
+\newcommand*{\notepage}{%
+\hrulefill\bigbreak
+\hrulefill\bigbreak
+\hrulefill\bigbreak
+\hrulefill\bigbreak
+\hrulefill\bigbreak
+\hrulefill\bigbreak
+\hrulefill\bigbreak
+\hrulefill\bigbreak
+\hrulefill\bigbreak
+\hrulefill\bigbreak
+\hrulefill\bigbreak
+\hrulefill\bigbreak
+\hrulefill\bigbreak
+\hrulefill\bigbreak
+\hrulefill\bigbreak
+\hrulefill\bigbreak
+\hrulefill\bigbreak
+\hrulefill\bigbreak
 }

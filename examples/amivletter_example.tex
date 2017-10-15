@@ -1,18 +1,52 @@
 \documentclass{amivletter}
-%\documentclass[kontakt]{amivletter}
+% You can use the following options:
+% kontakt -- use the kontakt logos and addresses
+% contract -- utilities to create contracts (see other example!)
 
 % Generate random text for demo purposes
 \usepackage{blindtext}
 
 \begin{document}
 
-% Required Variables
+% Letter Variables
 \subject{\LaTeX\ Brief ist da, Feedback erwünscht!}
 \representative{Alexander Dietmüller}
 \signature{Alexander}
 
 % Optional: Custom email for representative
-\email{alex@amiv.ethz.ch} % Reset to default: \email{\amivemail}
+\email{alex@amiv.ethz.ch}  % Reset to default: \email{\amivemail}
+
+% Begin the letter environment with the address
+\begin{letter}{%
+    Hr. Test\\
+    Teststrasse\\
+    1234 Teststadt\\
+    Testanien%
+}
+
+% Every letter must start with an opening
+\opening{Hallo zusammen,}
+
+\Blindtext
+
+% Optional: Closing and/or Enclosed
+\closing{Liebe Grüsse}
+
+\encl{%
+    Garnichts\\
+    Noch weniger
+}
+
+\end{letter}
+
+
+% Multiple Letters per Document work as well!
+
+% Optional: Use an info block without representative
+\genericamivinfoblock  % Reset to default: \amivinfoblock
+
+% You dont need a subject
+\subject{}
 
 \begin{letter}{%
     Hr. Test\\
@@ -21,16 +55,10 @@
     Testanien%
 }
 
-\opening{Hallo zusammen,}
+% Opening be empty, but you need the command!
+\opening{}
 
-\Blindtext
-
-\closing{Liebe Grüsse}
-
-\encl{%
-    Garnichts\\
-    Noch weniger
-}
+\blindtext
 
 \end{letter}
 

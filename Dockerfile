@@ -33,7 +33,6 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
         titlesec \
         extsizes \
         changepage \
-        marginnote \
         ms \
         blindtext \
         hyperref \

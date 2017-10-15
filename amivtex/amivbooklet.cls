@@ -2,7 +2,9 @@
 
 \LoadClass[9pt]{extarticle}
 
+
 %% LANGUAGE (polyglossia instead of babel since we are using xetex)
+
 \RequirePackage{polyglossia}
 \setmainlanguage[variant=swiss]{german}
 \setotherlanguage{english}
@@ -12,9 +14,15 @@
 \setlength\emergencystretch{3em}\hbadness=10000
 
 
+%% FOR PRITING
+
+% Define margin that can be cutoff
+\newlength\printmargin
+\setlength\printmargin{2mm}
 
 
 %% FONT AND COLORS
+
 \RequirePackage{xcolor}
 \definecolor{copperred}{rgb}{0.910, 0.275, 0.169}
 \definecolor{petrolblue}{rgb}{0.122, 0.176, 0.329}
@@ -28,50 +36,8 @@
 \setlength{\parindent}{0pt}
 
 
-%% GRAPHICS AND IMAGES
-\RequirePackage{graphicx}
-\usepackage{tikz}
-
-\newcommand*{\fullwidthimage}[1]{%
-\end{multicols}
-% Wrap image in box so it can overflow to the page border
-\makebox[\textwidth]{
-    \includegraphics[height=10cm]{#1}
-}
-\vspace{-5mm}  % Adjust whitespace below picture
-\iftwocolumn\begin{multicols}{2}\fi
-}
-
-
-% Check if odd or even page to find correct left and right margins
-\newcommand{\leftimagemargin}{%
-    \innermargin%\checkoddpage\ifoddpage\innermargin\else\outermargin\fi
-}
-\newcommand{\rightimagemargin}{%
-    \outermargin%\checkoddpage\ifoddpage\outermargin\else\innermargin\fi    
-}
-
-\newcommand{\image}[1]{%
-% The image is placed inline, not as a float -- therefore we have to use \par
-% to end the current paragraph and again to start a new one after the image.
-% Otherwise we get inconsistent newlines and unwanted spacing
-\par\vspace{0.5\columnsep}
-\docolaction{%
-    % Left col
-    \hspace{-\leftimagemargin}%
-    \includegraphics[width=\dimexpr\linewidth+\leftimagemargin]{#1}%
-}{%
-    % Middle col (not possible in layout, but for completeness)
-    \includegraphics[width=\linewidth]{#1}%
-}{%
-    % Right col    
-    \includegraphics[width=\dimexpr\linewidth+\rightimagemargin]{#1}%
-}%
-\vspace{0.5\columnsep}\par
-}
-
-
 %% PAGELAYOUT
+
 \newlength{\innermargin}
 \setlength{\innermargin}{9mm}
 \newlength{\outermargin}
@@ -91,9 +57,57 @@ marginparsep=0mm, marginparwidth=\outermargin%
 \RequirePackage{changepage}
 
 
+%% GRAPHICS AND IMAGES
+
+% Including print margins
+\RequirePackage{graphicx}
+\usepackage{tikz}
+
+
+% Check if odd or even page to find correct left and right margins
+\newcommand{\leftimagemargin}{%
+    \ifoddpage\innermargin\else\outermargin\fi
+}
+\newcommand{\rightimagemargin}{%
+    \ifoddpage\outermargin\else\innermargin\fi    
+}
+
+\newcommand*{\fullwidthimage}[1]{%
+\end{multicols}
+% Pack everything into a box and shift it s.t. it reaches the page border
+\checkoddpage\hspace{-\leftimagemargin}%
+% Print Margin: Shift needed on even pages
+\ifoddpage\else\hspace{-\printmargin}\fi%
+\makebox[\dimexpr\paperwidth+\printmargin]{
+    \includegraphics[width=\dimexpr\paperwidth+\printmargin]{#1}
+}
+\vspace{-5mm}  % Adjust whitespace below picture
+\iftwocolumn\begin{multicols}{2}\fi
+}
+
+\newcommand{\image}[1]{%
+% The image is placed inline, not as a float -- therefore we have to use \par
+% to end the current paragraph and again to start a new one after the image.
+% Otherwise we get inconsistent newlines and unwanted spacing
+\par\vspace{0.5\columnsep}
+\checkoddpage
+\docolaction{%
+    % Left col
+    \hspace{\dimexpr-\leftimagemargin-\printmargin}%
+    \includegraphics[width=\dimexpr\linewidth+\leftimagemargin+\printmargin]{#1}%
+}{%
+    % Middle col (not possible in layout, but for completeness)
+    \includegraphics[width=\linewidth]{#1}%
+}{%
+    % Right col    
+    \includegraphics[width=\dimexpr\linewidth+\rightimagemargin+\printmargin]{#1}%
+}%
+\vspace{0.5\columnsep}\par
+}
 
 
 %% TITLE PAGE
+
 % Lengths for the title layout
 \newlength{\titletopbar}\setlength{\titletopbar}{42mm}
 \newlength{\titlebottombar}\setlength{\titlebottombar}{20mm}
@@ -112,9 +126,10 @@ marginparsep=0mm, marginparwidth=\outermargin%
 \node [inner sep=0pt, anchor=south] at ([yshift=\titlebottombar]current page.south)
     {\includegraphics[height=\dimexpr \paperheight-\titletopbar-\titlebottombar]
      {\@titleimage}};
-% Blue bar on top
-\fill [petrolblue] (current page.north west)
-    rectangle ([yshift=-\titletopbar]current page.north east);
+% Blue bar on top, including print margins
+\fill [petrolblue] 
+    ([xshift=-\printmargin, yshift=\printmargin]current page.north west)
+    rectangle ([xshift=\printmargin, yshift=-\titletopbar]current page.north east);
 % Top and Bottom Text
 \node [anchor=east, align=right, text=white, font=\fontsize{21}{28}\selectfont,
        text width=0.5\paperwidth]
@@ -136,8 +151,6 @@ marginparsep=0mm, marginparwidth=\outermargin%
 }
 
 
-
-
 %% HEADER AND FOOTER
 
 \RequirePackage{fancyhdr}
@@ -145,16 +158,16 @@ marginparsep=0mm, marginparwidth=\outermargin%
 \fancyhf{}
 \renewcommand{\headrulewidth}{0pt}
 \fancyhead[C]{\begin{tikzpicture}[remember picture, overlay]
-    \fill [petrolblue] (current page.north west)
-        rectangle ([yshift=-10mm]current page.north east);
+    % Blue bar with print margin
+    \fill [petrolblue] ([xshift=-\printmargin, yshift=\printmargin]current page.north west)
+        rectangle ([xshift=\printmargin, yshift=-10mm]current page.north east);
     \end{tikzpicture}
 }
 \fancyfoot[EL, OR]{\textcolor{copperred}{\thepage}}
 
 
-
-
 %% MULTICOLUMN LAYOUT
+
 % We need multicol instead of the default twocolumn layout since
 % we can't implement layout elements like the fullwidthimage.
 % We want to make it invisble TODO
@@ -202,9 +215,8 @@ marginparsep=0mm, marginparwidth=\outermargin%
 }
 
 
-
-
 %% SECTIONS
+
 % Adjust spacing for subsubsections
 % TODO: Not quite working yet, all space above is removed regardless of setting
 \RequirePackage{titlesec}  % Important: Load this before section re-definitions
@@ -246,16 +258,14 @@ marginparsep=0mm, marginparwidth=\outermargin%
 }
 
 
+%% ADDITIONAL PACKAGES
 
-
-%% ADDITIONAL PACKAGES AND OPTIONS
 % email
 \RequirePackage{hyperref}
 
-% Marginnote, required for kontakt options
-\RequirePackage{marginnote}
 
 %% OPTIONS
+
 \DeclareOption{kontakt}{%
     \input{kontaktbooklet.sty}
 }
