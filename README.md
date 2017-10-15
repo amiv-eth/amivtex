@@ -4,6 +4,22 @@ Tex templates for the AMIV CI
 Two document classes are provided: `amivletter` and `amivbooklet` -- and they
 are easy to use, take a look in the examples folder to see all available commands and how to use them.
 
+## Quick Usage
+
+If you only need to edit or create a single document quickly, this is what you need to do:
+
+1. [Download all amivtex files](https://github.com/NotSpecial/amivtex/archive/master.zip)
+2. Choose:
+    - Copy your document into the `amivtex` subfolder
+      (put it right next to the `.sty` files!)
+    - Pick the example that fits your intentions best
+      and copy it to the `amivtex` folder (again, right next to the `.sty` files)
+3. In your editor, set the engine from `LaTex` (or whatever is activated) to `XeLaTex`
+   (otherwise we can't use the *DIN Pro* font)
+4. Make sure you have the *DIN Pro* Font installed (see *Installation* for quick download links)
+
+All done, you can now edit and compile your document!
+
 ## Installation
 
 ### Prerequisites: Fonts & XeLaTex
