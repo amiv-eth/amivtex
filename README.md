@@ -11,7 +11,7 @@ If you only need to edit or create a single document quickly, this is what you n
 1. [Download all amivtex files](https://github.com/NotSpecial/amivtex/archive/master.zip)
 2. Choose:
     - Copy your document into the `amivtex` subfolder
-      (put it right next to the `.sty` files!)
+      (put it right next to the `.sty` and `.cls`files!)
     - Pick the example that fits your intentions best
       and copy it to the `amivtex` folder (again, right next to the `.sty` files)
 3. In your editor, set the engine from `LaTex` (or whatever is activated) to `XeLaTex`
