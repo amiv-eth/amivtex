@@ -14,6 +14,9 @@
 \LoadLetterOption{SNcustom}
 
 
+% For Kontakt contract titles
+\RequirePackage{titlesec}
+
 %% LANGUAGE (polyglossia instead of babel since we are using xetex)
 
 \RequirePackage{polyglossia}
