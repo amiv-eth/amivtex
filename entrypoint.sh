@@ -5,7 +5,7 @@
 # started, check the README for the different ways to provide the fonts.
 
 FONT_NAME="Din Pro"
-FONT_DIR=/usr/share/fonts
+FONT_DIR=~/.local/share/fonts
 DEFAULT_URL_FILE=/run/secrets/font_url  # Default docker secret mount point
 
 function error() {
