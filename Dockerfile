@@ -1,10 +1,10 @@
-FROM python:3.6-slim
+FROM python:3.6-slim-jessie
 
 COPY ./texlive.profile /tmp/install-tl-unx/texlive.profile
 COPY ./amivtex /usr/local/texlive/texmf-local/tex/latex/amivtex
 
 # Add texlive directory to the path
-ENV PATH /usr/local/texlive/2017/bin/x86_64-linux:$PATH
+ENV PATH /usr/local/texlive/2018/bin/x86_64-linux:$PATH
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
 		perl \
@@ -36,6 +36,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
         ms \
         blindtext \
         hyperref \
+        zapfding \
         etoolbox \
     && \
     # Cleanup
