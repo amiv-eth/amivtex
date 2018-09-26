@@ -19,6 +19,8 @@
 \newcommand{\companycity}{}
 \newcommand{\companycountry}{}
 \newcommand{\companyboothchoice}{}
+\newcommand{\companyboothprice}{}
+\newcommand{\companyboothinfo}{}
 \newcommand{\companydatechoice}{}
 \newcommand{\companyextrachoice}{}
 
@@ -29,64 +31,185 @@
 \newcommand{\city}[1]{\renewcommand{\companycity}{#1}}
 \newcommand{\country}[1]{\renewcommand{\companycountry}{#1}}
 \newcommand{\boothchoice}[1]{\renewcommand{\companyboothchoice}{#1}}
+\newcommand{\boothprice}[1]{\renewcommand{\companyboothprice}{#1}}
+\newcommand{\boothinfo}[1]{\renewcommand{\companyboothinfo}{#1}}
 \newcommand{\datechoice}[1]{\renewcommand{\companydatechoice}{#1}}
 \newcommand{\extrachoice}[1]{\renewcommand{\companyextrachoice}{#1}}
 
+% Set dates
+% year, month, day
+\newcommand{\oneday}[3]{
+\ifgerman{Teilnahme}{Participation}\ \DayName{#1}{#2}{#3}, #3.#2.#1
+}
+% year, month, day1, day2
+\newcommand{\twodays}[4]{
+\ifgerman{Teilnahme}{Participation}\ \DayName{#1}{#2}{#3}, #3.#2.#1
+\ifgerman{und}{and}\ \DayName{#1}{#2}{#4}, #4.#2.#1
+}
+
+
 % Booth descriptions and info, command format: \sizeKATnumberofdays
 % Exceptions startup, they have no category
+
 % Small booths
-\newcommand{\smallAone}{Kleiner Stand, Kategorie A, ein Messetag}
-\newcommand{\smallAtwo}{Kleiner Stand, Kategorie A, zwei Messetage}
-\newcommand{\smallBone}{Kleiner Stand, Kategorie B, ein Messetag}
-\newcommand{\smallBtwo}{Kleiner Stand, Kategorie B, zwei Messetage}
-% big booths,
-\newcommand{\bigAone}{Grosser Stand, Kategorie A, ein Messetag}
-\newcommand{\bigAtwo}{Grosser Stand, Kategorie A, zwei Messetage}
-\newcommand{\bigBone}{Grosser Stand, Kategorie B, ein Messetag}
-\newcommand{\bigBtwo}{Grosser Stand, Kategorie B, zwei Messetage}
+\newcommand{\smallAone}{\boothinfo{\smallboothinfo}\ifgerman{%
+Kleiner Stand, Kategorie A, ein Messetag
+}{%
+Small Booth, Category A, Single Day
+}}
+\newcommand{\smallAtwo}{\boothinfo{\smallboothinfo}\ifgerman{%
+Kleiner Stand, Kategorie A, zwei Messetage
+}{%
+Small Booth, Category A, Two Days
+}}
+
+\newcommand{\smallBone}{\boothinfo{\smallboothinfo}\ifgerman{%
+Kleiner Stand, Kategorie B, ein Messetag
+}{%
+Small Booth, Category B, Single Day
+}}
+\newcommand{\smallBtwo}{\boothinfo{\smallboothinfo}\ifgerman{%
+Kleiner Stand, Kategorie B, zwei Messetage
+}{%
+Small Booth, Category B, Two Days
+}}
+
+
+% big booths
+
+\newcommand{\bigAone}{\boothinfo{\bigboothinfo}\ifgerman{%
+Grosser Stand, Kategorie A, ein Messetag
+}{%
+Big Booth, Category A, Single Day
+}}
+\newcommand{\bigAtwo}{\boothinfo{\bigboothinfo}\ifgerman{%
+Grosser Stand, Kategorie A, zwei Messetage
+}{%
+Big Booth, Category A, Two Days
+}}
+
+\newcommand{\bigBone}{\boothinfo{\bigboothinfo}\ifgerman{%
+Grosser Stand, Kategorie B, ein Messetag
+}{%
+Big Booth, Category B, Single Day
+}}
+\newcommand{\bigBtwo}{\boothinfo{\bigboothinfo}\ifgerman{%
+Grosser Stand, Kategorie B, zwei Messetage
+}{%
+Big Booth, Category B, Two Days
+}}
+
+
 % startups
-\newcommand{\startupone}{Startup-Stand, ein Messetag}
-\newcommand{\startuptwo}{Startup-Stand, zwei Messetage}
 
-\newcommand{\bigboothinfo}{%
-	\begin{enumerate}
-		\item Abmessungen Standplatz: 500cm x 220cm
-		\item Zwei Tische oder ein Tisch und zwei Stehtische oder vier Stehtische
-		\item Zwei Stellwände (je 120cm x 180 cm)
-	\end{enumerate}
+\newcommand{\startupone}{\ifgerman{%
+Startup-Stand, ein Messetag
+}{%
+Startup Booth, Single Day
+}}
+\newcommand{\startuptwo}{\ifgerman{%
+Startup-Stand, zwei Messetage
+}{%
+Startup Booth, Two Days
+}
+\boothinfo{}  % No extra info needed
 }
 
-\newcommand{\smallboothinfo}{%
-	\begin{enumerate}
-		\item Abmessungen Standplatz: 250cm x 220cm
-		\item Ein Tisch oder zwei Stehtische
-		\item Eine Stellwand (120cm x 180 cm)
-	\end{enumerate}
-}
 
-\newcommand{\mediainfo}{{%
-	\footnotesize Inserat im Messeführer (A5, farbig)\\
-	Ein frei gestaltbarer Facebook Post Ihrer Firma
-	auf der Kontakt Facebook-Seite
+% Detailed information
+
+\newcommand{\bigboothinfo}{\ifgerman{%
+\bigbreak\noindent
+Standinformationen:
+\begin{enumerate}
+	\item Abmessungen Standplatz: 500cm x 220cm
+	\item Zwei Tische oder ein Tisch und zwei Stehtische oder vier Stehtische
+	\item Zwei Stellwände (je 120cm x 180 cm)
+\end{enumerate}
+\bigbreak\noindent
+Der Aussteller kann einen eigenen
+Projektständer sowie anstelle der Stellwand ein
+eigenes Banner aufstellen, dieses darf jedoch
+die Masse des gebuchten Standes nicht
+überschreiten.
+}{%
+\bigbreak\noindent
+Additional information:
+\begin{enumerate}
+	\item Booth Size: 500cm x 220cm
+	\item Two normal tables, one table and two bar tables, or four bar tables
+	\item Two movable walls (each 120cm x 180 cm)
+\end{enumerate}
+\bigbreak\noindent
+The exhibitor may bring additional banners to use in replacement of the
+partitioning wall, as long as the booth's size is respected.
 }}
 
-\newcommand{\businessinfo}{{%
-	\footnotesize Erwähnung als Partner auf der Startseite der Kontakt-Website\\
-	Ganzjähriges Firmenprofil auf der Kontakt-Website\\
-	Ganzseitiges Inserat in der Studentenzeitschrift des AMIV (Blitz) vor der Messe
+\newcommand{\smallboothinfo}{ifgerman{%
+\bigbreak\noindent
+Standinformationen:
+\begin{enumerate}
+	\item Abmessungen Standplatz: 250cm x 220cm
+	\item Ein Tisch oder zwei Stehtische
+	\item Eine Stellwand (120cm x 180 cm)
+\end{enumerate}
+\bigbreak\noindent
+Der Aussteller kann einen eigenen
+Projektständer sowie anstelle der Stellwand ein
+eigenes Banner aufstellen, dieses darf jedoch
+die Masse des gebuchten Standes nicht
+überschreiten.
+}{%
+\bigbreak\noindent
+Additional information:
+\begin{enumerate}
+	\item Booth Size: 250cm x 220cm
+	\item One normal tables, or two bar tables
+	\item One movable wall (120cm x 180 cm)
+\end{enumerate}
+\bigbreak\noindent
+The exhibitor may bring additional banners to use in replacement of the
+partitioning wall, as long as the booth's size is respected.
 }}
 
-\newcommand{\firstinfo}{{%
-	\footnotesize Erwähnung als Partner auf der Startseite der Kontakt-Website\\
-	Ganzjähriges Firmenprofil auf der Kontakt-Website\\
-	Ganzseitiges Inserat in der Studentenzeitschrift des AMIV (Blitz) vor der Messe\\
-	Frei wählbarer Standplatz\\
-	Ihr Firmenlogo erscheint prominent auf allen Werbeplakaten
-}}
+\newcommand{\mediainfo}{{\footnotesize\ifgerman{%
+Inserat im Messeführer (A5, farbig)\\
+Ein frei gestaltbarer Facebook Post Ihrer Firma
+auf der Kontakt Facebook-Seite
+}{%
+Advertisement in the fair guide (A5, color)\\
+A freely designable Facebook post of your company on the Kontakt Facebook page
+}}}
+
+\newcommand{\businessinfo}{{\footnotesize\ifgerman{%
+Erwähnung als Partner auf der Startseite der Kontakt-Website\\
+Ganzjähriges Firmenprofil auf der Kontakt-Website\\
+Ganzseitiges Inserat in der Studentenzeitschrift des AMIV (Blitz) vor der Messe
+}{%
+Mention as a partner on the landing page of the Kontakt website \\
+Yearlong company profile on the Kontakt website \\
+Full page advertisement in the student magazine of AMIV (Blitz) before the fair
+}}}
+
+\newcommand{\firstinfo}{{\footnotesize\ifgerman{%
+Erwähnung als Partner auf der Startseite der Kontakt-Website\\
+Ganzjähriges Firmenprofil auf der Kontakt-Website\\
+Ganzseitiges Inserat in der Studentenzeitschrift des AMIV (Blitz) vor der Messe\\
+Frei wählbarer Standplatz\\
+Ihr Firmenlogo erscheint prominent auf allen Werbeplakaten
+}{%
+Mention as a partner on the landing page of the Kontakt website \\
+Yearlong company profile on the Kontakt website \\
+Full page advertisement in the student magazine of AMIV (Blitz) before the fair\\
+Freely selectable booth\\
+Your company logo will appear prominently on all advertising posters
+}}}
 
 % Helper to create cover letter
 \newcommand{\makecoverletter}{%
-	\setkomavar{subject}{Vertrag zur \amivfairtitle}
+	\setkomavar{subject}{%
+		\ifgerman{Vertrag zur \amivfairtitle}{\amivfairtitle\ Contract}
+	}
 	\setkomavar{signature}{\@signature}
 	\setkomavar{location}{\@locationcontent}
 
@@ -98,6 +221,7 @@
 		\companycity\\
 		\companycountry
 	}
+		\ifgerman{%
 
 		\opening{Sehr geehrte Damen und Herren,}
 
@@ -109,8 +233,24 @@
 		Bei allen Anliegen oder Fragen stehen wir Ihnen gerne zur Verfügung.
 		\medbreak
 		\closing{Mit freundlichen Grüssen}
-		\encl{Standvertrag in doppelter Ausführung}%\\
-			  %Information zur AMIV Kontakt.17}
+		\encl{Standvertrag in doppelter Ausführung}
+
+		}{%
+
+		\opening{Dear Sir or Madam,}
+
+		we are pleased that \companyname\ will participate in this year's
+		Kontakt.
+		\medbreak\noindent
+		Please find attached the booth contract in duplicate.
+		We ask you to return a signed version to us.
+		\medbreak\noindent
+		For all concerns or questions we are at your disposal.
+		\medbreak
+		\closing{Yours sincerely}
+		\encl{Booth contract in duplicate}
+
+		}
 
 	% Kontakt.17 Info Letter
 	% \newpage
@@ -167,6 +307,10 @@
 	\setkomavar{location}{}
 	\begin{letter}[backaddress=off,addrfield=false]{}
 		\opening{}
-		\input{kontakt_contract_text.tex}
+		\ifgerman{%
+			\input{kontakt_contract_text.tex}
+		}{%
+			\input{kontakt_contract_text_en.tex}
+		}
 	\end{letter}
 }%

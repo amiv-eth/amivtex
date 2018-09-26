@@ -5,6 +5,8 @@
 \fairtitle{AMIV Kontakt.17}
 \kontaktpresident{Don Pablo}
 
+%\usepackage{datetime2}
+%\setkomavar{date}{\formatdate{\day}{\month}{\year}}
 \begin{document}
 
 % Signature on Cover Letter
@@ -32,24 +34,20 @@
     %\bigBtwo
     %\startupone
     %\startuptwo
-    \hfill
-    % Enter the price
-    2200 CHF
-    % Uncomment the lines below if you need booth info (either small or big)
-    \bigbreak
-    \noindent Standinformationen:
-    %\smallboothinfo
-    \bigboothinfo
-    \bigbreak
-    \noindent Der Aussteller kann einen eigenen 
-    Projektständer sowie anstelle der Stellwand ein 
-    eigenes Banner aufstellen, dieses darf jedoch 
-    die Masse des gebuchten Standes nicht 
-    überschreiten.
 }
 
-\datechoice{%
-    Teilnahme Dienstag, 18.10.2016
+\boothprice{
+    % Enter the price
+    2200 CHF
+}
+
+
+\datechoice{
+    % year, month, day
+    \oneday{2016}{10}{18}
+    
+    % year, month, day1, day2
+    %\twodays{2016}{10}{18}{19}
 }
 
 \extrachoice{%
@@ -74,5 +72,12 @@
 % Next the contract (in duplicate if needed)
 \makecontract
 \makecontract
+
+% Also available in english!
+\begin{english}
+\makecoverletter
+\makecontract
+\makecontract
+\end{english}
 
 \end{document}

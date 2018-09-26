@@ -3,6 +3,7 @@
 % Base is the KOMA-script class scrartcl and the scrletter package
 \LoadClass{scrartcl}
 \RequirePackage{scrletter}
+\RequirePackage{scrdate}
 \RequirePackage{scrlayer}  % For footer
 \KOMAoptions{%
     foldmarks=false,  % No folding marks
@@ -21,7 +22,11 @@
 
 \RequirePackage{polyglossia}
 \setmainlanguage[variant=swiss]{german}
+\setotherlanguage{english}
 
+% Allow commands to react to current language
+\RequirePackage{iflang}
+\newcommand{\ifgerman}[2]{\IfLanguageName{german}{#1}{#2}}
 
 %% LOGO
 
@@ -69,7 +74,7 @@
 
 % AMIV info including representative
 \newcommand*{\amivinfoblock}{\renewcommand{\@locationcontent}{%
-    \locationitem{Ihre Ansprechperson}{\\ \@representative}%
+    \locationitem{\ifgerman{Ihre Ansprechperson}{Your representative}}{\\ \@representative}%
     \bigbreak\noindent
     \locationitem{T}{\amivphone}\\
     \locationitem{E}{\@representativeemail}
@@ -110,8 +115,16 @@
 \renewcommand*{\raggedsignature}{\raggedright}
 \@setplength{sigbeforevskip}{1.5cm}
 
-% Rename of "Anlagen" field
+% Rename of "Anlagen" field depending on language
+\let\oldencl\encl  % save original command for patching
+\renewcommand{\encl}[1]{
+\ifgerman{%
 \setkomavar*{enclseparator}{Anlagen}
+}{%
+\setkomavar*{enclseparator}{Attachments}
+}
+\oldencl{#1}
+}
 
 
 %% HEADER AND FOOTER
@@ -136,10 +149,10 @@
         \footnotesize{%
             \amivname \quad \amivaddress
             \quad
-            \amivpostal\ \amivcity 
+            \amivpostal\ \amivcity
             \quad
             \amivphone
-            \quad 
+            \quad
             \amivemail
         }}
     }

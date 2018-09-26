@@ -4,7 +4,7 @@ COPY ./texlive.profile /tmp/install-tl-unx/texlive.profile
 COPY ./amivtex /usr/local/texlive/texmf-local/tex/latex/amivtex
 
 # Add texlive directory to the path
-ENV PATH /usr/local/texlive/2018/bin/x86_64-linux:$PATH
+ENV PATH /usr/local/texlive/bin/x86_64-linux:$PATH
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
 		perl \
@@ -38,6 +38,8 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
         hyperref \
         zapfding \
         etoolbox \
+        # required for iflang
+        oberdiek \
     && \
     # Cleanup
     rm -rf /tmp/install-tl-unx && \

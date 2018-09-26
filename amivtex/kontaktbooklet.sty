@@ -83,8 +83,9 @@
 \fi
 }
 
-\newcommand*{\boothbox}[1]{% text
+\newcommand*{\boothbox}[2]{% booth, date
     \sidebox{\sideboxheight}{\sideboxoffset}{copperred}{%
+        \textcolor{white}{#2}\\
         \textcolor{white}{\textbf{\large #1}}
     }
 }
@@ -162,7 +163,7 @@
             \centering
             \includegraphics[width=0.9\textwidth, height=0.2\textheight, keepaspectratio]{#2}
         \end{minipage}
-        #4   
+        #4
         \begin{tikzpicture}[remember picture, overlay]
             #5
         \end{tikzpicture}
@@ -179,7 +180,7 @@
     \begin{tikzpicture}[overlay, remember picture]
     \node at ([xshift=\ifoddpage 0.5\printmargin \else -0.5\printmargin \fi]current page.center) {%
         \includegraphics
-            [height=\dimexpr\paperheight+1.41\printmargin, 
+            [height=\dimexpr\paperheight+1.41\printmargin,
             width=\dimexpr\paperwidth+\printmargin,
             keepaspectratio]
             {#1}
