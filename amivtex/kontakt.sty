@@ -100,6 +100,31 @@ Big Booth, Category B, Two Days
 }}
 
 
+% Generic commands
+
+\newcommand{\smallone}[1]{\boothinfo{\smallboothinfo}\ifgerman{%
+        Kleiner Stand, Kategorie #1, ein Messetag
+    }{%
+        Small Booth, Category #1, Single Day
+}}
+\newcommand{\smalltwo}[1]{\boothinfo{\smallboothinfo}\ifgerman{%
+        Kleiner Stand, Kategorie #1, zwei Messetage
+    }{%
+        Small Booth, Category #1, Two Days
+}}
+
+\newcommand{\bigone}[1]{\boothinfo{\bigboothinfo}\ifgerman{%
+        Grosser Stand, Kategorie #1, ein Messetag
+    }{%
+        Big Booth, Category #1, Single Day
+}}
+\newcommand{\bigtwo}[1]{\boothinfo{\bigboothinfo}\ifgerman{%
+        Grosser Stand, Kategorie #1, zwei Messetage
+    }{%
+        Big Booth, Category #1, Two Days
+}}
+
+
 % startups
 
 \newcommand{\startupone}{\ifgerman{%
@@ -116,6 +141,9 @@ Startup Booth, Two Days
 }
 
 
+% Generic Command for 
+
+
 % Detailed information
 
 \newcommand{\bigboothinfo}{\ifgerman{%
@@ -126,12 +154,13 @@ Standinformationen:
 	\item Zwei Tische oder ein Tisch und zwei Stehtische oder vier Stehtische
 	\item Zwei Stellwände (je 120cm x 180 cm)
 \end{enumerate}
-\bigbreak\noindent
-Der Aussteller kann einen eigenen
-Projektständer sowie anstelle der Stellwand ein
-eigenes Banner aufstellen, dieses darf jedoch
-die Masse des gebuchten Standes nicht
-überschreiten.
+% Not anymore as of 2019:
+%\bigbreak\noindent
+%Der Aussteller kann einen eigenen
+%Projektständer sowie anstelle der Stellwand ein
+%eigenes Banner aufstellen, dieses darf jedoch
+%die Masse des gebuchten Standes nicht
+%überschreiten.
 }{%
 \bigbreak\noindent
 Additional information:
@@ -140,12 +169,13 @@ Additional information:
 	\item Two normal tables, one table and two bar tables, or four bar tables
 	\item Two movable walls (each 120cm x 180 cm)
 \end{enumerate}
-\bigbreak\noindent
-The exhibitor may bring additional banners to use in replacement of the
-partitioning wall, as long as the booth's size is respected.
+% Not anymore as of 2019:
+%\bigbreak\noindent
+%The exhibitor may bring additional banners to use in replacement of the
+%partitioning wall, as long as the booth's size is respected.
 }}
 
-\newcommand{\smallboothinfo}{ifgerman{%
+\newcommand{\smallboothinfo}{\ifgerman{%
 \bigbreak\noindent
 Standinformationen:
 \begin{enumerate}
@@ -153,23 +183,25 @@ Standinformationen:
 	\item Ein Tisch oder zwei Stehtische
 	\item Eine Stellwand (120cm x 180 cm)
 \end{enumerate}
-\bigbreak\noindent
-Der Aussteller kann einen eigenen
-Projektständer sowie anstelle der Stellwand ein
-eigenes Banner aufstellen, dieses darf jedoch
-die Masse des gebuchten Standes nicht
-überschreiten.
+% Not anymore as of 2019:
+%\bigbreak\noindent
+%Der Aussteller kann einen eigenen
+%Projektständer sowie anstelle der Stellwand ein
+%eigenes Banner aufstellen, dieses darf jedoch
+%die Masse des gebuchten Standes nicht
+%überschreiten.
 }{%
 \bigbreak\noindent
 Additional information:
 \begin{enumerate}
 	\item Booth Size: 250cm x 220cm
-	\item One normal tables, or two bar tables
+	\item One normal table, or two bar tables
 	\item One movable wall (120cm x 180 cm)
 \end{enumerate}
-\bigbreak\noindent
-The exhibitor may bring additional banners to use in replacement of the
-partitioning wall, as long as the booth's size is respected.
+% Not anymore as of 2019:
+%\bigbreak\noindent
+%The exhibitor may bring additional banners to use in replacement of the
+%partitioning wall, as long as the booth's size is respected.
 }}
 
 \newcommand{\mediainfo}{{\footnotesize\ifgerman{%
