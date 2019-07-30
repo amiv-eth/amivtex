@@ -1,4 +1,4 @@
-FROM python:3.6-slim-jessie
+FROM python:3.7-slim-buster
 
 COPY ./texlive.profile /tmp/install-tl-unx/texlive.profile
 COPY ./amivtex /usr/local/texlive/texmf-local/tex/latex/amivtex
