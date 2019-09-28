@@ -85,7 +85,7 @@ marginparsep=0mm, marginparwidth=\outermargin%
 \iftwocolumn\begin{multicols}{2}\fi
 }
 
-\newcommand{\image}[1]{%
+\newcommand{\image}[2][]{% [Caption]{Image}
 % The image is placed inline, not as a float -- therefore we have to use \par
 % to end the current paragraph and again to start a new one after the image.
 % Otherwise we get inconsistent newlines and unwanted spacing
@@ -94,14 +94,19 @@ marginparsep=0mm, marginparwidth=\outermargin%
 \docolaction{%
     % Left col
     \hspace{\dimexpr-\leftimagemargin-\printmargin}%
-    \includegraphics[width=\dimexpr\linewidth+\leftimagemargin+\printmargin]{#1}%
+    \includegraphics[width=\dimexpr\linewidth+\leftimagemargin+\printmargin]{#2}%
 }{%
     % Middle col (not possible in layout, but for completeness)
-    \includegraphics[width=\linewidth]{#1}%
+    \includegraphics[width=\linewidth]{#2}%
 }{%
     % Right col    
-    \includegraphics[width=\dimexpr\linewidth+\rightimagemargin+\printmargin]{#1}%
+    \includegraphics[width=\dimexpr\linewidth+\rightimagemargin+\printmargin]{#2}%
 }%
+% Caption
+\ifx#1\empty\else
+\vspace{0.25\columnsep}\par
+#1
+\fi
 \vspace{0.5\columnsep}\par
 }
 
