@@ -43,7 +43,7 @@
 %% GENERAL AMIV INFORMATION
 
 \newcommand*{\amivname}{AMIV an der ETH}
-\newcommand*{\amivaddress}{Universitätsstrasse 6, CAB E 37}
+\newcommand*{\amivaddress}{Universitätstrasse 6, CAB E 37}
 \newcommand*{\amivpostal}{8092}
 \newcommand*{\amivcity}{Zürich}
 \newcommand*{\amivphone}{+41 44 632 42 45}
