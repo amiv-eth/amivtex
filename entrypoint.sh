@@ -6,7 +6,6 @@
 
 FONT_NAME="Din Pro"
 FONT_DIR=~/.local/share/fonts
-DEFAULT_URL_FILE=/run/secrets/font_url  # Default docker secret mount point
 
 function error() {
 	echo "Error while aquiring DIN Pro fonts:"
@@ -31,14 +30,18 @@ if ! fc-list | grep -qi "$FONT_NAME"; then
 		echo "Archive provided, unpacking..."
 		tar -xz -C $FONT_DIR -f $FONT_ARCHIVE || error bad-archive
 	else
-		echo "Downloading..."
+		echo "No archive provided."
 		if [ -n "$FONT_URL" ]; then
-			url=$FONT_URL
-		elif [ -f ${FONT_URL_FILE:=$DEFAULT_URL_FILE} ]; then
-			url=$(cat $FONT_URL_FILE)
+			echo "Reading URL from environment...";
+			url=$FONT_URL;
+		elif [ -f $FONT_URL_FILE ]; then
+			echo "Readind URL from file...";
+			url=$(cat $FONT_URL_FILE);
 		else
 			error no-url
 		fi
+
+		echo "Downloading fonts from URL: $FONT_URL"
 
 		temp_archive=/tmp/fonts_temp.tar.gz
 		wget -qO $temp_archive $url || error bad-url
