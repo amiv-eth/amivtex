@@ -1,4 +1,4 @@
-FROM python:3.12.9-bullseye
+FROM python:3.7-bookworm
 
 COPY ./texlive.profile /tmp/install-tl-unx/texlive.profile
 COPY ./amivtex /usr/local/texlive/texmf-local/tex/latex/amivtex
